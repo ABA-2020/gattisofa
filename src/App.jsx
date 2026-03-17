@@ -165,7 +165,7 @@ function App() {
 
   return (
     <div className="app-container">
-      <h1>Scopri quale gatto sul sofà sei</h1>
+      <h1>Che gatto da sofà sei?</h1>
 
       {showResult && finalCat && (
         <div className="result-container">
