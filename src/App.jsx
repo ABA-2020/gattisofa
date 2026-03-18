@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import TinderCard from 'react-tinder-card';
 import './App.css'; 
 
-// DEFINIZIONE DEI PROFILI DEI GATTI (AGGIORNATA CON DATABASE REALE)
+// DEFINIZIONE DEI PROFILI DEI GATTI (CON I TITOLI VERI)
 const catProfiles = {
   1: {
     name: "Paciock",
@@ -81,10 +81,7 @@ function App() {
   const [scores, setScores] = useState({ 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 });
   const [currentIndex, setCurrentIndex] = useState(questions.length - 1);
   const [showResult, setShowResult] = useState(false);
-  const [finalCat, setFinalCat] = useState(null);
 
-  // --- RILEVAMENTO DISPOSITIVO ---
-  // Se la finestra è più larga di 768px, consideriamo che l'utente sia da PC
   const [isDesktop, setIsDesktop] = useState(window.innerWidth > 768);
 
   useEffect(() => {
@@ -93,19 +90,16 @@ function App() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Creiamo dei "collegamenti" (Refs) alle carte per poterle swipare via codice quando si clicca su PC
   const cardRefs = useMemo(
     () => Array(questions.length).fill(0).map(() => React.createRef()),
     []
   );
 
   const handleButtonClick = (direction, index) => {
-    // Quando clicchiamo da PC, diciamo alla carta di animarsi fuori dallo schermo
     if (cardRefs[index] && cardRefs[index].current) {
       cardRefs[index].current.swipe(direction);
     }
   };
-  // ------------------------------
 
   const calculatePoints = (profiles) => {
     return 4 - profiles.length; 
@@ -136,43 +130,58 @@ function App() {
     });
 
     if (currentIndex === 0) {
-      calculateFinalResult();
+      setShowResult(true);
     } else {
       setCurrentIndex(prev => prev - 1);
     }
-  };
-
-  const calculateFinalResult = () => {
-    setScores(currentScores => {
-      const dominantType = Object.keys(currentScores).reduce((a, b) => currentScores[a] > currentScores[b] ? a : b);
-      
-      // STAMPA I PUNTEGGI NELLA CONSOLE
-      console.log("Punteggi Finali delle 5 tipologie:", currentScores);
-      console.log("Tipologia vincente:", dominantType);
-      
-      setFinalCat(catProfiles[dominantType]);
-      setShowResult(true);
-      return currentScores;
-    });
   };
 
   const resetTest = () => {
     setScores({ 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 });
     setCurrentIndex(questions.length - 1);
     setShowResult(false);
-    setFinalCat(null);
   };
+
+  // Ordiniamo gli ID dei gatti dal punteggio più alto al più basso
+  const sortedCatIds = Object.keys(scores).sort((a, b) => scores[b] - scores[a]);
 
   return (
     <div className="app-container">
-      <h1>Che gatto da sofà sei?</h1>
+      <h1>Scopri il tuo Gatto-TV</h1>
 
-      {showResult && finalCat && (
-        <div className="result-container">
-          <h2>Sei un {finalCat.name}!</h2>
-          <h3>{finalCat.breed}</h3>
-          <p><strong>Personalità:</strong> {finalCat.profile}</p>
-          <p><strong>Cosa dovresti guardare:</strong> {finalCat.tv}</p>
+      {showResult && (
+        <div className="result-container scrollable-results">
+          <h2>Le tue Affinità Feline</h2>
+          <p>Ecco quanto sei affine a ciascun profilo (da -47 a +47):</p>
+          
+          {sortedCatIds.map(catId => {
+            const cat = catProfiles[catId];
+            const score = scores[catId];
+            
+            return (
+              <div key={catId} className="cat-result-box">
+                <h3>{cat.name} ({score > 0 ? `+${score}` : score} pt)</h3>
+                <h4>{cat.breed}</h4>
+                <p><strong>Personalità:</strong> {cat.profile}</p>
+                
+                {/* LOGICA DELLA RACCOMANDAZIONE IN BASE AL SEGNO */}
+                {score > 0 ? (
+                  <p className="recommendation positive">
+                    <strong>✅ Serie Consigliate:</strong> {cat.tv}
+                  </p>
+                ) : score < 0 ? (
+                  <p className="recommendation negative">
+                    <strong>❌ Da EVITARE:</strong> {cat.tv}
+                  </p>
+                ) : (
+                  <p className="recommendation neutral">
+                    <strong>➖ Neutro:</strong> Puoi provare a guardare {cat.tv}
+                  </p>
+                )}
+              </div>
+            );
+          })}
+          
           <button onClick={resetTest}>Rifai il test</button>
         </div>
       )}
@@ -183,28 +192,22 @@ function App() {
           {questions.map((q, index) => (
             <TinderCard
               key={q.id}
-              ref={cardRefs[index]} // Aggiungiamo il collegamento alla carta
+              ref={cardRefs[index]}
               className="swipe"
-              // Se siamo su PC blocchiamo il trascinamento (up, down, left, right), se su mobile permettiamo left e right
               preventSwipe={isDesktop ? ['up', 'down', 'left', 'right'] : ['up', 'down']} 
               onSwipe={(dir) => handleSwipe(dir, q)}
             >
               <div className="card">
                 <h2>{q.title}</h2>
                 <div className="options">
-                  
-                  {/* OPZIONE SINISTRA */}
                   <div 
                     className="left-option"
-                    // Se siamo su PC e la carta è la prima in cima, cliccare attiverà l'animazione
                     onClick={() => isDesktop && index === currentIndex && handleButtonClick('left', index)}
                     style={{ cursor: isDesktop ? 'pointer' : 'default' }}
                   >
                     <span>⬅️ {isDesktop ? 'Clicca qui' : 'Swipe Sinistra'}</span>
                     <p>{q.leftOption}</p>
                   </div>
-
-                  {/* OPZIONE DESTRA */}
                   <div 
                     className="right-option"
                     onClick={() => isDesktop && index === currentIndex && handleButtonClick('right', index)}
@@ -213,7 +216,6 @@ function App() {
                     <span>{isDesktop ? 'Clicca qui' : 'Swipe Destra'} ➡️</span>
                     <p>{q.rightOption}</p>
                   </div>
-
                 </div>
               </div>
             </TinderCard>
