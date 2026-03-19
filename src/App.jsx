@@ -142,45 +142,48 @@ function App() {
     setShowResult(false);
   };
 
-  // Ordiniamo gli ID dei gatti dal punteggio più alto al più basso
-  const sortedCatIds = Object.keys(scores).sort((a, b) => scores[b] - scores[a]);
+  // Ordiniamo gli ID dei gatti dal punteggio più alto al più basso e selezioniamo solo x <= -10 V x >= 10
+const filteredCatIds = Object.keys(scores)
+    .filter(catId => scores[catId] <= -10 || scores[catId] >= 10)
+    .sort((a, b) => scores[b] - scores[a]);
 
   return (
     <div className="app-container">
-      <h1>Scopri il tuo Gatto-TV</h1>
+      <h1>Scopri le tue gatto+ list</h1>
 
       {showResult && (
         <div className="result-container scrollable-results">
           <h2>Le tue Affinità Feline</h2>
-          <p>Ecco quanto sei affine a ciascun profilo (da -47 a +47):</p>
+          <p>Ecco le serie con cui hai un'affinità (o un'avversione) molto forte:</p>
           
-          {sortedCatIds.map(catId => {
-            const cat = catProfiles[catId];
-            const score = scores[catId];
-            
-            return (
-              <div key={catId} className="cat-result-box">
-                <h3>{cat.name} ({score > 0 ? `+${score}` : score} pt)</h3>
-                <h4>{cat.breed}</h4>
-                <p><strong>Personalità:</strong> {cat.profile}</p>
-                
-                {/* LOGICA DELLA RACCOMANDAZIONE IN BASE AL SEGNO */}
-                {score > 0 ? (
-                  <p className="recommendation positive">
-                    <strong>✅ Serie Consigliate:</strong> {cat.tv}
-                  </p>
-                ) : score < 0 ? (
-                  <p className="recommendation negative">
-                    <strong>❌ Da EVITARE:</strong> {cat.tv}
-                  </p>
-                ) : (
-                  <p className="recommendation neutral">
-                    <strong>➖ Neutro:</strong> Puoi provare a guardare {cat.tv}
-                  </p>
-                )}
-              </div>
-            );
-          })}
+          {filteredCatIds.length > 0 ? (
+            filteredCatIds.map(catId => {
+              const cat = catProfiles[catId];
+              const score = scores[catId];
+              
+              return (
+                <div key={catId} className="cat-result-box">
+                  <h3>{cat.name} ({score > 0 ? `+${score}` : score} pt)</h3>
+                  <h4>{cat.breed}</h4>
+                  {/* <p><strong>Personalità:</strong> {cat.profile}</p> */}
+                  
+                  {score >= 10 ? (
+                    <p className="recommendation positive">
+                      <strong>✅ Serie Consigliate:</strong> {cat.tv}
+                    </p>
+                  ) : (
+                    <p className="recommendation negative">
+                      <strong>❌ Da EVITARE:</strong> {cat.tv}
+                    </p>
+                  )}
+                </div>
+              );
+            })
+          ) : (
+            <p className="recommendation neutral">
+              Wow! I tuoi gusti sono perfettamente bilanciati. Non hai una preferenza estrema per nessun genere in particolare!
+            </p>
+          )}
           
           <button onClick={resetTest}>Rifai il test</button>
         </div>
