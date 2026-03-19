@@ -187,7 +187,7 @@ function App() {
     }));
   };
 
-  const handleFormSubmit = async (e) => {
+ const handleFormSubmit = async (e) => {
     e.preventDefault();
     setIsSending(true);
 
@@ -207,29 +207,28 @@ function App() {
     console.log("Pacchetto dati:", dataToSend);
 
     try {
-      const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxz3MRQrlPJnLh9yBVkGwlRqE1UEeJkg4wzakzPJtk/exec";
+      const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzVfL9_W03IJDP9s3rIOcQvvf2W80pGdqXqYvvOukq3M8EBJBU2LIL5YXTTuwFdeir0/exec";
 
+      // Chiamata pulita: nessun header strano, nessun no-cors. 
+      // Il browser imposterà automaticamente text/plain e Google lo accetterà.
       const response = await fetch(GOOGLE_SCRIPT_URL, {
         method: "POST",
-        headers: {
-          "Content-Type": "text/plain;charset=utf-8", 
-        },
         body: JSON.stringify(dataToSend)
       });
       
-      console.log("Status della chiamata:", response.status);
-      
+      // Ora possiamo leggere la risposta ufficiale di Google!
       const resultText = await response.text();
       console.log("Risposta dal server:", resultText);
 
       if (response.ok) {
         setFormSubmitted(true);
+        console.log("Dati salvati con successo sul Foglio Google!");
       } else {
-        alert("Errore da Google: " + response.status + ". Guarda la console per i dettagli.");
+        alert("Errore dal server Google: " + response.status);
       }
 
     } catch (error) {
-      alert("La richiesta è stata bloccata dal browser! Guarda la console.");
+      alert("La richiesta è stata bloccata. Controlla la console.");
       console.error("ERRORE DI RETE/CORS:", error);
     } finally {
       setIsSending(false);
