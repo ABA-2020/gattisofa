@@ -175,7 +175,7 @@ function App() {
     }));
   };
 
- const handleFormSubmit = async (e) => {
+const handleFormSubmit = async (e) => {
     e.preventDefault();
     setIsSending(true);
 
@@ -191,23 +191,38 @@ function App() {
       tutte_le_risposte: userAnswers
     };
 
+    console.log("=== INIZIO INVIO DATI A GOOGLE ===");
+    console.log("Pacchetto dati:", dataToSend);
+
     try {
-      // Il tuo link corretto funzionante per le chiamate esterne
       const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxz3MRQrlPJnLh9yBVkGwlRqE1UEeJkg4wzakzPJtk/exec";
 
-      await fetch(GOOGLE_SCRIPT_URL, {
+      const response = await fetch(GOOGLE_SCRIPT_URL, {
         method: "POST",
-        // Text/plain evita i blocchi di sicurezza (CORS) del browser
         headers: {
           "Content-Type": "text/plain;charset=utf-8", 
         },
         body: JSON.stringify(dataToSend)
       });
       
-      setFormSubmitted(true);
+      console.log("Status della chiamata:", response.status);
+      
+      // Leggiamo la risposta cruda del server Google
+      const resultText = await response.text();
+      console.log("Risposta dal server:", resultText);
+
+      if (response.ok) {
+        // Se va tutto bene
+        setFormSubmitted(true);
+      } else {
+        // Se Google risponde con un errore (es. 401 Unauthorized o 404 Not Found)
+        alert("Errore da Google: " + response.status + ". Guarda la console per i dettagli.");
+      }
+
     } catch (error) {
-      alert("C'è stato un errore nel salvataggio dei dati. Riprova!");
-      console.error(error);
+      // Se la richiesta viene bloccata del tutto (es. errore CORS o assenza di internet)
+      alert("La richiesta è stata bloccata dal browser! Guarda la console.");
+      console.error("ERRORE DI RETE/CORS:", error);
     } finally {
       setIsSending(false);
     }
