@@ -2,36 +2,38 @@ import React, { useState, useEffect, useMemo } from 'react';
 import TinderCard from 'react-tinder-card';
 import './App.css'; 
 
-// DEFINIZIONE DEI PROFILI DEI GATTI (CON I TITOLI VERI)
+// IMPORTIAMO LE IMMAGINI (Assicurati che i file siano nella cartella src!)
+import PaciockImg from './assets/gatti/Paciock.svg';
+import PeppaPigImg from './assets/gatti/Peppa_pig.svg';
+import JoeyImg from './assets/gatti/Joey.svg';
+import MissMarpleImg from './assets/gatti/Miss_Marple.svg';
+import HannibalImg from './assets/gatti/Hannibal.svg';
+
+// DEFINIZIONE DEI PROFILI DEI GATTI (Ora con le immagini associate)
 const catProfiles = {
   1: {
     name: "Paciock",
-    breed: "Persiano Grigio (occhi gialli)",
-    profile: "Il pigro: tranquillo, calmo, dolce, abitudinario, sedentario, affettuoso, tollerante.",
+    image: PaciockImg,
     tv: "Schitt's Creek, Boris, Camera Café, Derry Girls, 30 Rock, The Good Place."
   },
   2: {
     name: "Peppa Pig",
-    breed: "Siamese Bianco a muso nero (occhi azzurri, femmina)",
-    profile: "La chiacchierona: empatica, ama le relazioni profonde, dipendente, molto vocale, giocherellona.",
+    image: PeppaPigImg,
     tv: "L’Amica Geniale, Downton Abbey, Un medico in famiglia, La meglio gioventù, Babylon Berlin."
   },
   3: {
     name: "Joey",
-    breed: "Maine Coon Tigrato (occhi grandi sfumature verdi)",
-    profile: "L'amicone: eccezionalmente amichevole, intelligente, dolce, socievole, leale, amante dell'acqua.",
+    image: JoeyImg,
     tv: "Heartstopper, Sex Education, Normal People, SKAM Italia, Friday Night Lights."
   },
   4: {
     name: "Miss Marple",
-    breed: "Abissino (occhi verdi a mandorla, femmina)",
-    profile: "L'investigatrice: intelligentissima, curiosa, investigativa, molto attiva, non sta mai ferma, non violenta.",
+    image: MissMarpleImg,
     tv: "Il Commissario Montalbano, Don Matteo, Sherlock, Distretto di Polizia, Borgen, House of Cards."
   },
   5: {
     name: "Hannibal",
-    breed: "Nigripes (tigrato, minuscolo, piedi neri, occhi neri)",
-    profile: "Il killer: fuori dagli schemi, ama il surreale, il violento e il dark.",
+    image: HannibalImg,
     tv: "Hannibal, Dark, American Horror Story, Fargo, Gomorra – La serie."
   }
 };
@@ -90,6 +92,20 @@ function App() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // --- LOGICA DI DEBUG PER LA CONSOLE ---
+  useEffect(() => {
+    if (showResult) {
+      console.log("=== DEBUG: PUNTEGGI DI TUTTI I GATTI (da -47 a +47) ===");
+      console.log("1 (Paciock):", scores[1]);
+      console.log("2 (Peppa Pig):", scores[2]);
+      console.log("3 (Joey):", scores[3]);
+      console.log("4 (Miss Marple):", scores[4]);
+      console.log("5 (Hannibal):", scores[5]);
+      console.log("=========================================================");
+    }
+  }, [showResult, scores]);
+  // --------------------------------------
+
   const cardRefs = useMemo(
     () => Array(questions.length).fill(0).map(() => React.createRef()),
     []
@@ -142,19 +158,16 @@ function App() {
     setShowResult(false);
   };
 
-  // Ordiniamo gli ID dei gatti dal punteggio più alto al più basso e selezioniamo solo x <= -10 V x >= 10
-const filteredCatIds = Object.keys(scores)
+  const filteredCatIds = Object.keys(scores)
     .filter(catId => scores[catId] <= -10 || scores[catId] >= 10)
     .sort((a, b) => scores[b] - scores[a]);
 
   return (
     <div className="app-container">
-      <h1>Scopri le tue gatto+ list</h1>
+      <h1>Scopri il tuo Gatto-TV</h1>
 
       {showResult && (
         <div className="result-container scrollable-results">
-          <h2>Le tue Affinità Feline</h2>
-          <p>Ecco le serie con cui hai un'affinità (o un'avversione) molto forte:</p>
           
           {filteredCatIds.length > 0 ? (
             filteredCatIds.map(catId => {
@@ -162,18 +175,22 @@ const filteredCatIds = Object.keys(scores)
               const score = scores[catId];
               
               return (
-                <div key={catId} className="cat-result-box">
-                  <h3>{cat.name} ({score > 0 ? `+${score}` : score} pt)</h3>
-                  <h4>{cat.breed}</h4>
-                  {/* <p><strong>Personalità:</strong> {cat.profile}</p> */}
+                <div key={catId} className="cat-result-box" style={{ textAlign: 'center' }}>
                   
+                  {/* IMMAGINE DEL GATTO */}
+                  <img src={cat.image} alt={cat.name} className="cat-image" />
+                  
+                  {/* NOME DEL GATTO */}
+                  <h3>{cat.name}</h3>
+                  
+                  {/* LISTA DELLE SERIE TV IN BASE AL PUNTEGGIO */}
                   {score >= 10 ? (
                     <p className="recommendation positive">
-                      <strong>✅ Serie Consigliate:</strong> {cat.tv}
+                      <strong>✅ Serie Consigliate:</strong><br /> {cat.tv}
                     </p>
                   ) : (
                     <p className="recommendation negative">
-                      <strong>❌ Da EVITARE:</strong> {cat.tv}
+                      <strong>❌ Da EVITARE:</strong><br /> {cat.tv}
                     </p>
                   )}
                 </div>
