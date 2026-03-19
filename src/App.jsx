@@ -310,6 +310,23 @@ function App() {
                   <small className="char-count">{formData.feedback.length} / 300 caratteri</small>
                 </div>
 
+                {/* CHECKBOX PRIVACY OBBLIGATORIA */}
+                <div className="form-group privacy-group">
+                  <label style={{ display: 'flex', alignItems: 'flex-start', fontWeight: 'normal', fontSize: '12px', cursor: 'pointer' }}>
+                    <input 
+                      type="checkbox" 
+                      name="privacyAccepted" 
+                      checked={formData.privacyAccepted} 
+                      onChange={handleFormChange} 
+                      required 
+                      style={{ marginRight: '10px', marginTop: '3px' }}
+                    />
+                    <span>
+                      Acconsento al trattamento dei miei dati in forma anonima a scopo statistico e di ricerca per il miglioramento dell'algoritmo, nel rispetto del GDPR.
+                    </span>
+                  </label>
+                </div>
+
                 <button type="submit" className="submit-btn">Invia Feedback</button>
               </form>
             ) : (
