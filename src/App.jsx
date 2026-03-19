@@ -78,6 +78,7 @@ const questions = [
 
 function App() {
   const [scores, setScores] = useState({ 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 });
+  const [userAnswers, setUserAnswers] = useState([]); // Stato ripristinato per memorizzare le 37 risposte
   const [currentIndex, setCurrentIndex] = useState(questions.length - 1);
   const [showResult, setShowResult] = useState(false);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth > 768);
@@ -92,6 +93,7 @@ function App() {
     privacyAccepted: false
   });
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [isSending, setIsSending] = useState(false); // Aggiunto lo stato mancante
 
   useEffect(() => {
     const handleResize = () => setIsDesktop(window.innerWidth > 768);
@@ -129,16 +131,25 @@ function App() {
   const handleSwipe = (direction, question) => {
     let chosenProfiles = [];
     let rejectedProfiles = [];
+    let chosenText = '';
 
     if (direction === 'left') {
       chosenProfiles = question.leftProfiles;
       rejectedProfiles = question.rightProfiles;
+      chosenText = question.leftOption;
     } else if (direction === 'right') {
       chosenProfiles = question.rightProfiles;
       rejectedProfiles = question.leftProfiles;
+      chosenText = question.rightOption;
     } else {
       return; 
     }
+
+    // Registriamo la risposta esatta che l'utente ha scelto
+    setUserAnswers(prev => [...prev, {
+      domanda: question.title,
+      scelta: chosenText
+    }]);
 
     const pointsToAdd = calculatePoints(chosenProfiles);
     const pointsToSubtract = calculatePoints(rejectedProfiles);
@@ -159,10 +170,11 @@ function App() {
 
   const resetTest = () => {
     setScores({ 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 });
+    setUserAnswers([]); // Resettiamo la memoria delle risposte
     setCurrentIndex(questions.length - 1);
     setShowResult(false);
     // Resettiamo anche il form
-    setFormData({ gender: '', age: '', catMatch: '', tvMatch: '', feedback: '' });
+    setFormData({ gender: '', age: '', catMatch: '', tvMatch: '', feedback: '', privacyAccepted: false });
     setFormSubmitted(false);
   };
 
@@ -175,7 +187,7 @@ function App() {
     }));
   };
 
-const handleFormSubmit = async (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     setIsSending(true);
 
@@ -207,20 +219,16 @@ const handleFormSubmit = async (e) => {
       
       console.log("Status della chiamata:", response.status);
       
-      // Leggiamo la risposta cruda del server Google
       const resultText = await response.text();
       console.log("Risposta dal server:", resultText);
 
       if (response.ok) {
-        // Se va tutto bene
         setFormSubmitted(true);
       } else {
-        // Se Google risponde con un errore (es. 401 Unauthorized o 404 Not Found)
         alert("Errore da Google: " + response.status + ". Guarda la console per i dettagli.");
       }
 
     } catch (error) {
-      // Se la richiesta viene bloccata del tutto (es. errore CORS o assenza di internet)
       alert("La richiesta è stata bloccata dal browser! Guarda la console.");
       console.error("ERRORE DI RETE/CORS:", error);
     } finally {
@@ -342,7 +350,10 @@ const handleFormSubmit = async (e) => {
                   </label>
                 </div>
 
-                <button type="submit" className="submit-btn">Invia Feedback</button>
+                {/* BOTTONE AGGIORNATO */}
+                <button type="submit" className="submit-btn" disabled={isSending}>
+                  {isSending ? "Invio in corso..." : "Invia Feedback"}
+                </button>
               </form>
             ) : (
               <div className="thank-you-message">
