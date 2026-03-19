@@ -88,7 +88,8 @@ function App() {
     age: '',
     catMatch: '',
     tvMatch: '',
-    feedback: ''
+    feedback: '',
+    privacyAccepted: false
   });
   const [formSubmitted, setFormSubmitted] = useState(false);
 
@@ -167,8 +168,11 @@ function App() {
 
   // --- GESTIONE DEL FORM ---
   const handleFormChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    setFormData(prev => ({ 
+      ...prev, 
+      [name]: type === 'checkbox' ? checked : value 
+    }));
   };
 
  const handleFormSubmit = async (e) => {
