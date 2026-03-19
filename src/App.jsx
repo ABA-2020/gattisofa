@@ -12,31 +12,31 @@ const catProfiles = {
   1: {
     name: "Paciock",
     image: PaciockImg,
-    profile: "Il pigro: tranquillo, calmo, dolce, abitudinario, sedentario, affettuoso, tollerante.",
+    profile: "Una personalità riflessiva e pacata. Ami la stabilità e trovi il tuo equilibrio nella dolcezza dei piccoli gesti quotidiani. Sei una presenza rassicurante, capace di offrire grande tolleranza e un affetto costante a chi ti circonda.",
     tv: "Schitt's Creek, Boris, Camera Café, Derry Girls, 30 Rock, The Good Place."
   },
   2: {
     name: "Peppa Pig",
     image: PeppaPigImg,
-    profile: "La chiacchierona: empatica, ama le relazioni profonde, dipendente, molto vocale, giocherellona.",
+    profile: "Sei una persona empatica e comunicativa, che vive di relazioni profonde e autentiche. Ami condividere i tuoi pensieri e le tue emozioni, cercando sempre una sintonia speciale con gli altri attraverso il gioco e il dialogo continuo.",
     tv: "L’Amica Geniale, Downton Abbey, Un medico in famiglia, La meglio gioventù, Babylon Berlin."
   },
   3: {
     name: "Joey",
     image: JoeyImg,
-    profile: "L'amicone: eccezionalmente amichevole, intelligente, dolce, socievole, leale, amante dell'acqua.",
+    profile: "Dotato di una socialità innata e di una grande lealtà. Sei una personalità brillante, aperta alle novità e capace di adattarsi con intelligenza a ogni contesto. La tua energia è contagiosa e la tua natura è limpida come l'acqua che tanto ami.",
     tv: "Heartstopper, Sex Education, Normal People, SKAM Italia, Friday Night Lights."
   },
   4: {
     name: "Miss Marple",
     image: MissMarpleImg,
-    profile: "L'investigatrice: intelligentissima, curiosa, investigativa, molto attiva, non sta mai ferma, non violenta.",
+    profile: "Una mente brillante e dinamica, sempre alla ricerca di nuovi stimoli. La tua curiosità ti spinge a osservare il mondo con occhio critico e investigativo. Sei un’anima attiva e propositiva, che usa l’intelletto per navigare la realtà con gentilezza.",
     tv: "Il Commissario Montalbano, Don Matteo, Sherlock, Distretto di Polizia, Borgen, House of Cards."
   },
   5: {
     name: "Hannibal",
     image: HannibalImg,
-    profile: "Il killer: fuori dagli schemi, ama il surreale, il violento e il dark.",
+    profile: "Una personalità anticonformista e audace, che trova bellezza negli aspetti più insoliti e profondi della vita. Ami tutto ciò che è fuori dagli schemi e non temi di esplorare atmosfere intense e misteriose. Sei uno spirito libero che sfida le convenzioni con originalità.",
     tv: "Hannibal, Dark, American Horror Story, Fargo, Gomorra – La serie."
   }
 };
@@ -81,10 +81,23 @@ const questions = [
   { id: 37, title: "Preferisci...", leftOption: "Pretty Woman", leftProfiles: [1, 3], rightOption: "C'era una volta in America", rightProfiles: [2, 4, 5] }
 ];
 
+// --- FUNZIONE PER MISCHIARE L'ARRAY (Fisher-Yates Shuffle) ---
+const shuffleArray = (array) => {
+  let shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+};
+
 function App() {
+  // Inizializziamo lo stato delle domande già mischiato
+  const [currentQuestions, setCurrentQuestions] = useState(() => shuffleArray(questions));
+  
   const [scores, setScores] = useState({ 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 });
   const [userAnswers, setUserAnswers] = useState([]); 
-  const [currentIndex, setCurrentIndex] = useState(questions.length - 1);
+  const [currentIndex, setCurrentIndex] = useState(currentQuestions.length - 1);
   const [showResult, setShowResult] = useState(false);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth > 768);
 
@@ -105,21 +118,9 @@ function App() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  useEffect(() => {
-    if (showResult) {
-      console.log("=== DEBUG: PUNTEGGI DI TUTTI I GATTI (da -47 a +47) ===");
-      console.log("1 (Paciock):", scores[1]);
-      console.log("2 (Peppa Pig):", scores[2]);
-      console.log("3 (Joey):", scores[3]);
-      console.log("4 (Miss Marple):", scores[4]);
-      console.log("5 (Hannibal):", scores[5]);
-      console.log("=========================================================");
-    }
-  }, [showResult, scores]);
-
   const cardRefs = useMemo(
-    () => Array(questions.length).fill(0).map(() => React.createRef()),
-    []
+    () => Array(currentQuestions.length).fill(0).map(() => React.createRef()),
+    [currentQuestions]
   );
 
   const handleButtonClick = (direction, index) => {
@@ -149,7 +150,9 @@ function App() {
       return; 
     }
 
+    // Salviamo l'ID insieme al testo della risposta per poter riordinare tutto alla fine
     setUserAnswers(prev => [...prev, {
+      id: question.id,
       domanda: question.title,
       scelta: chosenText
     }]);
@@ -172,9 +175,13 @@ function App() {
   };
 
   const resetTest = () => {
+    // Rimescoliamo le domande al riavvio
+    const newShuffled = shuffleArray(questions);
+    setCurrentQuestions(newShuffled);
+    
     setScores({ 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 });
     setUserAnswers([]); 
-    setCurrentIndex(questions.length - 1);
+    setCurrentIndex(newShuffled.length - 1);
     setShowResult(false);
     setFormData({ gender: '', age: '', catMatch: '', tvMatch: '', feedback: '', privacyAccepted: false });
     setFormSubmitted(false);
@@ -192,6 +199,15 @@ function App() {
     e.preventDefault();
     setIsSending(true);
 
+    // 1. Riordiniamo le risposte per ID e UNIAMO il titolo alla risposta scelta
+    const sortedAnswers = [...userAnswers]
+      .sort((a, b) => a.id - b.id)
+      .map(item => ({
+        ...item,
+        // Questo concatena tutto in una stringa perfetta per l'AI
+        scelta: `[${item.domanda}] -> ${item.scelta}` 
+      }));
+
     const dataToSend = {
       ...formData,
       punteggi_finali: {
@@ -201,22 +217,25 @@ function App() {
         "4 Miss Marple": scores[4],
         "5 Hannibal": scores[5],
       },
-      tutte_le_risposte: userAnswers
+      tutte_le_risposte: sortedAnswers
     };
 
     console.log("=== INIZIO INVIO DATI A GOOGLE ===");
-    console.log("Pacchetto dati:", dataToSend);
+    console.log("Pacchetto dati (Ordinato e formattato):", dataToSend);
 
     try {
       const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzVfL9_W03IJDP9s3rIOcQvvf2W80pGdqXqYvvOukq3M8EBJBU2LIL5YXTTuwFdeir0/exec";
 
+      // 2. Il fetch aggiornato con l'header text/plain per sicurezza CORS
       const response = await fetch(GOOGLE_SCRIPT_URL, {
         method: "POST",
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8", 
+        },
         body: JSON.stringify(dataToSend)
       });
       
       const resultText = await response.text();
-      console.log("Risposta dal server:", resultText);
 
       if (response.ok) {
         setFormSubmitted(true);
@@ -244,7 +263,6 @@ function App() {
       {showResult && (
         <div className="result-container scrollable-results">
           
-          {/* MODIFICA 1: INDICATORE DI SCROLL AGGIUNTO QUI */}
           <div style={{
             backgroundColor: '#fff3cd',
             color: '#856404',
@@ -259,7 +277,6 @@ function App() {
             ⬇️ Scorri fino in fondo per vedere tutti i risultati e lasciarci il tuo feedback! ⬇️
           </div>
 
-          {/* I RISULTATI DEL TEST */}
           {filteredCatIds.length > 0 ? (
             filteredCatIds.map(catId => {
               const cat = catProfiles[catId];
@@ -293,7 +310,6 @@ function App() {
           
           <hr />
 
-          {/* IL FORM DI FEEDBACK */}
           <div className="feedback-section">
             <h3>Cosa ne pensi?</h3>
             <p>Aiutaci a migliorare l'algoritmo lasciando un feedback!</p>
@@ -338,7 +354,6 @@ function App() {
                 </div>
 
                 <div className="form-group">
-                  {/* MODIFICA 2: ETICHETTA AGGIORNATA E TEXTAREA "REQUIRED" */}
                   <label>Lascia un commento (obbligatorio):</label>
                   <textarea 
                     name="feedback" 
@@ -386,8 +401,8 @@ function App() {
 
       {!showResult && (
         <div className="card-container">
-          <p className="counter">Domanda {questions.length - currentIndex} di {questions.length}</p>
-          {questions.map((q, index) => (
+          <p className="counter">Domanda {currentQuestions.length - currentIndex} di {currentQuestions.length}</p>
+          {currentQuestions.map((q, index) => (
             <TinderCard
               key={q.id}
               ref={cardRefs[index]}
