@@ -2,14 +2,12 @@ import React, { useState, useEffect, useMemo } from 'react';
 import TinderCard from 'react-tinder-card';
 import './App.css'; 
 
-// IMPORTIAMO LE IMMAGINI (Assicurati che i file siano nella cartella src!)
 import PaciockImg from './assets/gatti/Paciock.svg';
 import PeppaPigImg from './assets/gatti/Peppa_pig.svg';
 import JoeyImg from './assets/gatti/Joey.svg';
 import MissMarpleImg from './assets/gatti/Miss_Marple.svg';
 import HannibalImg from './assets/gatti/Hannibal.svg';
 
-// DEFINIZIONE DEI PROFILI DEI GATTI (Ora con le immagini associate)
 const catProfiles = {
   1: {
     name: "Paciock",
@@ -38,7 +36,6 @@ const catProfiles = {
   }
 };
 
-// LE 37 DOMANDE COMPLETE
 const questions = [
   { id: 1, title: "Preferisci un viaggio in un posto...", leftOption: "Nuovo", leftProfiles: [1, 2], rightOption: "Dove sono già stato e mi è piaciuto", rightProfiles: [3, 4, 5] },
   { id: 2, title: "Preferisci andare a cena...", leftOption: "Con gente nuova", leftProfiles: [1, 2], rightOption: "Con vecchi amici", rightProfiles: [3, 4, 5] },
@@ -83,8 +80,17 @@ function App() {
   const [scores, setScores] = useState({ 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 });
   const [currentIndex, setCurrentIndex] = useState(questions.length - 1);
   const [showResult, setShowResult] = useState(false);
-
   const [isDesktop, setIsDesktop] = useState(window.innerWidth > 768);
+
+  // --- STATI PER IL FORM DI FEEDBACK ---
+  const [formData, setFormData] = useState({
+    gender: '',
+    age: '',
+    catMatch: '',
+    tvMatch: '',
+    feedback: ''
+  });
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   useEffect(() => {
     const handleResize = () => setIsDesktop(window.innerWidth > 768);
@@ -92,7 +98,6 @@ function App() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // --- LOGICA DI DEBUG PER LA CONSOLE ---
   useEffect(() => {
     if (showResult) {
       console.log("=== DEBUG: PUNTEGGI DI TUTTI I GATTI (da -47 a +47) ===");
@@ -104,7 +109,6 @@ function App() {
       console.log("=========================================================");
     }
   }, [showResult, scores]);
-  // --------------------------------------
 
   const cardRefs = useMemo(
     () => Array(questions.length).fill(0).map(() => React.createRef()),
@@ -156,6 +160,23 @@ function App() {
     setScores({ 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 });
     setCurrentIndex(questions.length - 1);
     setShowResult(false);
+    // Resettiamo anche il form
+    setFormData({ gender: '', age: '', catMatch: '', tvMatch: '', feedback: '' });
+    setFormSubmitted(false);
+  };
+
+  // --- GESTIONE DEL FORM ---
+  const handleFormChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault(); // Evita che la pagina si ricarichi
+    console.log("=== NUOVO FEEDBACK UTENTE ===");
+    console.log(formData);
+    console.log("=============================");
+    setFormSubmitted(true);
   };
 
   const filteredCatIds = Object.keys(scores)
@@ -164,26 +185,20 @@ function App() {
 
   return (
     <div className="app-container">
-      <h1>Scopri il tuo Gatto-TV</h1>
+      <h1>Scopri la tua gatto+ list</h1>
 
       {showResult && (
         <div className="result-container scrollable-results">
           
+          {/* I RISULTATI DEL TEST */}
           {filteredCatIds.length > 0 ? (
             filteredCatIds.map(catId => {
               const cat = catProfiles[catId];
               const score = scores[catId];
-              
               return (
                 <div key={catId} className="cat-result-box" style={{ textAlign: 'center' }}>
-                  
-                  {/* IMMAGINE DEL GATTO */}
                   <img src={cat.image} alt={cat.name} className="cat-image" />
-                  
-                  {/* NOME DEL GATTO */}
                   <h3>{cat.name}</h3>
-                  
-                  {/* LISTA DELLE SERIE TV IN BASE AL PUNTEGGIO */}
                   {score >= 10 ? (
                     <p className="recommendation positive">
                       <strong>✅ Serie Consigliate:</strong><br /> {cat.tv}
@@ -202,7 +217,76 @@ function App() {
             </p>
           )}
           
-          <button onClick={resetTest}>Rifai il test</button>
+          <hr />
+
+          {/* IL FORM DI FEEDBACK */}
+          <div className="feedback-section">
+            <h3>Cosa ne pensi?</h3>
+            <p>Aiutaci a migliorare l'algoritmo lasciando un feedback!</p>
+            
+            {!formSubmitted ? (
+              <form onSubmit={handleFormSubmit} className="feedback-form">
+                
+                <div className="form-group">
+                  <label>Sesso:</label>
+                  <select name="gender" value={formData.gender} onChange={handleFormChange} required>
+                    <option value="">Seleziona...</option>
+                    <option value="M">Uomo</option>
+                    <option value="F">Donna</option>
+                    <option value="Altro">Altro / Preferisco non specificare</option>
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label>Età:</label>
+                  <input type="number" name="age" value={formData.age} onChange={handleFormChange} required min="10" max="100" placeholder="Es. 25" />
+                </div>
+
+                <div className="form-group">
+                  <label>Ti ritrovi con la descrizione del gatto?</label>
+                  <select name="catMatch" value={formData.catMatch} onChange={handleFormChange} required>
+                    <option value="">Seleziona...</option>
+                    <option value="Molto">Molto</option>
+                    <option value="Abbastanza">Abbastanza</option>
+                    <option value="Poco">Poco</option>
+                    <option value="Per niente">Per niente</option>
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label>Confermi l'attinenza delle serie TV proposte/sconsigliate?</label>
+                  <select name="tvMatch" value={formData.tvMatch} onChange={handleFormChange} required>
+                    <option value="">Seleziona...</option>
+                    <option value="Assolutamente sì">Assolutamente sì</option>
+                    <option value="In parte">In parte</option>
+                    <option value="No">No</option>
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label>Lascia un commento (opzionale):</label>
+                  <textarea 
+                    name="feedback" 
+                    value={formData.feedback} 
+                    onChange={handleFormChange} 
+                    maxLength="300" 
+                    rows="3" 
+                    placeholder="Scrivi qui i tuoi pensieri..."
+                  />
+                  <small className="char-count">{formData.feedback.length} / 300 caratteri</small>
+                </div>
+
+                <button type="submit" className="submit-btn">Invia Feedback</button>
+              </form>
+            ) : (
+              <div className="thank-you-message">
+                <h4>Grazie per aver partecipato! 🐾</h4>
+                <p>Il tuo feedback è stato registrato.</p>
+              </div>
+            )}
+          </div>
+
+          <button onClick={resetTest} className="restart-btn">Rifai il test</button>
         </div>
       )}
 
