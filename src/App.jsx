@@ -171,12 +171,42 @@ function App() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleFormSubmit = (e) => {
-    e.preventDefault(); // Evita che la pagina si ricarichi
-    console.log("=== NUOVO FEEDBACK UTENTE ===");
-    console.log(formData);
-    console.log("=============================");
-    setFormSubmitted(true);
+ const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    setIsSending(true);
+
+    const dataToSend = {
+      ...formData,
+      punteggi_finali: {
+        "1 Paciock": scores[1],
+        "2 Peppa Pig": scores[2],
+        "3 Joey": scores[3],
+        "4 Miss Marple": scores[4],
+        "5 Hannibal": scores[5],
+      },
+      tutte_le_risposte: userAnswers
+    };
+
+    try {
+      // Il tuo link corretto funzionante per le chiamate esterne
+      const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxz3MRQrlPJnLh9yBVkGwlRqE1UEeJkg4wzakzPJtk/exec";
+
+      await fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        // Text/plain evita i blocchi di sicurezza (CORS) del browser
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8", 
+        },
+        body: JSON.stringify(dataToSend)
+      });
+      
+      setFormSubmitted(true);
+    } catch (error) {
+      alert("C'è stato un errore nel salvataggio dei dati. Riprova!");
+      console.error(error);
+    } finally {
+      setIsSending(false);
+    }
   };
 
   const filteredCatIds = Object.keys(scores)
