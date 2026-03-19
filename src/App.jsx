@@ -12,26 +12,31 @@ const catProfiles = {
   1: {
     name: "Paciock",
     image: PaciockImg,
+    profile: "Il pigro: tranquillo, calmo, dolce, abitudinario, sedentario, affettuoso, tollerante.",
     tv: "Schitt's Creek, Boris, Camera Café, Derry Girls, 30 Rock, The Good Place."
   },
   2: {
     name: "Peppa Pig",
     image: PeppaPigImg,
+    profile: "La chiacchierona: empatica, ama le relazioni profonde, dipendente, molto vocale, giocherellona.",
     tv: "L’Amica Geniale, Downton Abbey, Un medico in famiglia, La meglio gioventù, Babylon Berlin."
   },
   3: {
     name: "Joey",
     image: JoeyImg,
+    profile: "L'amicone: eccezionalmente amichevole, intelligente, dolce, socievole, leale, amante dell'acqua.",
     tv: "Heartstopper, Sex Education, Normal People, SKAM Italia, Friday Night Lights."
   },
   4: {
     name: "Miss Marple",
     image: MissMarpleImg,
+    profile: "L'investigatrice: intelligentissima, curiosa, investigativa, molto attiva, non sta mai ferma, non violenta.",
     tv: "Il Commissario Montalbano, Don Matteo, Sherlock, Distretto di Polizia, Borgen, House of Cards."
   },
   5: {
     name: "Hannibal",
     image: HannibalImg,
+    profile: "Il killer: fuori dagli schemi, ama il surreale, il violento e il dark.",
     tv: "Hannibal, Dark, American Horror Story, Fargo, Gomorra – La serie."
   }
 };
@@ -78,12 +83,11 @@ const questions = [
 
 function App() {
   const [scores, setScores] = useState({ 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 });
-  const [userAnswers, setUserAnswers] = useState([]); // Stato ripristinato per memorizzare le 37 risposte
+  const [userAnswers, setUserAnswers] = useState([]); 
   const [currentIndex, setCurrentIndex] = useState(questions.length - 1);
   const [showResult, setShowResult] = useState(false);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth > 768);
 
-  // --- STATI PER IL FORM DI FEEDBACK ---
   const [formData, setFormData] = useState({
     gender: '',
     age: '',
@@ -93,7 +97,7 @@ function App() {
     privacyAccepted: false
   });
   const [formSubmitted, setFormSubmitted] = useState(false);
-  const [isSending, setIsSending] = useState(false); // Aggiunto lo stato mancante
+  const [isSending, setIsSending] = useState(false); 
 
   useEffect(() => {
     const handleResize = () => setIsDesktop(window.innerWidth > 768);
@@ -145,7 +149,6 @@ function App() {
       return; 
     }
 
-    // Registriamo la risposta esatta che l'utente ha scelto
     setUserAnswers(prev => [...prev, {
       domanda: question.title,
       scelta: chosenText
@@ -170,15 +173,13 @@ function App() {
 
   const resetTest = () => {
     setScores({ 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 });
-    setUserAnswers([]); // Resettiamo la memoria delle risposte
+    setUserAnswers([]); 
     setCurrentIndex(questions.length - 1);
     setShowResult(false);
-    // Resettiamo anche il form
     setFormData({ gender: '', age: '', catMatch: '', tvMatch: '', feedback: '', privacyAccepted: false });
     setFormSubmitted(false);
   };
 
-  // --- GESTIONE DEL FORM ---
   const handleFormChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({ 
@@ -187,7 +188,7 @@ function App() {
     }));
   };
 
- const handleFormSubmit = async (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     setIsSending(true);
 
@@ -209,14 +210,11 @@ function App() {
     try {
       const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzVfL9_W03IJDP9s3rIOcQvvf2W80pGdqXqYvvOukq3M8EBJBU2LIL5YXTTuwFdeir0/exec";
 
-      // Chiamata pulita: nessun header strano, nessun no-cors. 
-      // Il browser imposterà automaticamente text/plain e Google lo accetterà.
       const response = await fetch(GOOGLE_SCRIPT_URL, {
         method: "POST",
         body: JSON.stringify(dataToSend)
       });
       
-      // Ora possiamo leggere la risposta ufficiale di Google!
       const resultText = await response.text();
       console.log("Risposta dal server:", resultText);
 
@@ -246,6 +244,21 @@ function App() {
       {showResult && (
         <div className="result-container scrollable-results">
           
+          {/* MODIFICA 1: INDICATORE DI SCROLL AGGIUNTO QUI */}
+          <div style={{
+            backgroundColor: '#fff3cd',
+            color: '#856404',
+            padding: '12px',
+            borderRadius: '8px',
+            marginBottom: '20px',
+            textAlign: 'center',
+            fontWeight: 'bold',
+            border: '1px solid #ffeeba',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+          }}>
+            ⬇️ Scorri fino in fondo per vedere tutti i risultati e lasciarci il tuo feedback! ⬇️
+          </div>
+
           {/* I RISULTATI DEL TEST */}
           {filteredCatIds.length > 0 ? (
             filteredCatIds.map(catId => {
@@ -255,6 +268,11 @@ function App() {
                 <div key={catId} className="cat-result-box" style={{ textAlign: 'center' }}>
                   <img src={cat.image} alt={cat.name} className="cat-image" />
                   <h3>{cat.name}</h3>
+                  
+                  <p style={{ fontSize: '14px', fontStyle: 'italic', marginBottom: '15px' }}>
+                    <strong>Personalità:</strong> {cat.profile}
+                  </p>
+                  
                   {score >= 10 ? (
                     <p className="recommendation positive">
                       <strong>✅ Serie Consigliate:</strong><br /> {cat.tv}
@@ -320,19 +338,20 @@ function App() {
                 </div>
 
                 <div className="form-group">
-                  <label>Lascia un commento (opzionale):</label>
+                  {/* MODIFICA 2: ETICHETTA AGGIORNATA E TEXTAREA "REQUIRED" */}
+                  <label>Lascia un commento (obbligatorio):</label>
                   <textarea 
                     name="feedback" 
                     value={formData.feedback} 
                     onChange={handleFormChange} 
                     maxLength="300" 
                     rows="3" 
+                    required 
                     placeholder="Scrivi qui i tuoi pensieri..."
                   />
                   <small className="char-count">{formData.feedback.length} / 300 caratteri</small>
                 </div>
 
-                {/* CHECKBOX PRIVACY OBBLIGATORIA */}
                 <div className="form-group privacy-group">
                   <label style={{ display: 'flex', alignItems: 'flex-start', fontWeight: 'normal', fontSize: '12px', cursor: 'pointer' }}>
                     <input 
@@ -349,7 +368,6 @@ function App() {
                   </label>
                 </div>
 
-                {/* BOTTONE AGGIORNATO */}
                 <button type="submit" className="submit-btn" disabled={isSending}>
                   {isSending ? "Invio in corso..." : "Invia Feedback"}
                 </button>
