@@ -10,36 +10,12 @@ import HannibalImg from './assets/gatti/Hannibal.svg';
 import LuluImg from './assets/gatti/Lulu.svg'; 
 
 const catProfiles = {
-  1: { 
-    name: "L'Abitudinario", image: PaciockImg, 
-    profile: "Una personalità riflessiva e pacata. Ami la stabilità e trovi il tuo equilibrio nella dolcezza dei piccoli gesti quotidiani. Sei una presenza rassicurante.", 
-    genre: "Comedy / Sitcom" 
-  },
-  2: { 
-    name: "L'Anima Sensibile", image: PeppaPigImg, 
-    profile: "Sei una persona empatica e comunicativa, che vive di relazioni profonde e autentiche. Ami condividere i tuoi pensieri e cercare sintonia.", 
-    genre: "Family Drama / Storico" 
-  },
-  3: { 
-    name: "Il Carismatico", image: JoeyImg, 
-    profile: "Dotato di una socialità innata e lealtà. Sei una personalità brillante, capace di adattarsi con intelligenza a ogni contesto. L'energia è contagiosa.", 
-    genre: "Pop / Cult / Fantasy" 
-  },
-  4: { 
-    name: "L'Esploratrice", image: MissMarpleImg, 
-    profile: "Una mente brillante e dinamica, sempre alla ricerca di stimoli. La tua curiosità ti spinge a osservare il mondo con occhio critico e investigativo.", 
-    genre: "Crime / Mystery / Politico" 
-  },
-  5: { 
-    name: "L'Alternativo", image: HannibalImg, 
-    profile: "Anticonformista e audace, trovi bellezza negli aspetti più insoliti. Ami ciò che è fuori dagli schemi e non temi di esplorare atmosfere intense.", 
-    genre: "Horror / Thriller / Sci-Fi" 
-  },
-  6: { 
-    name: "La Sognatrice", image: LuluImg, 
-    profile: "Un'anima dolce e profondamente romantica, che vive le emozioni con purezza. Credi nei legami autentici e ti lasci guidare dal cuore.", 
-    genre: "Teen / Romance / Young Adult" 
-  }
+  1: { name: "L'Abitudinario", image: PaciockImg, profile: "Una personalità riflessiva e pacata. Ami la stabilità e trovi il tuo equilibrio nella dolcezza dei piccoli gesti quotidiani.", genre: "Comedy / Sitcom" },
+  2: { name: "L'Anima Sensibile", image: PeppaPigImg, profile: "Sei una persona empatica e comunicativa, che vive di relazioni profonde e autentiche.", genre: "Family Drama / Storico" },
+  3: { name: "Il Carismatico", image: JoeyImg, profile: "Dotato di una socialità innata e lealtà. Sei una personalità brillante, capace di adattarsi con intelligenza.", genre: "Pop / Cult / Fantasy" },
+  4: { name: "L'Esploratrice", image: MissMarpleImg, profile: "Una mente brillante e dinamica, sempre alla ricerca di stimoli. La tua curiosità ti spinge a osservare il mondo.", genre: "Crime / Mystery / Politico" },
+  5: { name: "L'Alternativo", image: HannibalImg, profile: "Anticonformista e audace, trovi bellezza negli aspetti più insoliti. Ami ciò che è fuori dagli schemi.", genre: "Horror / Thriller / Sci-Fi" },
+  6: { name: "La Sognatrice", image: LuluImg, profile: "Un'anima dolce e profondamente romantica, che vive le emozioni con purezza. Ti lasci guidare dal cuore.", genre: "Teen / Romance / Young Adult" }
 };
 
 const shuffleArray = (array) => {
@@ -51,62 +27,54 @@ const shuffleArray = (array) => {
   return shuffled;
 };
 
-// ==========================================
-// 1. DATASET: DEMOGRAFICHE E GATTI
-// ==========================================
+// DATASET COMPLETO
 const demographicQuestions = [
   { id: "D1", type: "demo", title: "Qual è il tuo sesso?", leftOption: "Uomo", upOption: "Altro / ND", rightOption: "Donna" },
   { id: "D2", type: "demo_age", title: "Quanti anni hai?" },
 ];
 
 const catValidationQuestions = [
-  { id: "C1", type: "cat", catId: 1, title: "Questo gatto ti piace e lo vorresti a casa?", leftOption: "Non fa per me", upOption: "Neutro", rightOption: "Sì, lo adoro!" },
-  { id: "C2", type: "cat", catId: 2, title: "Questo gatto ti piace e lo vorresti a casa?", leftOption: "Non fa per me", upOption: "Neutro", rightOption: "Sì, lo adoro!" },
-  { id: "C3", type: "cat", catId: 3, title: "Questo gatto ti piace e lo vorresti a casa?", leftOption: "Non fa per me", upOption: "Neutro", rightOption: "Sì, lo adoro!" },
-  { id: "C4", type: "cat", catId: 4, title: "Questo gatto ti piace e lo vorresti a casa?", leftOption: "Non fa per me", upOption: "Neutro", rightOption: "Sì, lo adoro!" },
-  { id: "C5", type: "cat", catId: 5, title: "Questo gatto ti piace e lo vorresti a casa?", leftOption: "Non fa per me", upOption: "Neutro", rightOption: "Sì, lo adoro!" },
-  { id: "C6", type: "cat", catId: 6, title: "Questo gatto ti piace e lo vorresti a casa?", leftOption: "Non fa per me", upOption: "Neutro", rightOption: "Sì, lo adoro!" },
+  { id: "C1", type: "cat", catId: 1, title: "Questo gatto ti piace e lo vorresti a casa?", leftOption: "No", upOption: "Neutro", rightOption: "Sì!" },
+  { id: "C2", type: "cat", catId: 2, title: "Questo gatto ti piace e lo vorresti a casa?", leftOption: "No", upOption: "Neutro", rightOption: "Sì!" },
+  { id: "C3", type: "cat", catId: 3, title: "Questo gatto ti piace e lo vorresti a casa?", leftOption: "No", upOption: "Neutro", rightOption: "Sì!" },
+  { id: "C4", type: "cat", catId: 4, title: "Questo gatto ti piace e lo vorresti a casa?", leftOption: "No", upOption: "Neutro", rightOption: "Sì!" },
+  { id: "C5", type: "cat", catId: 5, title: "Questo gatto ti piace e lo vorresti a casa?", leftOption: "No", upOption: "Neutro", rightOption: "Sì!" },
+  { id: "C6", type: "cat", catId: 6, title: "Questo gatto ti piace e lo vorresti a casa?", leftOption: "No", upOption: "Neutro", rightOption: "Sì!" },
 ];
 
-// ==========================================
-// 2. DATASET: SERIE TV (30 totali)
-// ==========================================
 const tvQuestions = [
-  { id: "T1", type: "tv", title: "Cosa ne pensi di 'The Office'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
-  { id: "T2", type: "tv", title: "Cosa ne pensi di 'Friends'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
-  { id: "T3", type: "tv", title: "Cosa ne pensi di 'Boris'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
-  { id: "T4", type: "tv", title: "Cosa ne pensi di 'Scrubs'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
-  { id: "T5", type: "tv", title: "Cosa ne pensi di 'Ted Lasso'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
-  { id: "T6", type: "tv", title: "Cosa ne pensi di 'This Is Us'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
-  { id: "T7", type: "tv", title: "Cosa ne pensi di 'Normal People'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
-  { id: "T8", type: "tv", title: "Cosa ne pensi di 'The Crown'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
-  { id: "T9", type: "tv", title: "Cosa ne pensi di 'Scenes from a Marriage'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
-  { id: "T10", type: "tv", title: "Cosa ne pensi di 'Mad Men'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
-  { id: "T11", type: "tv", title: "Cosa ne pensi di 'Game of Thrones'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
-  { id: "T12", type: "tv", title: "Cosa ne pensi di 'Lost'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
-  { id: "T13", type: "tv", title: "Cosa ne pensi di 'The Boys'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
-  { id: "T14", type: "tv", title: "Cosa ne pensi di 'Vikings'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
-  { id: "T15", type: "tv", title: "Cosa ne pensi di 'Arcane'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
-  { id: "T16", type: "tv", title: "Cosa ne pensi di 'True Detective' (S1)?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
-  { id: "T17", type: "tv", title: "Cosa ne pensi di 'Mindhunter'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
-  { id: "T18", type: "tv", title: "Cosa ne pensi di 'House of Cards'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
-  { id: "T19", type: "tv", title: "Cosa ne pensi di 'Succession'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
-  { id: "T20", type: "tv", title: "Cosa ne pensi di 'Fargo'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
-  { id: "T21", type: "tv", title: "Cosa ne pensi di 'Breaking Bad'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
-  { id: "T22", type: "tv", title: "Cosa ne pensi di 'The Sopranos'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
-  { id: "T23", type: "tv", title: "Cosa ne pensi di 'Dark'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
-  { id: "T24", type: "tv", title: "Cosa ne pensi di 'Black Mirror'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
-  { id: "T25", type: "tv", title: "Cosa ne pensi di 'Mr. Robot'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
-  { id: "T26", type: "tv", title: "Cosa ne pensi di 'Euphoria'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
-  { id: "T27", type: "tv", title: "Cosa ne pensi di 'Elite'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
-  { id: "T28", type: "tv", title: "Cosa ne pensi di 'Dawson’s Creek'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
-  { id: "T29", type: "tv", title: "Cosa ne pensi di 'Skins (UK)'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
-  { id: "T30", type: "tv", title: "Cosa ne pensi di 'Beverly Hills 90210'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T1", type: "tv", title: "Cosa ne pensi di 'The Office'?", leftOption: "No", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T2", type: "tv", title: "Cosa ne pensi di 'Friends'?", leftOption: "No", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T3", type: "tv", title: "Cosa ne pensi di 'Boris'?", leftOption: "No", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T4", type: "tv", title: "Cosa ne pensi di 'Scrubs'?", leftOption: "No", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T5", type: "tv", title: "Cosa ne pensi di 'Ted Lasso'?", leftOption: "No", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T6", type: "tv", title: "Cosa ne pensi di 'This Is Us'?", leftOption: "No", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T7", type: "tv", title: "Cosa ne pensi di 'Normal People'?", leftOption: "No", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T8", type: "tv", title: "Cosa ne pensi di 'The Crown'?", leftOption: "No", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T9", type: "tv", title: "Cosa ne pensi di 'Scenes from a Marriage'?", leftOption: "No", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T10", type: "tv", title: "Cosa ne pensi di 'Mad Men'?", leftOption: "No", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T11", type: "tv", title: "Cosa ne pensi di 'Game of Thrones'?", leftOption: "No", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T12", type: "tv", title: "Cosa ne pensi di 'Lost'?", leftOption: "No", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T13", type: "tv", title: "Cosa ne pensi di 'The Boys'?", leftOption: "No", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T14", type: "tv", title: "Cosa ne pensi di 'Vikings'?", leftOption: "No", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T15", type: "tv", title: "Cosa ne pensi di 'Arcane'?", leftOption: "No", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T16", type: "tv", title: "Cosa ne pensi di 'True Detective'?", leftOption: "No", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T17", type: "tv", title: "Cosa ne pensi di 'Mindhunter'?", leftOption: "No", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T18", type: "tv", title: "Cosa ne pensi di 'House of Cards'?", leftOption: "No", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T19", type: "tv", title: "Cosa ne pensi di 'Succession'?", leftOption: "No", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T20", type: "tv", title: "Cosa ne pensi di 'Fargo'?", leftOption: "No", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T21", type: "tv", title: "Cosa ne pensi di 'Breaking Bad'?", leftOption: "No", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T22", type: "tv", title: "Cosa ne pensi di 'The Sopranos'?", leftOption: "No", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T23", type: "tv", title: "Cosa ne pensi di 'Dark'?", leftOption: "No", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T24", type: "tv", title: "Cosa ne pensi di 'Black Mirror'?", leftOption: "No", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T25", type: "tv", title: "Cosa ne pensi di 'Mr. Robot'?", leftOption: "No", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T26", type: "tv", title: "Cosa ne pensi di 'Euphoria'?", leftOption: "No", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T27", type: "tv", title: "Cosa ne pensi di 'Elite'?", leftOption: "No", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T28", type: "tv", title: "Cosa ne pensi di 'Dawson’s Creek'?", leftOption: "No", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T29", type: "tv", title: "Cosa ne pensi di 'Skins'?", leftOption: "No", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T30", type: "tv", title: "Cosa ne pensi di '90210'?", leftOption: "No", upOption: "Mai vista", rightOption: "La amo" },
 ];
 
-// ==========================================
-// 3. DATASET: DOMANDE PSICOLOGICHE (37 totali, NO upOption)
-// ==========================================
 const psychQuestions = [
   { id: "P1", type: "psych", title: "Preferisci un viaggio in un posto...", leftOption: "Nuovo", leftProfiles: [1, 2, 6], rightOption: "Già visitato", rightProfiles: [3, 4, 5] },
   { id: "P2", type: "psych", title: "Preferisci andare a cena...", leftOption: "Gente nuova", leftProfiles: [1, 2, 6], rightOption: "Vecchi amici", rightProfiles: [3, 4, 5] },
@@ -147,28 +115,17 @@ const psychQuestions = [
   { id: "P37", type: "psych", title: "Preferisci il film...", leftOption: "Pretty Woman", leftProfiles: [1, 3, 6], rightOption: "C'era una volta in America", rightProfiles: [2, 4, 5] }
 ];
 
-// ==========================================
-// LOGICA COSTRUZIONE MAZZO
-// ==========================================
 const buildDeck = () => {
   const others = shuffleArray([...psychQuestions, ...tvQuestions]); 
   const cats = shuffleArray([...catValidationQuestions]); 
-  
   let deck = [];
   deck.push(demographicQuestions[0]);
   deck.push(demographicQuestions[1]);
-
   let count = 0;
   while (others.length > 0 || cats.length > 0) {
-    if (count === 4 && cats.length > 0) {
-      deck.push(cats.pop()); 
-      count = 0; 
-    } else if (others.length > 0) {
-      deck.push(others.pop());
-      count++;
-    } else if (cats.length > 0) {
-      deck.push(cats.pop());
-    }
+    if (count === 4 && cats.length > 0) { deck.push(cats.pop()); count = 0; }
+    else if (others.length > 0) { deck.push(others.pop()); count++; }
+    else if (cats.length > 0) { deck.push(cats.pop()); }
   }
   return deck.reverse();
 };
@@ -180,138 +137,70 @@ function App() {
   const [currentIndex, setCurrentIndex] = useState(deck.length - 1);
   const [showResult, setShowResult] = useState(false);
   const [isSending, setIsSending] = useState(false);
-  
   const [ageValue, setAgeValue] = useState('');
 
   const cardRefs = useMemo(() => Array(deck.length).fill(0).map(() => React.createRef()), [deck]);
 
   useEffect(() => {
     if (showResult) sendDataToGoogle();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showResult]);
 
   const sendDataToGoogle = async () => {
     setIsSending(true);
     const topCatId = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
-
-    // 1. CREIAMO LO SCHELETRO DELL'ORDINE PERFETTO (75 Domande)
-    const orderedIds = [
-      "D1", "D2", 
-      ...Array.from({length: 6}, (_, i) => `C${i+1}`), 
-      ...Array.from({length: 30}, (_, i) => `T${i+1}`), 
-      ...Array.from({length: 37}, (_, i) => `P${i+1}`)  
-    ];
-
-    // 2. ESTRAIAMO LE RISPOSTE NELL'ORDINE CORRETTO
+    const orderedIds = ["D1", "D2", ...Array.from({length: 6}, (_, i) => `C${i+1}`), ...Array.from({length: 30}, (_, i) => `T${i+1}`), ...Array.from({length: 37}, (_, i) => `P${i+1}`)];
     const risposteOrdinate = orderedIds.map(id => {
       const found = responses.find(r => r.id === id);
       return found ? found.risposta : `[Nessuna risposta per ${id}] -> Vuoto`;
     });
-
-    const dataToSend = {
-      punteggi_raw: scores,
-      gatto_vincitore: catProfiles[topCatId].name,
-      tutte_le_risposte: risposteOrdinate 
-    };
-
+    const dataToSend = { punteggi_raw: scores, gatto_vincitore: catProfiles[topCatId].name, tutte_le_risposte: risposteOrdinate };
     try {
-      const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxjyygOfGka_MczHbUUjJBHNnDWygKaOOTnarb5Y5wtXUCeaTLW83sqUgh_aUt9593S/exec";
-      await fetch(GOOGLE_SCRIPT_URL, {
-        method: "POST",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify(dataToSend)
-      });
-      console.log("Dati ordinati e inviati con successo!");
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setIsSending(false);
-    }
+      const URL = "https://script.google.com/macros/s/AKfycbzjyygOfGka_MczHbUUjJBHNnDWygKaOOTnarb5Y5wtXUCeaTLW83sqUgh_aUt9593S/exec";
+      await fetch(URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(dataToSend) });
+    } catch (e) { console.error(e); } finally { setIsSending(false); }
   };
 
   const swipe = async (dir) => {
-    if (currentIndex >= 0 && currentIndex < deck.length) {
-      if (cardRefs[currentIndex] && cardRefs[currentIndex].current) {
-        await cardRefs[currentIndex].current.swipe(dir);
-      }
+    if (currentIndex >= 0 && cardRefs[currentIndex]?.current) {
+      await cardRefs[currentIndex].current.swipe(dir);
     }
   };
 
-  const handleAgeSubmit = () => {
-    if (!ageValue) return;
-    swipe('right'); 
-  };
+  const handleAgeSubmit = () => { if (ageValue) swipe('right'); };
 
   useEffect(() => {
-    const handleKeyDown = (event) => {
-      if (showResult) return;
-      
-      if (document.activeElement.tagName === 'INPUT') return;
-
-      switch (event.key) {
-        case 'ArrowLeft': swipe('left'); break;
-        case 'ArrowRight': swipe('right'); break;
-        case 'ArrowUp':
-          if (deck[currentIndex] && deck[currentIndex].upOption) swipe('up');
-          break;
-        case 'Enter':
-          if (deck[currentIndex] && deck[currentIndex].type === 'demo_age' && ageValue) {
-            handleAgeSubmit();
-          }
-          break;
-        default: break;
-      }
+    const handleKeyDown = (e) => {
+      if (showResult || document.activeElement.tagName === 'INPUT') return;
+      if (e.key === 'ArrowLeft') swipe('left');
+      if (e.key === 'ArrowRight') swipe('right');
+      if (e.key === 'ArrowUp' && deck[currentIndex]?.upOption) swipe('up');
+      if (e.key === 'Enter' && deck[currentIndex]?.type === 'demo_age') handleAgeSubmit();
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [currentIndex, showResult, deck, ageValue]);
 
   const handleSwipe = (direction, question) => {
-    let chosenText = '';
-    
-    if (question.type === 'demo_age') {
-      chosenText = ageValue;
-    } else {
-      if (direction === 'left') chosenText = question.leftOption;
-      if (direction === 'right') chosenText = question.rightOption;
-      if (direction === 'up') chosenText = question.upOption;
-    }
-
-    setResponses(prev => [...prev, {
-      id: question.id,
-      tipo: question.type,
-      risposta: `[${question.title}] -> ${chosenText}`
-    }]);
-
+    let chosen = direction === 'left' ? question.leftOption : direction === 'right' ? question.rightOption : question.upOption;
+    if (question.type === 'demo_age') chosen = ageValue;
+    setResponses(prev => [...prev, { id: question.id, risposta: `[${question.title}] -> ${chosen}` }]);
     if (question.type === 'psych' && direction !== 'up') {
-      const chosenProfiles = direction === 'left' ? question.leftProfiles : question.rightProfiles;
-      const rejectedProfiles = direction === 'left' ? question.rightProfiles : question.leftProfiles;
-      const pAdd = 4 - chosenProfiles.length;
-      const pSub = 4 - rejectedProfiles.length;
+      const chosenP = direction === 'left' ? question.leftProfiles : question.rightProfiles;
+      const rejectedP = direction === 'left' ? question.rightProfiles : question.leftProfiles;
       setScores(prev => {
         const next = { ...prev };
-        chosenProfiles.forEach(p => next[p] += pAdd);
-        rejectedProfiles.forEach(p => next[p] -= pSub);
+        chosenP.forEach(p => next[p] += (4 - chosenP.length));
+        rejectedP.forEach(p => next[p] -= (4 - rejectedP.length));
         return next;
       });
     }
-
     if (currentIndex === 0) setShowResult(true);
     else setCurrentIndex(prev => prev - 1);
   };
 
-  // --- SEPARIAMO I GATTI POSITIVI E QUELLI NEGATIVI ---
-  const positiveCats = Object.keys(scores)
-    .filter(id => scores[id] >= 10)
-    .sort((a, b) => scores[b] - scores[a]); 
-
-  const negativeCats = Object.keys(scores)
-    .filter(id => scores[id] <= -10)
-    .sort((a, b) => scores[a] - scores[b]); 
-
-  const totalQuestions = deck.length;
-  const currentQNum = totalQuestions - currentIndex;
-  const progressPercent = Math.round((currentQNum / totalQuestions) * 100);
+  const positiveCats = Object.keys(scores).filter(id => scores[id] >= 10).sort((a, b) => scores[b] - scores[a]);
+  const negativeCats = Object.keys(scores).filter(id => scores[id] <= -10).sort((a, b) => scores[a] - scores[b]);
+  const progressPercent = Math.round(((deck.length - currentIndex) / deck.length) * 100);
 
   return (
     <div className="app-container">
@@ -319,130 +208,26 @@ function App() {
         <div className="result-container scrollable-results">
           <div className="sticky-banner">🛡️ Analisi Completata 🛡️</div>
           <div className="results-list">
-            {positiveCats.length > 0 || negativeCats.length > 0 ? (
-              <>
-                {/* --- SEZIONE POSITIVA (SERIE CONSIGLIATE) --- */}
-                {positiveCats.length > 0 && (
-                  <div className="results-section">
-                    <h3 className="section-title">✅ Serie e Generi Consigliati</h3>
-                    {positiveCats.map(id => (
-                      <div key={id} className="cat-result-box positive-box">
-                        <p style={{fontSize: '18px', textAlign: 'center', color: '#28a745', margin: '0', fontWeight: 'bold'}}>
-                          {catProfiles[id].genre}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {/* --- SEZIONE NEGATIVA (SERIE SCONSIGLIATE) --- */}
-                {negativeCats.length > 0 && (
-                  <div className="results-section">
-                    <h3 className="section-title">❌ Serie e Generi da Evitare</h3>
-                    {negativeCats.map(id => (
-                      <div key={id} className="cat-result-box negative-box">
-                        <p style={{fontSize: '18px', textAlign: 'center', color: '#dc3545', margin: '0', fontWeight: 'bold'}}>
-                          {catProfiles[id].genre}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </>
-            ) : (
-              <div className="cat-result-box">
-                <p>Sei perfettamente bilanciato! Non ci sono limitazioni: puoi guardare qualsiasi genere senza problemi!</p>
-              </div>
-            )}
+            {positiveCats.length > 0 && <div className="results-section"><h3 className="section-title">✅ Serie e Generi Consigliati</h3>{positiveCats.map(id => <div key={id} className="cat-result-box positive-box"><p className="genre-text">{catProfiles[id].genre}</p></div>)}</div>}
+            {negativeCats.length > 0 && <div className="results-section"><h3 className="section-title">❌ Serie e Generi da Evitare</h3>{negativeCats.map(id => <div key={id} className="cat-result-box negative-box"><p className="genre-text-neg">{catProfiles[id].genre}</p></div>)}</div>}
           </div>
-          <button onClick={() => window.location.reload()} className="swipe-btn" style={{width: '100%', marginTop: '20px', backgroundColor: '#e2a07c', color: '#fff'}}>Rifai il test</button>
+          <button onClick={() => window.location.reload()} className="swipe-btn" style={{width: '100%', marginTop: '20px', background: '#e2a07c', color: '#fff'}}>Rifai il test</button>
         </div>
       ) : (
         <div className="test-interface">
-          <div className="progress-section">
-            <div className="progress-text">
-              <span>Domanda {currentQNum} di {totalQuestions}</span>
-              <span>{progressPercent}%</span>
-            </div>
-            <div className="progress-bar-container">
-              <div className="progress-fill" style={{ width: `${progressPercent}%` }}></div>
-            </div>
-          </div>
-          
+          <div className="progress-section"><div className="progress-text"><span>Domanda {deck.length - currentIndex} di {deck.length}</span><span>{progressPercent}%</span></div><div className="progress-bar-container"><div className="progress-fill" style={{ width: `${progressPercent}%` }}></div></div></div>
           <div className="card-container">
-            {deck.map((q, index) => {
-              const isAgeCard = q.type === 'demo_age';
-              const preventArr = isAgeCard 
-                ? ['up', 'down', 'left', 'right'] 
-                : ['down', ...(q.upOption ? [] : ['up'])];
-
-              return (
-                <TinderCard
-                  key={q.id + index}
-                  ref={cardRefs[index]}
-                  className="swipe"
-                  preventSwipe={preventArr}
-                  onSwipe={(dir) => handleSwipe(dir, q)}
-                >
-                  <div className="card">
-                    {/* MOSTRIAMO LA DESCRIZIONE POSITIVA DEL GATTO DURANTE LO SWIPE */}
-                    {q.type === 'cat' && (
-                      <div className="cat-preview-container">
-                        <img src={catProfiles[q.catId].image} alt="Cat" className="cat-circle-img" />
-                        <strong style={{color: '#834d6c', marginBottom: '5px', fontSize: '14px'}}>{catProfiles[q.catId].name}</strong>
-                        <p className="cat-full-desc">"{catProfiles[q.catId].profile}"</p>
-                      </div>
-                    )}
-                    
-                    <h2 style={{ fontSize: q.type === 'cat' ? '18px' : '22px', marginBottom: q.type === 'cat' ? '5px' : '0' }}>{q.title}</h2>
-                    
-                    {isAgeCard ? (
-                      <div className="age-input-container">
-                        <input 
-                          type="number" 
-                          className="age-input" 
-                          placeholder="Es. 25" 
-                          value={ageValue} 
-                          onChange={(e) => setAgeValue(e.target.value)} 
-                          min="10" max="100"
-                        />
-                        <button 
-                          className="age-submit-btn" 
-                          onClick={handleAgeSubmit} 
-                          disabled={!ageValue}
-                        >
-                          Avanti
-                        </button>
-                      </div>
-                    ) : (
-                      q.type !== 'cat' && <p className="card-subtitle">Trascina la carta o usa i pulsanti</p>
-                    )}
-                  </div>
-                </TinderCard>
-              );
-            })}
+            {deck.map((q, index) => (
+              <TinderCard key={q.id + index} ref={cardRefs[index]} className="swipe" preventSwipe={q.type === 'demo_age' ? ['up','down','left','right'] : ['down', ...(q.upOption ? [] : ['up'])]} onSwipe={(dir) => handleSwipe(dir, q)}>
+                <div className="card">
+                  {q.type === 'cat' && <div className="cat-preview-container"><img src={catProfiles[q.catId].image} alt="Cat" className="cat-circle-img" /><strong>{catProfiles[q.catId].name}</strong><p className="cat-full-desc">"{catProfiles[q.catId].profile}"</p></div>}
+                  <h2 style={{ fontSize: q.type === 'cat' ? '18px' : '22px' }}>{q.title}</h2>
+                  {q.type === 'demo_age' ? <div className="age-input-container"><input type="number" className="age-input" placeholder="Es. 25" value={ageValue} onChange={(e) => setAgeValue(e.target.value)} /><button className="age-submit-btn" onClick={handleAgeSubmit} disabled={!ageValue}>Avanti</button></div> : <p className="card-subtitle">Trascina o usa i pulsanti</p>}
+                </div>
+              </TinderCard>
+            ))}
           </div>
-
-          {deck[currentIndex] && deck[currentIndex].type !== 'demo_age' && (
-            <div className="action-buttons-container">
-              <button className="swipe-btn" onClick={() => swipe('left')}>
-                <span className="arrow">←</span>
-                <span className="btn-text">{deck[currentIndex].leftOption}</span>
-              </button>
-              
-              {deck[currentIndex].upOption && (
-                <button className="swipe-btn" onClick={() => swipe('up')}>
-                  <span className="arrow">↑</span>
-                  <span className="btn-text">{deck[currentIndex].upOption}</span>
-                </button>
-              )}
-
-              <button className="swipe-btn" onClick={() => swipe('right')}>
-                <span className="arrow">→</span>
-                <span className="btn-text">{deck[currentIndex].rightOption}</span>
-              </button>
-            </div>
-          )}
+          {deck[currentIndex]?.type !== 'demo_age' && <div className="action-buttons-container"><button className="swipe-btn" onClick={() => swipe('left')}><span className="arrow">←</span><span className="btn-text">{deck[currentIndex]?.leftOption}</span></button>{deck[currentIndex]?.upOption && <button className="swipe-btn" onClick={() => swipe('up')}><span className="arrow">↑</span><span className="btn-text">{deck[currentIndex]?.upOption}</span></button>}<button className="swipe-btn" onClick={() => swipe('right')}><span className="arrow">→</span><span className="btn-text">{deck[currentIndex]?.rightOption}</span></button></div>}
         </div>
       )}
     </div>

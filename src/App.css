@@ -1,351 +1,65 @@
-/* =========================================
-   SFONDO, FONT E LAYOUT BASE
-   ========================================= */
 body {
-  margin: 0;
-  padding: 0;
+  margin: 0; padding: 0;
   background: linear-gradient(135deg, #2b1b3d 0%, #49284d 35%, #834d6c 70%, #e2a07c 100%);
-  background-attachment: fixed;
-  color: white;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  overflow-x: hidden; 
+  background-attachment: fixed; color: white;
+  font-family: -apple-system, sans-serif; overflow-x: hidden;
 }
 
-.app-container {
-  max-width: 500px; 
-  margin: 0 auto;
-  padding: 20px;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
+.app-container { max-width: 500px; margin: 0 auto; padding: 20px; min-height: 100vh; display: flex; flex-direction: column; }
 
-/* =========================================
-   HEADER: FOTO, TITOLI E TAGS
-   ========================================= */
-.hero-img {
-  width: 100%;
-  height: 120px;
-  border-radius: 16px;
-  object-fit: cover;
-  margin-bottom: 15px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-}
+.progress-section { margin-bottom: 30px; }
+.progress-text { display: flex; justify-content: space-between; font-size: 14px; font-weight: 600; margin-bottom: 5px; }
+.progress-bar-container { width: 100%; height: 8px; background: rgba(255,255,255,0.2); border-radius: 6px; overflow: hidden; }
+.progress-fill { height: 100%; background: #a855f7; border-radius: 6px; transition: width 0.4s; }
 
-.app-header {
-  text-align: center;
-  margin-bottom: 25px;
-}
-
-.app-header h1 {
-  font-size: 24px;
-  font-weight: 700;
-  margin: 10px 0;
-  letter-spacing: -0.5px;
-}
-
-.app-header p {
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.85);
-  margin-bottom: 15px;
-  line-height: 1.4;
-}
-
-.tags {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin-top: 10px;
-}
-
-.tag {
-  background: rgba(255, 255, 255, 0.15);
-  padding: 6px 16px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 500;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(5px);
-}
-
-/* =========================================
-   BARRA DI PROGRESSO
-   ========================================= */
-.progress-section {
-  margin-bottom: 30px;
-}
-
-.progress-text {
-  display: flex;
-  justify-content: space-between;
-  font-size: 14px;
-  font-weight: 600;
-  margin-bottom: 5px;
-}
-
-.progress-subtext {
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.6);
-  margin-bottom: 10px;
-}
-
-.progress-bar-container {
-  width: 100%;
-  height: 8px; 
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 6px;
-  overflow: hidden;
-}
-
-.progress-fill {
-  height: 100%;
-  background-color: #a855f7; 
-  border-radius: 6px;
-  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* =========================================
-   IL MAZZO DI CARTE (Dimensione fissa)
-   ========================================= */
+/* CARD FISSA E CENTRATA */
 .card-container {
   position: relative;
   width: 100%;
   height: 420px; 
+  display: flex;
+  justify-content: center;
   margin-bottom: 20px;
 }
 
 .swipe {
   position: absolute;
-  width: 100%;
+  width: 340px; /* Larghezza FISSA */
   height: 100%;
-  left: 0;
-  top: 0;
 }
 
 .card {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  left: 0;
-  top: 0;
-  background: #ffffff;
-  border-radius: 24px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 20px; 
-  box-sizing: border-box;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25) !important; 
-  color: #1a1a1a;
-  text-align: center;
-  overflow: hidden; 
+  position: absolute; width: 100%; height: 100%;
+  background: #fff; border-radius: 24px;
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  padding: 20px; box-sizing: border-box; color: #1a1a1a; text-align: center;
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.25) !important;
 }
 
-.card h2 {
-  font-size: 20px; 
-  font-weight: 600;
-  margin: 0;
-  line-height: 1.3;
-  color: #2b1b3d;
-}
+.card h2 { font-size: 20px; color: #2b1b3d; margin: 0; }
+.card-subtitle { font-size: 13px; color: #888; margin-top: 15px; }
 
-.card-subtitle {
-  font-size: 13px;
-  color: #888;
-  margin-top: 20px;
-  font-weight: 500;
-}
+/* GATTI VALIDATION */
+.cat-preview-container { display: flex; flex-direction: column; align-items: center; margin-bottom: 10px; width: 100%; }
+.cat-circle-img { width: 75px; height: 75px; border-radius: 50%; object-fit: contain; border: 3px solid #e2a07c; background: #fdfaf6; margin-bottom: 5px; flex-shrink: 0; }
+.cat-full-desc { font-size: 13px; font-style: italic; color: #555; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
 
-/* =========================================
-   STILI PER LE CARTE GATTO (Validation)
-   ========================================= */
-.cat-preview-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 10px;
-  width: 100%;
-}
+/* PULSANTI */
+.action-buttons-container { display: flex; gap: 10px; width: 100%; }
+.swipe-btn { flex: 1; background: rgba(255,255,255,0.95); border: none; border-radius: 18px; padding: 15px 5px; cursor: pointer; color: #2b1b3d; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: flex; flex-direction: column; align-items: center; }
+.swipe-btn .arrow { font-size: 20px; font-weight: bold; color: #834d6c; }
+.swipe-btn .btn-text { font-size: 12px; font-weight: 600; }
 
-.cat-circle-img {
-  width: 75px; 
-  height: 75px;
-  border-radius: 50%;
-  object-fit: contain; 
-  padding: 5px; 
-  border: 3px solid #e2a07c; 
-  background-color: #fdfaf6;
-  margin-bottom: 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  box-sizing: border-box; 
-  flex-shrink: 0; 
-}
+/* RISULTATI FINALI PULITI */
+.section-title { font-size: 18px; margin: 25px 0 10px; text-align: center; }
+.cat-result-box { background: #fdfaf6; border-radius: 16px; padding: 15px; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+.positive-box { border-left: 6px solid #28a745; }
+.negative-box { border-left: 6px solid #dc3545; background: #fff5f5; }
+.genre-text { color: #28a745; font-weight: bold; font-size: 18px; margin: 0; }
+.genre-text-neg { color: #dc3545; font-weight: bold; font-size: 18px; margin: 0; }
 
-.cat-full-desc {
-  font-size: 13px; 
-  font-style: italic;
-  color: #555;
-  line-height: 1.3;
-  margin: 0 0 10px 0;
-  padding: 0 5px;
-  text-align: center;
-  display: -webkit-box;
-  -webkit-line-clamp: 5;
-  -webkit-box-orient: vertical;  
-  overflow: hidden;
-}
-
-/* =========================================
-   PULSANTIERA INFERIORE LARGHEZZA PIENA
-   ========================================= */
-.action-buttons-container {
-  display: flex;
-  gap: 12px;
-  width: 100%;
-  z-index: 100;
-  position: relative;
-  justify-content: space-between;
-}
-
-.swipe-btn {
-  flex: 1; 
-  background: rgba(255, 255, 255, 0.95);
-  border: none;
-  border-radius: 18px;
-  padding: 15px 5px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: #2b1b3d;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  transition: transform 0.15s ease, background-color 0.2s;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.swipe-btn:active {
-  transform: scale(0.92);
-  background-color: #e0e0e0;
-}
-
-.swipe-btn .arrow {
-  font-size: 24px;
-  margin-bottom: 5px;
-  color: #834d6c;
-  font-weight: bold;
-}
-
-.swipe-btn .btn-text {
-  font-size: 14px;
-  font-weight: 600;
-  text-align: center;
-  padding: 0 5px;
-}
-
-/* =========================================
-   SCHERMATA RISULTATI (Visuale Finale Pulita)
-   ========================================= */
-.result-container {
-  padding-bottom: 40px;
-}
-
-.sticky-banner {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(10px);
-  padding: 12px;
-  border-radius: 12px;
-  text-align: center;
-  font-size: 13px;
-  margin-bottom: 25px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  font-weight: 500;
-}
-
-.cat-result-box {
-  background: #fdfaf6; 
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 12px;
-  color: #1a1a1a;
-  text-align: center;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-
-.section-title {
-  font-size: 18px;
-  color: white;
-  text-align: center;
-  margin: 25px 0 15px 0;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-}
-
-.positive-box {
-  border-left: 6px solid #28a745;
-}
-
-.negative-box {
-  background-color: #fff5f5;
-  border-left: 6px solid #dc3545;
-}
-
-/* =========================================
-   STILI PER L'INPUT ETÀ
-   ========================================= */
-.age-input-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 25px;
-  width: 100%;
-}
-
-.age-input {
-  width: 120px;
-  padding: 15px;
-  font-size: 24px;
-  text-align: center;
-  border: 2px solid #e0e4e8;
-  border-radius: 12px;
-  margin-bottom: 15px;
-  color: #2b1b3d;
-  font-weight: bold;
-  outline: none;
-  transition: border-color 0.2s;
-  background-color: #fafafa;
-}
-
-.age-input:focus {
-  border-color: #834d6c;
-  background-color: #ffffff;
-}
-
-.age-input::-webkit-outer-spin-button,
-.age-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-.age-submit-btn {
-  background-color: #a855f7;
-  color: white;
-  border: none;
-  padding: 12px 30px;
-  border-radius: 20px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s, opacity 0.2s;
-  width: 80%;
-}
-
-.age-submit-btn:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-  opacity: 0.7;
-}
-
-.age-submit-btn:not(:disabled):hover {
-  background-color: #9333ea;
-}
+/* INPUT ETÀ */
+.age-input-container { display: flex; flex-direction: column; align-items: center; margin-top: 20px; width: 100%; }
+.age-input { width: 100px; padding: 10px; font-size: 20px; text-align: center; border: 2px solid #ddd; border-radius: 10px; margin-bottom: 10px; }
+.age-submit-btn { background: #a855f7; color: #fff; border: none; padding: 10px 25px; border-radius: 15px; font-weight: bold; cursor: pointer; }
+.age-submit-btn:disabled { background: #ccc; }
