@@ -238,7 +238,7 @@ function App() {
 
       {/* ── TITOLO + SOTTOTITOLO ── */}
       <div className="hero-text">
-        <h1>🐱 Scopri il tuo gatto</h1>
+        <h1>🐱 Scopri le loro gatto+ list</h1>
         <p className="hero-subtitle">Un test rapido per capire quale gatto sul sofà ti rappresenta davvero.</p>
         <div className="hero-badges">
           <span className="badge">37 domande</span>
