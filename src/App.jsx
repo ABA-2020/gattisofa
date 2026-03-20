@@ -60,12 +60,12 @@ const demographicQuestions = [
 ];
 
 const catValidationQuestions = [
-  { id: "C1", type: "cat", catId: 1, title: "Ti piacerebbe avere a casa L'Abitudinario?", leftOption: "Non fa per me", upOption: "Neutro", rightOption: "Sì, lo adoro!" },
-  { id: "C2", type: "cat", catId: 2, title: "Vorresti vivere con L'Anima Sensibile?", leftOption: "Non credo", upOption: "Neutro", rightOption: "Sì, adorabile" },
-  { id: "C3", type: "cat", catId: 3, title: "Il Carismatico sarebbe il gatto perfetto per te?", leftOption: "No", upOption: "Neutro", rightOption: "Assolutamente sì" },
-  { id: "C4", type: "cat", catId: 4, title: "Adotteresti L'Esploratrice?", leftOption: "No, troppo attiva", upOption: "Neutro", rightOption: "Sì, mi affascina" },
-  { id: "C5", type: "cat", catId: 5, title: "Terresti in casa L'Alternativo?", leftOption: "No", upOption: "Neutro", rightOption: "Sì, intrigante" },
-  { id: "C6", type: "cat", catId: 6, title: "La Sognatrice farebbe al caso tuo?", leftOption: "No", upOption: "Neutro", rightOption: "Sì, bellissima" },
+  { id: "C1", type: "cat", catId: 1, title: "Questo gatto ti piace e lo vorresti a casa?", leftOption: "Non fa per me", upOption: "Neutro", rightOption: "Sì, lo adoro!" },
+  { id: "C2", type: "cat", catId: 2, title: "Questo gatto ti piace e lo vorresti a casa?", leftOption: "Non fa per me", upOption: "Neutro", rightOption: "Sì, lo adoro!" },
+  { id: "C3", type: "cat", catId: 3, title: "Questo gatto ti piace e lo vorresti a casa?", leftOption: "Non fa per me", upOption: "Neutro", rightOption: "Sì, lo adoro!" },
+  { id: "C4", type: "cat", catId: 4, title: "Questo gatto ti piace e lo vorresti a casa?", leftOption: "Non fa per me", upOption: "Neutro", rightOption: "Sì, lo adoro!" },
+  { id: "C5", type: "cat", catId: 5, title: "Questo gatto ti piace e lo vorresti a casa?", leftOption: "Non fa per me", upOption: "Neutro", rightOption: "Sì, lo adoro!" },
+  { id: "C6", type: "cat", catId: 6, title: "Questo gatto ti piace e lo vorresti a casa?", leftOption: "Non fa per me", upOption: "Neutro", rightOption: "Sì, lo adoro!" },
 ];
 
 // ==========================================
@@ -348,11 +348,13 @@ function App() {
                     {q.type === 'cat' && (
                       <div className="cat-preview-container">
                         <img src={catProfiles[q.catId].image} alt="Cat" className="cat-circle-img" />
+                        {/* Aggiunto il nome del gatto come titoletto per chiarezza */}
+                        <strong style={{color: '#834d6c', marginBottom: '5px', fontSize: '14px'}}>{catProfiles[q.catId].name}</strong>
                         <p className="cat-full-desc">"{catProfiles[q.catId].profile}"</p>
                       </div>
                     )}
                     
-                    <h2 style={{ fontSize: q.type === 'cat' ? '16px' : '20px', marginBottom: q.type === 'cat' ? '5px' : '0' }}>{q.title}</h2>
+                    <h2 style={{ fontSize: q.type === 'cat' ? '18px' : '22px', marginBottom: q.type === 'cat' ? '5px' : '0' }}>{q.title}</h2>
                     
                     {isAgeCard ? (
                       <div className="age-input-container">
