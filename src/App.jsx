@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import TinderCard from 'react-tinder-card';
 import './App.css'; 
 
@@ -27,7 +27,6 @@ const shuffleArray = (array) => {
   return shuffled;
 };
 
-// DATASET
 const demographicQuestions = [
   { id: "D1", type: "demo", title: "Qual è il tuo sesso?", leftOption: "Uomo", upOption: "Altro / ND", rightOption: "Donna" },
   { id: "D2", type: "demo_age", title: "Quanti anni hai?" },
@@ -139,6 +138,8 @@ function App() {
   const [isSending, setIsSending] = useState(false);
   const [ageValue, setAgeValue] = useState('');
 
+  // Riferimento per l'input dell'età per forzare il focus su mobile
+  const ageInputRef = useRef(null);
   const cardRefs = useMemo(() => Array(deck.length).fill(0).map(() => React.createRef()), [deck]);
 
   const sendDataToGoogle = async () => {
@@ -159,6 +160,21 @@ function App() {
   useEffect(() => {
     if (showResult) sendDataToGoogle();
   }, [showResult]);
+
+  // EFFETTO PER IL FOCUS AUTOMATICO SULL'ETÀ
+  useEffect(() => {
+    const q = deck[currentIndex];
+    if (q && q.type === 'demo_age') {
+      // Aspettiamo un attimo che la carta finisca l'animazione di entrata
+      setTimeout(() => {
+        if (ageInputRef.current) {
+          ageInputRef.current.focus();
+          // Su alcuni iOS serve scrollare leggermente per far apparire la tastiera
+          ageInputRef.current.click();
+        }
+      }, 300);
+    }
+  }, [currentIndex, deck]);
 
   const swipe = async (dir) => {
     if (currentIndex >= 0 && cardRefs[currentIndex]?.current) {
@@ -239,22 +255,27 @@ function App() {
                   key={q.id + index} 
                   ref={cardRefs[index]} 
                   className="swipe" 
+                  // BLOCCA SWIPE FISICO PER L'ETÀ
                   preventSwipe={isAge ? ['up','down','left','right'] : ['down', ...(q.upOption ? [] : ['up'])]} 
                   onSwipe={(dir) => handleSwipe(dir, q)}
                 >
                   <div className="card">
                     {q.type === 'cat' && <div className="cat-preview-container"><img src={catProfiles[q.catId].image} alt="Cat" className="cat-circle-img" /><strong>{catProfiles[q.catId].name}</strong><p className="cat-full-desc">"{catProfiles[q.catId].profile}"</p></div>}
                     <h2 style={{ fontSize: q.type === 'cat' ? '18px' : '22px' }}>{q.title}</h2>
+                    
                     {isAge ? (
                       <div className="age-input-container">
                         <input 
+                          ref={ageInputRef}
                           type="number" 
                           inputMode="numeric" 
                           pattern="[0-9]*"
                           className="age-input" 
-                          placeholder="Età" 
+                          placeholder="Scrivi qui..." 
                           value={ageValue} 
                           onChange={(e) => setAgeValue(e.target.value)} 
+                          // Evita che il click sull'input faccia "ballare" la carta
+                          onPointerDown={(e) => e.stopPropagation()}
                         />
                         <button className="age-submit-btn" onClick={handleAgeSubmit} disabled={!ageValue || ageValue.trim()===""}>Avanti</button>
                       </div>
@@ -267,6 +288,7 @@ function App() {
             })}
           </div>
 
+          {/* MOSTRA BOTTONI SOLO SE NON È LA DOMANDA DELL'ETÀ */}
           {currentQuestion && currentQuestion.type !== 'demo_age' && (
             <div className="action-buttons-container">
               <button className="swipe-btn" onClick={() => swipe('left')}><span className="arrow">←</span><span className="btn-text">{currentQuestion.leftOption}</span></button>

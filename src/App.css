@@ -4,6 +4,8 @@ body {
   background-attachment: fixed; color: white;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   overflow-x: hidden;
+  /* Importante per evitare che la tastiera mobile "spinga" il layout fuori posto */
+  height: 100%;
 }
 
 .app-container {
@@ -62,7 +64,7 @@ body {
 .genre-text { color: #28a745; font-weight: bold; font-size: 18px; margin: 0; }
 .genre-text-neg { color: #dc3545; font-weight: bold; font-size: 18px; margin: 0; }
 
-/* INPUT ETÀ (FISSO) */
+/* INPUT ETÀ (OTTIMIZZATO PER MOBILE) */
 .age-input-container {
   display: flex;
   flex-direction: column;
@@ -72,8 +74,8 @@ body {
 }
 
 .age-input {
-  width: 120px;
-  padding: 12px;
+  width: 160px; /* Più largo per facilitare il tocco */
+  padding: 15px;
   font-size: 24px;
   text-align: center;
   border: 2px solid #ddd;
@@ -82,25 +84,30 @@ body {
   color: #2b1b3d;
   font-weight: bold;
   background-color: #fafafa;
+  /* Disabilita zoom automatico su iOS quando si tocca l'input */
+  touch-action: manipulation;
 }
 
 .age-input:focus {
   border-color: #834d6c;
   outline: none;
+  background-color: #fff;
 }
 
 .age-submit-btn {
   background-color: #a855f7;
   color: #fff;
   border: none;
-  padding: 12px 30px;
+  padding: 15px 40px;
   border-radius: 20px;
   font-weight: bold;
-  font-size: 16px;
+  font-size: 18px;
   cursor: pointer;
+  box-shadow: 0 4px 10px rgba(168, 85, 247, 0.3);
 }
 
 .age-submit-btn:disabled {
   background-color: #ccc;
   cursor: not-allowed;
+  box-shadow: none;
 }
