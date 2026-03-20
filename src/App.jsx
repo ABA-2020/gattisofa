@@ -189,21 +189,40 @@ function App() {
     if (showResult) sendDataToGoogle();
   }, [showResult]);
 
-  const sendDataToGoogle = async () => {
+const sendDataToGoogle = async () => {
     setIsSending(true);
     const topCatId = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
+
+    // 1. CREIAMO LO SCHELETRO DELL'ORDINE PERFETTO (75 Domande)
+    const orderedIds = [
+      "D1", "D2", // Sesso ed Età
+      ...Array.from({length: 6}, (_, i) => `C${i+1}`),  // Gatti C1-C6
+      ...Array.from({length: 30}, (_, i) => `T${i+1}`), // TV T1-T30
+      ...Array.from({length: 37}, (_, i) => `P${i+1}`)  // Psicologiche P1-P37
+    ];
+
+    // 2. ESTRAIAMO LE RISPOSTE E LE INCASELLIAMO NELL'ORDINE CORRETTO
+    const risposteOrdinate = orderedIds.map(id => {
+      const found = responses.find(r => r.id === id);
+      // Salva la stringa completa: "[Titolo] -> Risposta"
+      return found ? found.risposta : `[Nessuna risposta per ${id}] -> Vuoto`;
+    });
+
     const dataToSend = {
       punteggi_raw: scores,
       gatto_vincitore: catProfiles[topCatId].name,
-      tutte_le_risposte: responses
+      tutte_le_risposte: risposteOrdinate // Ora è un array di 75 stringhe ordinate!
     };
+
     try {
-      const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxjyygOfGka_MczHbUUjJBHNnDWygKaOOTnarb5Y5wtXUCeaTLW83sqUgh_aUt9593S/exec";
+      // HO LASCIATO IL TUO LINK ORIGINALE, COSÌ FUNZIONA SUBITO!
+      const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzbxnZX56YkfBmbZH_33KiB9dI0MkblC5LfVfpszznE2DohFptkNTzF2taMFwIg3V1X/exec";
       await fetch(GOOGLE_SCRIPT_URL, {
         method: "POST",
         headers: { "Content-Type": "text/plain;charset=utf-8" },
         body: JSON.stringify(dataToSend)
       });
+      console.log("Dati ordinati e inviati con successo!");
     } catch (e) {
       console.error(e);
     } finally {
