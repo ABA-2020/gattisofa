@@ -1,217 +1,224 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-/* ─── CSS VARIABLES ─────────────────────────────────────────────── */
+/* ─── ROOT ───────────────────────────────────────────────────────── */
 :root {
-  --bg-from: #1a0a2e;
-  --bg-mid:  #3b1040;
-  --bg-to:   #6b2737;
-  --accent:  #a855f7;
-  --accent2: #f59e0b;
-  --card-bg: #ffffff;
-  --card-radius: 20px;
-  --text-dark: #1a1a2e;
-  --text-mid:  #4b5563;
-  --text-light: rgba(255,255,255,0.9);
-  --positive: #16a34a;
-  --negative: #dc2626;
-  --shadow-card: 0 8px 32px rgba(0,0,0,0.22);
-  --font-display: 'Playfair Display', Georgia, serif;
-  --font-body: 'DM Sans', sans-serif;
-  --max-w: 480px;
+  --bg:        #2d1b4e;
+  --bg2:       #3d1a3a;
+  --bg3:       #5c2035;
+  --accent:    #7c3aed;
+  --accent2:   #a855f7;
+  --pill-bg:   rgba(255,255,255,0.10);
+  --pill-border: rgba(255,255,255,0.22);
+  --card-bg:   #ffffff;
+  --card-r:    18px;
+  --text-white: #ffffff;
+  --text-white2: rgba(255,255,255,0.65);
+  --text-dark: #111827;
+  --text-mid:  #6b7280;
+  --shadow:    0 4px 24px rgba(0,0,0,0.28);
+  --positive:  #15803d;
+  --negative:  #b91c1c;
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --max: 480px;
 }
 
-/* ─── RESET & BASE ───────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-body {
-  font-family: var(--font-body);
-  background: linear-gradient(160deg, var(--bg-from) 0%, var(--bg-mid) 50%, var(--bg-to) 100%);
+html, body {
+  font-family: var(--font);
+  background: linear-gradient(175deg, var(--bg) 0%, var(--bg2) 45%, var(--bg3) 100%);
   background-attachment: fixed;
   min-height: 100vh;
-  color: var(--text-light);
+  color: var(--text-white);
+  -webkit-font-smoothing: antialiased;
 }
 
-/* ─── APP CONTAINER ─────────────────────────────────────────────── */
+/* ─── APP WRAPPER ────────────────────────────────────────────────── */
 .app-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
-  padding-bottom: 48px;
-  font-family: var(--font-body);
+  padding-bottom: 56px;
 }
 
-/* ─── HERO BANNER ───────────────────────────────────────────────── */
+/* ─── HERO BANNER ────────────────────────────────────────────────── */
 .hero-banner {
   width: 100%;
-  max-width: var(--max-w);
-  margin: 16px auto 0;
-  padding: 0 16px;
+  max-width: var(--max);
+  padding: 16px 16px 0;
 }
 
 .hero-image {
   width: 100%;
-  border-radius: var(--card-radius);
+  border-radius: var(--card-r);
   display: block;
-  box-shadow: 0 6px 32px rgba(0,0,0,0.4);
   object-fit: cover;
-  max-height: 220px;
+  max-height: 210px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.45);
 }
 
-/* ─── HERO TEXT ─────────────────────────────────────────────────── */
+/* ─── HERO TEXT ──────────────────────────────────────────────────── */
 .hero-text {
-  width: 90vw;
-  max-width: var(--max-w);
+  width: 100%;
+  max-width: var(--max);
+  padding: 20px 16px 0;
   text-align: center;
-  padding: 18px 8px 4px;
 }
 
 .hero-text h1 {
-  font-family: var(--font-display);
-  font-size: clamp(1.5rem, 5vw, 2rem);
-  font-weight: 900;
-  color: #ffffff;
-  letter-spacing: -0.3px;
-  text-shadow: 0 2px 16px rgba(168,85,247,0.5);
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: var(--text-white);
+  letter-spacing: -0.4px;
   margin-bottom: 8px;
+  line-height: 1.2;
 }
 
 .hero-subtitle {
   font-size: 14px;
-  color: rgba(255,255,255,0.72);
-  line-height: 1.5;
-  margin-bottom: 12px;
+  color: var(--text-white2);
+  line-height: 1.55;
+  margin-bottom: 14px;
+  padding: 0 8px;
 }
 
 .hero-badges {
   display: flex;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
+  margin-bottom: 4px;
 }
 
 .badge {
-  background: rgba(255,255,255,0.12);
-  border: 1px solid rgba(255,255,255,0.2);
-  color: rgba(255,255,255,0.85);
+  background: var(--pill-bg);
+  border: 1px solid var(--pill-border);
+  color: rgba(255,255,255,0.80);
   font-size: 13px;
-  font-weight: 600;
-  padding: 5px 14px;
+  font-weight: 500;
+  padding: 5px 16px;
   border-radius: 999px;
-  backdrop-filter: blur(6px);
+  letter-spacing: 0.01em;
 }
 
-/* ─── PROGRESS AREA ─────────────────────────────────────────────── */
+/* ─── PROGRESS AREA ──────────────────────────────────────────────── */
 .progress-area {
-  width: 90vw;
-  max-width: var(--max-w);
-  margin: 18px 0 10px;
+  width: 100%;
+  max-width: var(--max);
+  padding: 20px 16px 0;
 }
 
 .progress-labels {
   display: flex;
   justify-content: space-between;
+  align-items: baseline;
   font-size: 13px;
   font-weight: 600;
-  color: var(--text-light);
-  margin-bottom: 2px;
+  color: var(--text-white);
+  margin-bottom: 3px;
 }
 
 .progress-sublabel {
   font-size: 12px;
-  color: rgba(255,255,255,0.5);
-  margin-bottom: 8px;
+  color: var(--text-white2);
+  margin-bottom: 10px;
 }
 
 .progress-track {
   width: 100%;
-  height: 6px;
-  background: rgba(255,255,255,0.15);
+  height: 5px;
+  background: rgba(255,255,255,0.13);
   border-radius: 999px;
   overflow: hidden;
 }
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  background: linear-gradient(90deg, var(--accent2), #f59e0b);
   border-radius: 999px;
-  transition: width 0.4s ease;
-  min-width: 6px;
+  transition: width 0.45s cubic-bezier(.4,0,.2,1);
+  min-width: 5px;
 }
 
-/* ─── CARD CONTAINER ────────────────────────────────────────────── */
+/* ─── CARD CONTAINER (stack) ─────────────────────────────────────── */
 .card-container {
-  width: 90vw;
-  max-width: var(--max-w);
-  height: 220px;
+  width: 100%;
+  max-width: var(--max);
+  height: 230px;
   position: relative;
-  margin-bottom: 0;
+  margin-top: 16px;
+  padding: 0 16px;
 }
 
 .swipe {
   position: absolute;
-  width: 100%;
+  width: calc(100% - 32px);
   height: 100%;
 }
 
-/* ─── QUESTION CARD ─────────────────────────────────────────────── */
+/* ─── QUESTION CARD ──────────────────────────────────────────────── */
 .card {
   background: var(--card-bg);
   width: 100%;
   height: 100%;
-  border-radius: var(--card-radius);
-  box-shadow: var(--shadow-card);
+  border-radius: var(--card-r);
+  box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 28px 24px 20px;
-  position: relative;
-  overflow: hidden;
   text-align: center;
+  cursor: grab;
 }
 
+.card:active { cursor: grabbing; }
+
 .card h2 {
-  font-family: var(--font-display);
-  font-size: clamp(1.05rem, 3.5vw, 1.3rem);
+  font-size: clamp(1rem, 4vw, 1.2rem);
   font-weight: 700;
   color: var(--text-dark);
-  line-height: 1.35;
-  margin-bottom: 10px;
+  line-height: 1.4;
+  margin-bottom: 12px;
 }
 
 .hint {
   font-size: 13px;
-  color: var(--accent);
-  font-weight: 500;
+  color: #9ca3af;
+  font-weight: 400;
 }
 
-/* ─── ANSWER BUTTONS ────────────────────────────────────────────── */
+/* ─── ANSWER BUTTONS ─────────────────────────────────────────────── */
 .options {
   display: flex;
-  gap: 12px;
-  width: 90vw;
-  max-width: var(--max-w);
-  margin-top: 14px;
+  gap: 10px;
+  width: 100%;
+  max-width: var(--max);
+  padding: 12px 16px 0;
 }
 
 .left-option,
 .right-option {
   flex: 1;
   background: var(--card-bg);
-  border-radius: var(--card-radius);
-  padding: 16px 12px 18px;
+  border-radius: var(--card-r);
+  padding: 16px 14px 18px;
   text-align: center;
   cursor: pointer;
-  box-shadow: var(--shadow-card);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: var(--shadow);
+  transition: transform 0.14s ease, box-shadow 0.14s ease;
   user-select: none;
   border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
 }
 
 .left-option:hover,
 .right-option:hover {
   transform: translateY(-3px);
-  box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.32);
 }
 
 .left-option:active,
@@ -219,11 +226,13 @@ body {
   transform: scale(0.97);
 }
 
-.option-arrow {
+/* Arrow label: "← Testo" or "Testo →" */
+.option-label-left,
+.option-label-right {
+  font-size: 13px;
+  font-weight: 600;
+  color: #6b7280;
   display: block;
-  font-size: 20px;
-  color: var(--text-dark);
-  margin-bottom: 6px;
 }
 
 .left-option p,
@@ -235,38 +244,36 @@ body {
   margin: 0;
 }
 
-/* ─── RESULT CONTAINER ──────────────────────────────────────────── */
+/* ─── RESULTS ────────────────────────────────────────────────────── */
 .result-container {
-  width: 90vw;
-  max-width: var(--max-w);
-  padding: 16px 0 0;
+  width: 100%;
+  max-width: var(--max);
+  padding: 20px 16px 0;
 }
 
-/* ─── SCROLL NOTICE ─────────────────────────────────────────────── */
 .scroll-notice {
-  background: rgba(168,85,247,0.15);
-  border: 1px solid rgba(168,85,247,0.35);
-  color: #e9d5ff;
+  background: rgba(124,58,237,0.18);
+  border: 1px solid rgba(124,58,237,0.35);
+  color: #ddd6fe;
   padding: 11px 16px;
   border-radius: 12px;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
   text-align: center;
   font-size: 13px;
   font-weight: 600;
-  backdrop-filter: blur(8px);
 }
 
-/* ─── CAT RESULT CARD ───────────────────────────────────────────── */
+/* ─── CAT CARD ───────────────────────────────────────────────────── */
 .cat-result-box {
   background: var(--card-bg);
-  border-radius: var(--card-radius);
-  padding: 28px 22px 22px;
-  margin-bottom: 16px;
-  box-shadow: var(--shadow-card);
+  border-radius: var(--card-r);
+  padding: 26px 20px 22px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow);
   text-align: center;
   position: relative;
   overflow: hidden;
-  animation: fadeInUp 0.4s ease both;
+  animation: fadeUp 0.4s ease both;
 }
 
 .cat-result-box::before {
@@ -274,26 +281,19 @@ body {
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 4px;
-  border-radius: var(--card-radius) var(--card-radius) 0 0;
 }
 
-.positive-card::before {
-  background: linear-gradient(90deg, #16a34a, #4ade80);
-}
+.positive-card::before { background: linear-gradient(90deg,#16a34a,#4ade80); }
+.negative-card::before { background: linear-gradient(90deg,#dc2626,#f87171); }
 
-.negative-card::before {
-  background: linear-gradient(90deg, #dc2626, #f87171);
-}
-
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(18px); }
+  to   { opacity:1; transform:translateY(0); }
 }
 
 .cat-result-box h3 {
-  font-family: var(--font-display);
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: 1.4rem;
+  font-weight: 800;
   color: var(--text-dark);
   margin-bottom: 3px;
 }
@@ -301,17 +301,18 @@ body {
 .cat-subtitle {
   font-size: 13px;
   font-weight: 600;
-  color: var(--accent);
+  color: var(--accent2);
   margin-bottom: 12px;
+  display: block;
 }
 
 .cat-image {
-  width: 130px;
-  height: 130px;
+  width: 120px;
+  height: 120px;
   object-fit: contain;
   margin: 0 auto 14px;
   display: block;
-  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));
+  filter: drop-shadow(0 3px 8px rgba(0,0,0,0.10));
 }
 
 .cat-profile {
@@ -319,14 +320,13 @@ body {
   line-height: 1.65;
   color: var(--text-mid);
   margin-bottom: 14px;
-  font-style: italic;
   text-align: left;
 }
 
-/* ─── RECOMMENDATION ────────────────────────────────────────────── */
+/* ─── RECOMMENDATION ─────────────────────────────────────────────── */
 .recommendation {
   border-radius: 10px;
-  padding: 12px 14px;
+  padding: 11px 14px;
   font-size: 14px;
   line-height: 1.6;
   text-align: left;
@@ -350,41 +350,40 @@ body {
   border-left: 4px solid #d1d5db;
 }
 
-/* ─── DIVIDER ───────────────────────────────────────────────────── */
+/* ─── DIVIDER ────────────────────────────────────────────────────── */
 hr {
   border: 0;
   height: 1px;
-  background: rgba(255,255,255,0.12);
-  margin: 24px 0;
+  background: rgba(255,255,255,0.10);
+  margin: 22px 0;
 }
 
-/* ─── FEEDBACK SECTION ──────────────────────────────────────────── */
+/* ─── FEEDBACK SECTION ───────────────────────────────────────────── */
 .feedback-section {
   background: var(--card-bg);
-  padding: 24px 20px;
-  border-radius: var(--card-radius);
-  margin-bottom: 16px;
-  box-shadow: var(--shadow-card);
+  padding: 22px 18px;
+  border-radius: var(--card-r);
+  margin-bottom: 14px;
+  box-shadow: var(--shadow);
   text-align: left;
 }
 
 .feedback-section h3 {
-  font-family: var(--font-display);
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   font-weight: 700;
   color: var(--text-dark);
-  margin-bottom: 5px;
+  margin-bottom: 4px;
 }
 
 .feedback-section > p {
   font-size: 13px;
   color: var(--text-mid);
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
 
-/* ─── FORM ──────────────────────────────────────────────────────── */
+/* ─── FORM ───────────────────────────────────────────────────────── */
 .form-group {
-  margin-bottom: 14px;
+  margin-bottom: 13px;
   display: flex;
   flex-direction: column;
 }
@@ -399,11 +398,11 @@ hr {
 .form-group select,
 .form-group input,
 .form-group textarea {
-  padding: 10px 13px;
+  padding: 10px 12px;
   border: 1.5px solid #e5e7eb;
   border-radius: 10px;
   font-size: 14px;
-  font-family: var(--font-body);
+  font-family: var(--font);
   color: var(--text-dark);
   background: #fafafa;
   outline: none;
@@ -413,17 +412,17 @@ hr {
 .form-group select:focus,
 .form-group input:focus,
 .form-group textarea:focus {
-  border-color: var(--accent);
+  border-color: var(--accent2);
   background: #fff;
 }
 
-.form-group textarea { resize: vertical; min-height: 76px; }
+.form-group textarea { resize: vertical; min-height: 74px; }
 
 .char-count {
   text-align: right;
   font-size: 11px;
   color: #9ca3af;
-  margin-top: 4px;
+  margin-top: 3px;
 }
 
 .privacy-group label {
@@ -431,61 +430,60 @@ hr {
   font-size: 12px !important;
   color: var(--text-mid) !important;
   cursor: pointer;
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
+  line-height: 1.5;
 }
 
-/* ─── BUTTONS ───────────────────────────────────────────────────── */
+/* ─── BUTTONS ────────────────────────────────────────────────────── */
 button {
-  font-family: var(--font-body);
+  font-family: var(--font);
   font-weight: 600;
   font-size: 15px;
   cursor: pointer;
   border: none;
   border-radius: 14px;
-  padding: 14px 24px;
-  transition: transform 0.15s ease, filter 0.15s ease;
+  padding: 14px 20px;
+  transition: transform 0.14s ease, filter 0.14s ease, box-shadow 0.14s ease;
 }
 
-button:hover { transform: translateY(-2px); filter: brightness(1.08); }
+button:hover  { transform: translateY(-2px); filter: brightness(1.07); }
 button:active { transform: scale(0.97); }
 
 .submit-btn {
-  background: linear-gradient(135deg, #16a34a, #4ade80);
-  color: white;
+  background: linear-gradient(135deg, #16a34a, #22c55e);
+  color: #fff;
   width: 100%;
   margin-top: 6px;
-  box-shadow: 0 4px 16px rgba(22,163,74,0.3);
+  box-shadow: 0 4px 14px rgba(22,163,74,0.28);
 }
 
-.submit-btn:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
+.submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
 .restart-btn {
-  background: linear-gradient(135deg, var(--accent), #7c3aed);
-  color: white;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff;
   width: 100%;
   margin-top: 4px;
-  box-shadow: 0 4px 16px rgba(168,85,247,0.3);
+  box-shadow: 0 4px 14px rgba(124,58,237,0.28);
 }
 
-/* ─── THANK YOU ─────────────────────────────────────────────────── */
+/* ─── THANK YOU ──────────────────────────────────────────────────── */
 .thank-you-message {
   text-align: center;
   color: var(--positive);
-  padding: 16px 0;
+  padding: 14px 0;
 }
 
 .thank-you-message h4 {
-  font-family: var(--font-display);
-  font-size: 1.1rem;
-  margin-bottom: 5px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 4px;
 }
 
-/* ─── RESPONSIVE ────────────────────────────────────────────────── */
-@media (max-width: 400px) {
-  .options { gap: 8px; }
-  .left-option, .right-option { padding: 13px 8px 15px; }
+/* ─── RESPONSIVE ─────────────────────────────────────────────────── */
+@media (max-width: 380px) {
+  .options { gap: 8px; padding: 10px 12px 0; }
+  .left-option, .right-option { padding: 12px 8px 14px; }
   .left-option p, .right-option p { font-size: 12px; }
-  .hero-image { max-height: 180px; }
+  .hero-image { max-height: 170px; }
+  .card-container { height: 210px; }
 }
