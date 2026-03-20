@@ -140,19 +140,41 @@ function App() {
 
   const cardRefs = useMemo(() => Array(deck.length).fill(0).map(() => React.createRef()), [deck]);
 
-  const sendDataToGoogle = async () => {
+const sendDataToGoogle = async () => {
     setIsSending(true);
-    const topCatId = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
-    const orderedIds = ["D1", "D2", ...Array.from({length: 6}, (_, i) => `C${i+1}`), ...Array.from({length: 30}, (_, i) => `T${i+1}`), ...Array.from({length: 37}, (_, i) => `P${i+1}`)];
-    const risposteOrdinate = orderedIds.map(id => {
-      const found = responses.find(r => r.id === id);
-      return found ? found.risposta : `[Nessuna risposta per ${id}] -> Vuoto`;
+    
+    // Creiamo una mappa ID -> Risposta per lo script
+    const mappaRisposte = {};
+    responses.forEach(r => {
+      // Estraiamo solo il valore dopo la freccia "->"
+      const parts = r.risposta.split(" -> ");
+      mappaRisposte[r.id] = parts.length > 1 ? parts[1] : r.risposta;
     });
-    const dataToSend = { punteggi_raw: scores, gatto_vincitore: catProfiles[topCatId].name, tutte_le_risposte: risposteOrdinate };
+
+    const topCatId = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
+
+    const dataToSend = {
+      punteggi_raw: scores,
+      gatto_vincitore: catProfiles[topCatId].name,
+      risposte_mappate: mappaRisposte // Inviato come oggetto { D1: "Uomo", T1: "La amo", ... }
+    };
+
     try {
-      const URL = "https://script.google.com/macros/s/AKfycbzjyygOfGka_MczHbUUjJBHNnDWygKaOOTnarb5Y5wtXUCeaTLW83sqUgh_aUt9593S/exec";
-      await fetch(URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(dataToSend) });
-    } catch (e) { console.error(e); } finally { setIsSending(false); }
+      const URL = "https://script.google.com/macros/s/AKfycbxc0243b1IRVoGCzZMGMhfiK5TTX40qsNMxzKCfrMLLdNmhVzOH-jJQsLGpD9GgJyXA/exec";
+      
+      await fetch(URL, { 
+        method: "POST", 
+        mode: "no-cors", 
+        cache: "no-cache",
+        body: JSON.stringify(dataToSend) 
+      });
+      
+      console.log("Dati inviati correttamente al file Excel");
+    } catch (e) { 
+      console.error("Errore invio:", e); 
+    } finally { 
+      setIsSending(false); 
+    }
   };
 
   useEffect(() => {
@@ -167,12 +189,10 @@ function App() {
 
   const handleAgeSubmit = () => { if (ageValue) swipe('right'); };
 
-  // RIPRISTINO FRECCE TASTIERA
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (showResult) return;
       
-      // Permettiamo i tasti se non siamo nell'input dell'età o se l'input non ha il focus
       const isInputActive = document.activeElement.tagName === 'INPUT';
       
       if (e.key === 'ArrowLeft' && !isInputActive) swipe('left');
@@ -207,7 +227,7 @@ function App() {
   const positiveCats = Object.keys(scores).filter(id => scores[id] >= 10).sort((a, b) => scores[b] - scores[a]);
   const negativeCats = Object.keys(scores).filter(id => scores[id] <= -10).sort((a, b) => scores[a] - scores[b]);
   
-  // PERCENTUALE FORZATA NUMERICA
+  // LOGICA PERCENTUALE CORRETTA
   const totalQuestions = Number(deck.length);
   const currentQNum = Number(totalQuestions - currentIndex);
   const progressPercent = Math.round((currentQNum / totalQuestions) * 100);
