@@ -1,384 +1,360 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import TinderCard from 'react-tinder-card';
-import './App.css';
-
-// ← copia unnamed.jpg in src/assets/ rinominandolo banner.jpg
-import BannerImg from './assets/banner.jpg';
+import './App.css'; 
 
 import PaciockImg from './assets/gatti/Paciock.svg';
 import PeppaPigImg from './assets/gatti/Peppa_pig.svg';
 import JoeyImg from './assets/gatti/Joey.svg';
 import MissMarpleImg from './assets/gatti/Miss_Marple.svg';
 import HannibalImg from './assets/gatti/Hannibal.svg';
+import LuluImg from './assets/gatti/Lulu.svg'; 
+// Se hai l'immagine di copertina (quella con la scritta SERIE TV LIBRI POP), importala qui:
+// import CoverImg from './assets/cover.jpeg'; 
 
 const catProfiles = {
-  1: {
-    name: "Paciock",
-    subtitle: "Il gatto del relax",
-    image: PaciockImg,
-    profile: "Una personalità riflessiva e pacata. Ami la stabilità e trovi il tuo equilibrio nella dolcezza dei piccoli gesti quotidiani. Sei una presenza rassicurante, capace di offrire grande tolleranza e un affetto costante a chi ti circonda.",
-    tv: "Schitt's Creek, Boris, Camera Café, Derry Girls, 30 Rock, The Good Place."
-  },
-  2: {
-    name: "Peppa Pig",
-    subtitle: "Il gatto empatico",
-    image: PeppaPigImg,
-    profile: "Sei una persona empatica e comunicativa, che vive di relazioni profonde e autentiche. Ami condividere i tuoi pensieri e le tue emozioni, cercando sempre una sintonia speciale con gli altri attraverso il gioco e il dialogo continuo.",
-    tv: "L'Amica Geniale, Downton Abbey, Un medico in famiglia, La meglio gioventù, Babylon Berlin."
-  },
-  3: {
-    name: "Joey",
-    subtitle: "Il gatto sociale",
-    image: JoeyImg,
-    profile: "Dotato di una socialità innata e di una grande lealtà. Sei una personalità brillante, aperta alle novità e capace di adattarsi con intelligenza a ogni contesto. La tua energia è contagiosa e la tua natura è limpida come l'acqua che tanto ami.",
-    tv: "Heartstopper, Sex Education, Normal People, SKAM Italia, Friday Night Lights."
-  },
-  4: {
-    name: "Miss Marple",
-    subtitle: "Il gatto investigativo",
-    image: MissMarpleImg,
-    profile: "Una mente brillante e dinamica, sempre alla ricerca di nuovi stimoli. La tua curiosità ti spinge a osservare il mondo con occhio critico e investigativo. Sei un'anima attiva e propositiva, che usa l'intelletto per navigare la realtà con gentilezza.",
-    tv: "Il Commissario Montalbano, Don Matteo, Sherlock, Distretto di Polizia, Borgen, House of Cards."
-  },
-  5: {
-    name: "Hannibal",
-    subtitle: "Il gatto oscuro",
-    image: HannibalImg,
-    profile: "Una personalità anticonformista e audace, che trova bellezza negli aspetti più insoliti e profondi della vita. Ami tutto ciò che è fuori dagli schemi e non temi di esplorare atmosfere intense e misteriose. Sei uno spirito libero che sfida le convenzioni con originalità.",
-    tv: "Hannibal, Dark, American Horror Story, Fargo, Gomorra – La serie."
-  }
+  1: { name: "Paciock", image: PaciockImg, profile: "Il pigro: calmo, abitudinario, rilassato. Ama il comfort.", genre: "Comedy / Sitcom" },
+  2: { name: "Peppa Pig", image: PeppaPigImg, profile: "La chiacchierona: empatica, legata alla famiglia e alle tradizioni.", genre: "Family Drama / Storico" },
+  3: { name: "Joey", image: JoeyImg, profile: "L'amicone: leale, socievole, ama l'avventura e il gruppo.", genre: "Pop / Cult / Fantasy" },
+  4: { name: "Miss Marple", image: MissMarpleImg, profile: "L'investigatrice: curiosa, analitica, cerebrale, instancabile.", genre: "Crime / Mystery / Politico" },
+  5: { name: "Hannibal", image: HannibalImg, profile: "Il killer: misterioso, dark, ama l'estetica estrema e il brivido.", genre: "Horror / Thriller / Sci-Fi" },
+  6: { name: "Lulù", image: LuluImg, profile: "La sognatrice: emotiva, romantica, vive di grandi passioni.", genre: "Teen / Romance / Young Adult" }
 };
 
-const questions = [
-  { id: 1,  title: "Preferisci un viaggio in un posto...",           leftOption: "Nuovo",                              leftProfiles: [1,2],     rightOption: "Dove sono già stato e mi è piaciuto", rightProfiles: [3,4,5] },
-  { id: 2,  title: "Preferisci andare a cena...",                    leftOption: "Con gente nuova",                    leftProfiles: [1,2],     rightOption: "Con vecchi amici",                    rightProfiles: [3,4,5] },
-  { id: 3,  title: "Preferiresti un lavoro...",                      leftOption: "Stabile ma routinario",              leftProfiles: [3,4,5],   rightOption: "Incerto ma fantasioso",               rightProfiles: [1,2]   },
-  { id: 4,  title: "Preferisci un amico...",                         leftOption: "Simpatico",                          leftProfiles: [1],       rightOption: "Che ti capisca",                      rightProfiles: [3]     },
-  { id: 5,  title: "Gettarti da uno scoglio molto alto è...",        leftOption: "Da evitare",                         leftProfiles: [1],       rightOption: "Eccitante",                           rightProfiles: [5]     },
-  { id: 6,  title: "Preferisci quadri...",                           leftOption: "Arte astratta",                      leftProfiles: [4,5],     rightOption: "Ritratti",                            rightProfiles: [1,3]   },
-  { id: 7,  title: "Preferisci quadri...",                           leftOption: "Impressionisti",                     leftProfiles: [1,2,3],   rightOption: "Cubismo",                             rightProfiles: [4,5]   },
-  { id: 8,  title: "Preferisci musica...",                           leftOption: "Lirica",                             leftProfiles: [1,2,3],   rightOption: "Jazz",                                rightProfiles: [4,5]   },
-  { id: 9,  title: "Preferiresti essere un campione di...",          leftOption: "Discesa libera",                     leftProfiles: [5],       rightOption: "Pallavolo",                           rightProfiles: [1,2,3] },
-  { id: 10, title: "Preferiresti essere un campione di...",          leftOption: "Tennis",                             leftProfiles: [4],       rightOption: "Pallavolo",                           rightProfiles: [2,3]   },
-  { id: 11, title: "Preferisci giocare a...",                        leftOption: "Burraco",                            leftProfiles: [1,2,3],   rightOption: "Scacchi",                             rightProfiles: [4,5]   },
-  { id: 12, title: "Preferisci...",                                  leftOption: "L'amore",                            leftProfiles: [3],       rightOption: "Il successo",                         rightProfiles: [2]     },
-  { id: 13, title: "Preferisci...",                                  leftOption: "La filosofia",                       leftProfiles: [2,3],     rightOption: "La matematica",                       rightProfiles: [4,5]   },
-  { id: 14, title: "Preferisci le vacanze...",                       leftOption: "Al mare",                            leftProfiles: [5],       rightOption: "In montagna",                         rightProfiles: [1,3]   },
-  { id: 15, title: "Preferisci un weekend...",                       leftOption: "Di relax a casa",                    leftProfiles: [1],       rightOption: "Con molte attività fuori casa",        rightProfiles: [3]     },
-  { id: 16, title: "Preferisci leggere di...",                       leftOption: "Politica",                           leftProfiles: [3,4],     rightOption: "Sport",                               rightProfiles: [1,2]   },
-  { id: 17, title: "Preferisci leggere di...",                       leftOption: "Cronaca nera",                       leftProfiles: [4,5],     rightOption: "Cronaca rosa",                        rightProfiles: [1,2,3] },
-  { id: 18, title: "Su internet cerco cose...",                      leftOption: "Da ridere",                          leftProfiles: [1,3],     rightOption: "Interessanti",                        rightProfiles: [2,4]   },
-  { id: 19, title: "Preferisci...",                                  leftOption: "Parlare",                            leftProfiles: [2,5],     rightOption: "Ascoltare",                           rightProfiles: [4]     },
-  { id: 20, title: "Preferisci una giornata...",                     leftOption: "Calma",                              leftProfiles: [1],       rightOption: "Emozionante ma agitata",              rightProfiles: [3,5]   },
-  { id: 21, title: "Ti interessa di più...",                         leftOption: "Svelare un segreto",                 leftProfiles: [4],       rightOption: "Conoscere persone interessanti",      rightProfiles: [2,3]   },
-  { id: 22, title: "Ti appassiona di più...",                        leftOption: "La realtà di oggi",                  leftProfiles: [4],       rightOption: "Il mondo passato",                    rightProfiles: [2]     },
-  { id: 23, title: "Ti appassiona di più...",                        leftOption: "Il mondo passato",                   leftProfiles: [2],       rightOption: "Il mondo futuro",                     rightProfiles: [5]     },
-  { id: 24, title: "Ti appassiona di più...",                        leftOption: "La realtà di oggi",                  leftProfiles: [4],       rightOption: "Il mondo futuro",                     rightProfiles: [5]     },
-  { id: 25, title: "È più interessante parlare di...",               leftOption: "Amore/amicizia",                     leftProfiles: [3],       rightOption: "Politica/soldi",                      rightProfiles: [2]     },
-  { id: 26, title: "Preferisci cose che...",                         leftOption: "Ti rilassano",                       leftProfiles: [1],       rightOption: "Ti eccitano",                         rightProfiles: [5]     },
-  { id: 27, title: "Preferisci...",                                  leftOption: "Forrest Gump",                       leftProfiles: [1],       rightOption: "Il Padrino",                          rightProfiles: [2]     },
-  { id: 28, title: "Preferisci...",                                  leftOption: "La Pantera Rosa",                    leftProfiles: [1],       rightOption: "Titanic",                             rightProfiles: [3]     },
-  { id: 29, title: "Preferisci...",                                  leftOption: "Forrest Gump",                       leftProfiles: [1],       rightOption: "Assassinio sull'Orient Express",      rightProfiles: [4]     },
-  { id: 30, title: "Preferisci...",                                  leftOption: "La Pantera Rosa",                    leftProfiles: [1],       rightOption: "Psycho",                              rightProfiles: [5]     },
-  { id: 31, title: "Preferisci...",                                  leftOption: "Apocalypse Now",                     leftProfiles: [2],       rightOption: "Casablanca",                          rightProfiles: [3]     },
-  { id: 32, title: "Preferisci...",                                  leftOption: "Apocalypse Now",                     leftProfiles: [2],       rightOption: "Match Point",                         rightProfiles: [4]     },
-  { id: 33, title: "Preferisci...",                                  leftOption: "Il Padrino",                         leftProfiles: [2],       rightOption: "Il silenzio degli innocenti",         rightProfiles: [5]     },
-  { id: 34, title: "Preferisci...",                                  leftOption: "Titanic",                            leftProfiles: [3],       rightOption: "Match point",                         rightProfiles: [4]     },
-  { id: 35, title: "Preferisci...",                                  leftOption: "Casablanca",                         leftProfiles: [3],       rightOption: "Il silenzio degli innocenti",         rightProfiles: [5]     },
-  { id: 36, title: "Preferisci...",                                  leftOption: "Assassinio sull'Orient Express",     leftProfiles: [4],       rightOption: "Psycho",                              rightProfiles: [5]     },
-  { id: 37, title: "Preferisci...",                                  leftOption: "Pretty Woman",                       leftProfiles: [1,3],     rightOption: "C'era una volta in America",          rightProfiles: [2,4,5] }
+// --- MISCHIATORE ARRAY ---
+const shuffleArray = (array) => {
+  let shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+};
+
+// ==========================================
+// DATASET DOMANDE (75 totali)
+// ==========================================
+const demographicQuestions = [
+  { id: "D1", type: "demo", title: "Qual è il tuo sesso?", leftOption: "Uomo", upOption: "Altro / Preferisco non dirlo", rightOption: "Donna" },
+  { id: "D2", type: "demo", title: "In quale fascia d'età rientri?", leftOption: "Sotto i 25", upOption: "25 - 45 anni", rightOption: "Oltre i 45" },
 ];
 
-const shuffleArray = arr => {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
+const catValidationQuestions = [
+  { id: "C1", type: "cat", title: "Ti piacerebbe avere a casa Paciock (Pigro e affettuoso)?", leftOption: "No, troppo noioso", upOption: "Neutro", rightOption: "Sì, lo amo!" },
+  { id: "C2", type: "cat", title: "Vorresti vivere con Peppa Pig (Empatica e chiacchierona)?", leftOption: "No, troppa ansia", upOption: "Neutro", rightOption: "Sì, adorabile" },
+  { id: "C3", type: "cat", title: "Joey (L'amicone fedele) sarebbe il gatto perfetto per te?", leftOption: "Non credo", upOption: "Neutro", rightOption: "Assolutamente sì" },
+  { id: "C4", type: "cat", title: "Adotteresti Miss Marple (L'investigatrice curiosa)?", leftOption: "No, fa troppi guai", upOption: "Neutro", rightOption: "Sì, mi affascina" },
+  { id: "C5", type: "cat", title: "Terresti in casa Hannibal (Il felino dark e misterioso)?", leftOption: "No, mi fa paura", upOption: "Neutro", rightOption: "Sì, è intrigante" },
+  { id: "C6", type: "cat", title: "Lulù (La sognatrice dolce ed emotiva) farebbe al caso tuo?", leftOption: "No, troppo sdolcinata", upOption: "Neutro", rightOption: "Sì, è dolcissima" },
+];
+
+const tvQuestions = [
+  // PACIOCK
+  { id: "T1", type: "tv", title: "Cosa ne pensi di 'The Office'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T2", type: "tv", title: "Cosa ne pensi di 'Friends'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T3", type: "tv", title: "Cosa ne pensi di 'Boris'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T4", type: "tv", title: "Cosa ne pensi di 'Scrubs'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T5", type: "tv", title: "Cosa ne pensi di 'Ted Lasso'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
+  // PEPPA PIG
+  { id: "T6", type: "tv", title: "Cosa ne pensi di 'This Is Us'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T7", type: "tv", title: "Cosa ne pensi di 'Normal People'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T8", type: "tv", title: "Cosa ne pensi di 'The Crown'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T9", type: "tv", title: "Cosa ne pensi di 'Scenes from a Marriage'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T10", type: "tv", title: "Cosa ne pensi di 'Mad Men'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
+  // JOEY
+  { id: "T11", type: "tv", title: "Cosa ne pensi di 'Game of Thrones'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T12", type: "tv", title: "Cosa ne pensi di 'Lost'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T13", type: "tv", title: "Cosa ne pensi di 'The Boys'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T14", type: "tv", title: "Cosa ne pensi di 'Vikings'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T15", type: "tv", title: "Cosa ne pensi di 'Arcane'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
+  // MISS MARPLE
+  { id: "T16", type: "tv", title: "Cosa ne pensi di 'True Detective'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T17", type: "tv", title: "Cosa ne pensi di 'Mindhunter'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T18", type: "tv", title: "Cosa ne pensi di 'House of Cards'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T19", type: "tv", title: "Cosa ne pensi di 'Succession'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T20", type: "tv", title: "Cosa ne pensi di 'Fargo'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
+  // HANNIBAL
+  { id: "T21", type: "tv", title: "Cosa ne pensi di 'Breaking Bad'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T22", type: "tv", title: "Cosa ne pensi di 'The Sopranos'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T23", type: "tv", title: "Cosa ne pensi di 'Dark'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T24", type: "tv", title: "Cosa ne pensi di 'Black Mirror'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T25", type: "tv", title: "Cosa ne pensi di 'Mr. Robot'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
+  // LULÙ
+  { id: "T26", type: "tv", title: "Cosa ne pensi di 'Euphoria'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T27", type: "tv", title: "Cosa ne pensi di 'Elite'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T28", type: "tv", title: "Cosa ne pensi di 'Dawson’s Creek'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T29", type: "tv", title: "Cosa ne pensi di 'Skins (UK)'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
+  { id: "T30", type: "tv", title: "Cosa ne pensi di 'Beverly Hills 90210'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
+];
+
+const psychQuestions = [
+  { id: "P1", type: "psych", title: "Preferisci un viaggio in un posto...", leftOption: "Nuovo", leftProfiles: [1, 2, 6], upOption: "Indifferente", rightOption: "Già visitato", rightProfiles: [3, 4, 5] },
+  { id: "P2", type: "psych", title: "Preferisci andare a cena...", leftOption: "Gente nuova", leftProfiles: [1, 2, 6], upOption: "Indifferente", rightOption: "Vecchi amici", rightProfiles: [3, 4, 5] },
+  { id: "P3", type: "psych", title: "Preferiresti un lavoro...", leftOption: "Stabile", leftProfiles: [3, 4, 5], upOption: "Indifferente", rightOption: "Fantasioso", rightProfiles: [1, 2, 6] },
+  { id: "P4", type: "psych", title: "Preferisci un amico...", leftOption: "Simpatico", leftProfiles: [1, 3], upOption: "Indifferente", rightOption: "Che ti capisca", rightProfiles: [2, 4, 6] },
+  { id: "P5", type: "psych", title: "Gettarti da uno scoglio alto è...", leftOption: "Da evitare", leftProfiles: [1, 2, 6], upOption: "Indifferente", rightOption: "Eccitante", rightProfiles: [3, 4, 5] },
+  { id: "P6", type: "psych", title: "Preferisci quadri di...", leftOption: "Arte astratta", leftProfiles: [4, 5], upOption: "Indifferente", rightOption: "Ritratti", rightProfiles: [1, 2, 3, 6] },
+  { id: "P7", type: "psych", title: "Preferisci quadri...", leftOption: "Impressionisti", leftProfiles: [1, 2, 3, 6], upOption: "Indifferente", rightOption: "Cubismo", rightProfiles: [4, 5] },
+  { id: "P8", type: "psych", title: "Preferisci musica...", leftOption: "Lirica", leftProfiles: [1, 2, 3, 6], upOption: "Indifferente", rightOption: "Jazz", rightProfiles: [4, 5] },
+  { id: "P9", type: "psych", title: "Saresti campione di...", leftOption: "Discesa libera", leftProfiles: [3, 5], upOption: "Indifferente", rightOption: "Pallavolo", rightProfiles: [1, 2, 4, 6] },
+  { id: "P10", type: "psych", title: "Saresti campione di...", leftOption: "Tennis", leftProfiles: [4, 5], upOption: "Indifferente", rightOption: "Pallavolo", rightProfiles: [2, 3, 6] },
+  { id: "P11", type: "psych", title: "Preferisci giocare a...", leftOption: "Burraco", leftProfiles: [1, 2, 3, 6], upOption: "Indifferente", rightOption: "Scacchi", rightProfiles: [4, 5] },
+  { id: "P12", type: "psych", title: "Preferisci...", leftOption: "L'amore", leftProfiles: [2, 3, 6], upOption: "Indifferente", rightOption: "Il successo", rightProfiles: [4, 5] },
+  { id: "P13", type: "psych", title: "Preferisci studiare...", leftOption: "Filosofia", leftProfiles: [2, 3, 6], upOption: "Indifferente", rightOption: "Matematica", rightProfiles: [4, 5] },
+  { id: "P14", type: "psych", title: "Preferisci le vacanze...", leftOption: "Al mare", leftProfiles: [2, 3, 6], upOption: "Indifferente", rightOption: "In montagna", rightProfiles: [1, 4, 5] },
+  { id: "P15", type: "psych", title: "Preferisci un weekend...", leftOption: "A casa", leftProfiles: [1, 2], upOption: "Indifferente", rightOption: "Fuori casa", rightProfiles: [3, 4, 5, 6] },
+  { id: "P16", type: "psych", title: "Preferisci leggere di...", leftOption: "Politica", leftProfiles: [4, 5], upOption: "Indifferente", rightOption: "Sport/Gossip", rightProfiles: [1, 3, 6] },
+  { id: "P17", type: "psych", title: "Preferisci leggere di...", leftOption: "Cronaca nera", leftProfiles: [4, 5], upOption: "Indifferente", rightOption: "Cronaca rosa", rightProfiles: [1, 2, 3, 6] },
+  { id: "P18", type: "psych", title: "Su internet cerchi cose...", leftOption: "Da ridere", leftProfiles: [1, 3, 6], upOption: "Indifferente", rightOption: "Interessanti", rightProfiles: [2, 4, 5] },
+  { id: "P19", type: "psych", title: "Preferisci...", leftOption: "Parlare", leftProfiles: [2, 5, 6], upOption: "Indifferente", rightOption: "Ascoltare", rightProfiles: [1, 3, 4] },
+  { id: "P20", type: "psych", title: "Preferisci una giornata...", leftOption: "Calma", leftProfiles: [1, 2], upOption: "Indifferente", rightOption: "Agitata", rightProfiles: [3, 4, 5, 6] },
+  { id: "P21", type: "psych", title: "Ti interessa di più...", leftOption: "Svelare segreti", leftProfiles: [4, 5], upOption: "Indifferente", rightOption: "Conoscere persone", rightProfiles: [2, 3, 6] },
+  { id: "P22", type: "psych", title: "Ti appassiona di più...", leftOption: "Il mondo di oggi", leftProfiles: [4, 5], upOption: "Indifferente", rightOption: "Il passato", rightProfiles: [1, 2, 6] },
+  { id: "P23", type: "psych", title: "Ti appassiona di più...", leftOption: "Il passato", leftProfiles: [1, 2, 6], upOption: "Indifferente", rightOption: "Il futuro", rightProfiles: [3, 4, 5] },
+  { id: "P24", type: "psych", title: "Ti appassiona di più...", leftOption: "Il mondo di oggi", leftProfiles: [1, 2], upOption: "Indifferente", rightOption: "Il futuro", rightProfiles: [3, 4, 5, 6] },
+  { id: "P25", type: "psych", title: "Meglio parlare di...", leftOption: "Amore/Amicizia", leftProfiles: [2, 3, 6], upOption: "Indifferente", rightOption: "Politica/Soldi", rightProfiles: [4, 5] },
+  { id: "P26", type: "psych", title: "Preferisci cose che...", leftOption: "Rilassano", leftProfiles: [1, 2], upOption: "Indifferente", rightOption: "Eccitano", rightProfiles: [3, 4, 5, 6] },
+  { id: "P27", type: "psych", title: "Preferisci il film...", leftOption: "Forrest Gump", leftProfiles: [1, 3, 6], upOption: "Non so", rightOption: "Il Padrino", rightProfiles: [2, 4, 5] },
+  { id: "P28", type: "psych", title: "Preferisci il film...", leftOption: "La Pantera Rosa", leftProfiles: [1, 3], upOption: "Non so", rightOption: "Titanic", rightProfiles: [2, 6] },
+  { id: "P29", type: "psych", title: "Preferisci il film...", leftOption: "Forrest Gump", leftProfiles: [1, 3, 6], upOption: "Non so", rightOption: "Assassinio sull'Orient Expr.", rightProfiles: [4, 5] },
+  { id: "P30", type: "psych", title: "Preferisci il film...", leftOption: "La Pantera Rosa", leftProfiles: [1, 3], upOption: "Non so", rightOption: "Psycho", rightProfiles: [4, 5] },
+  { id: "P31", type: "psych", title: "Preferisci il film...", leftOption: "Apocalypse Now", leftProfiles: [4, 5], upOption: "Non so", rightOption: "Casablanca", rightProfiles: [2, 6] },
+  { id: "P32", type: "psych", title: "Preferisci il film...", leftOption: "Apocalypse Now", leftProfiles: [5], upOption: "Non so", rightOption: "Match Point", rightProfiles: [4] },
+  { id: "P33", type: "psych", title: "Preferisci il film...", leftOption: "Il Padrino", leftProfiles: [2, 4], upOption: "Non so", rightOption: "Silenzio degli Innocenti", rightProfiles: [5] },
+  { id: "P34", type: "psych", title: "Preferisci il film...", leftOption: "Titanic", leftProfiles: [2, 6], upOption: "Non so", rightOption: "Match Point", rightProfiles: [4, 5] },
+  { id: "P35", type: "psych", title: "Preferisci il film...", leftOption: "Casablanca", leftProfiles: [2, 6], upOption: "Non so", rightOption: "Silenzio degli Innocenti", rightProfiles: [5] },
+  { id: "P36", type: "psych", title: "Preferisci il film...", leftOption: "Assassinio sull'Orient Expr.", leftProfiles: [4], upOption: "Non so", rightOption: "Psycho", rightProfiles: [5] },
+  { id: "P37", type: "psych", title: "Preferisci il film...", leftOption: "Pretty Woman", leftProfiles: [1, 3, 6], upOption: "Non so", rightOption: "C'era una volta in America", rightProfiles: [2, 4, 5] }
+];
+
+// ==========================================
+// LOGICA COSTRUZIONE MAZZO
+// ==========================================
+const buildDeck = () => {
+  const others = shuffleArray([...psychQuestions, ...tvQuestions]); 
+  const cats = shuffleArray([...catValidationQuestions]); 
+  
+  let deck = [];
+
+  deck.push(demographicQuestions[0]);
+  deck.push(demographicQuestions[1]);
+
+  let count = 0;
+  while (others.length > 0 || cats.length > 0) {
+    if (count === 4 && cats.length > 0) {
+      deck.push(cats.pop()); 
+      count = 0; 
+    } else if (others.length > 0) {
+      deck.push(others.pop());
+      count++;
+    } else if (cats.length > 0) {
+      deck.push(cats.pop());
+    }
   }
-  return a;
+
+  return deck.reverse();
 };
 
-export default function App() {
-  const [currentQuestions, setCurrentQuestions] = useState(() => shuffleArray(questions));
-  const [scores, setScores]         = useState({ 1:0, 2:0, 3:0, 4:0, 5:0 });
-  const [userAnswers, setUserAnswers] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(currentQuestions.length - 1);
+function App() {
+  const [deck, setDeck] = useState(() => buildDeck());
+  const [scores, setScores] = useState({ 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 });
+  const [responses, setResponses] = useState([]); 
+  const [currentIndex, setCurrentIndex] = useState(deck.length - 1);
   const [showResult, setShowResult] = useState(false);
-  const [isDesktop, setIsDesktop]   = useState(window.innerWidth > 768);
-
-  const [formData, setFormData] = useState({
-    gender:'', age:'', catMatch:'', tvMatch:'', feedback:'', privacyAccepted: false
-  });
-  const [formSubmitted, setFormSubmitted] = useState(false);
   const [isSending, setIsSending] = useState(false);
+  const [swipeDirection, setSwipeDirection] = useState(null); // per l'animazione
+
+  const cardRefs = useMemo(() => Array(deck.length).fill(0).map(() => React.createRef()), [deck]);
 
   useEffect(() => {
-    const fn = () => setIsDesktop(window.innerWidth > 768);
-    window.addEventListener('resize', fn);
-    return () => window.removeEventListener('resize', fn);
-  }, []);
-
-  // Console log finale
-  useEffect(() => {
-    if (!showResult) return;
-    console.log('=== PUNTEGGI FINALI ===');
-    console.table(Object.entries(scores).map(([id, score]) => ({
-      ID: id,
-      Gatto: catProfiles[id].name,
-      Punteggio: score,
-      Stato: score >= 10 ? '✅ CONSIGLIATO' : score <= -10 ? '❌ DA EVITARE' : '⚪ NEUTRO'
-    })));
+    if (showResult) {
+      sendDataToGoogle();
+    }
   }, [showResult]);
 
-  const cardRefs = useMemo(
-    () => Array(currentQuestions.length).fill(0).map(() => React.createRef()),
-    [currentQuestions]
-  );
-
-  const swipe = (dir, idx) => {
-    cardRefs[idx]?.current?.swipe(dir);
-  };
-
-  const calcPoints = profiles => 4 - profiles.length;
-
-  const handleSwipe = (direction, question) => {
-    if (direction !== 'left' && direction !== 'right') return;
-
-    const chosen   = direction === 'left' ? question.leftProfiles  : question.rightProfiles;
-    const rejected = direction === 'left' ? question.rightProfiles : question.leftProfiles;
-    const text     = direction === 'left' ? question.leftOption    : question.rightOption;
-
-    setUserAnswers(prev => [...prev, { id: question.id, domanda: question.title, scelta: text }]);
-
-    const add = calcPoints(chosen);
-    const sub = calcPoints(rejected);
-
-    setScores(prev => {
-      const s = { ...prev };
-      chosen.forEach(p   => s[p] += add);
-      rejected.forEach(p => s[p] -= sub);
-      return s;
-    });
-
-    if (currentIndex === 0) setShowResult(true);
-    else setCurrentIndex(prev => prev - 1);
-  };
-
-  const resetTest = () => {
-    const q = shuffleArray(questions);
-    setCurrentQuestions(q);
-    setScores({ 1:0, 2:0, 3:0, 4:0, 5:0 });
-    setUserAnswers([]);
-    setCurrentIndex(q.length - 1);
-    setShowResult(false);
-    setFormData({ gender:'', age:'', catMatch:'', tvMatch:'', feedback:'', privacyAccepted: false });
-    setFormSubmitted(false);
-  };
-
-  const handleFormChange = e => {
-    const { name, value, type, checked } = e.target;
-    setFormData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
-  };
-
-  const handleFormSubmit = async e => {
-    e.preventDefault();
+  const sendDataToGoogle = async () => {
     setIsSending(true);
-    const sorted = [...userAnswers]
-      .sort((a,b) => a.id - b.id)
-      .map(i => ({ ...i, scelta: `[${i.domanda}] -> ${i.scelta}` }));
-    const payload = {
-      ...formData,
-      punteggi_finali: { "1 Paciock": scores[1], "2 Peppa Pig": scores[2], "3 Joey": scores[3], "4 Miss Marple": scores[4], "5 Hannibal": scores[5] },
-      tutte_le_risposte: sorted
+    const topCatId = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
+
+    const dataToSend = {
+      punteggi_raw: scores,
+      gatto_vincitore: catProfiles[topCatId].name,
+      tutte_le_risposte: responses
     };
+
     try {
-      const res = await fetch(
-        "https://script.google.com/macros/s/AKfycbzVfL9_W03IJDP9s3rIOcQvvf2W80pGdqXqYvvOukq3M8EBJBU2LIL5YXTTuwFdeir0/exec",
-        { method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body: JSON.stringify(payload) }
-      );
-      if (res.ok) setFormSubmitted(true);
-      else alert("Errore server: " + res.status);
-    } catch(err) {
-      alert("Errore di rete.");
-      console.error(err);
+      const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzVfL9_W03IJDP9s3rIOcQvvf2W80pGdqXqYvvOukq3M8EBJBU2LIL5YXTTuwFdeir0/exec";
+      await fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(dataToSend)
+      });
+      console.log("Dataset inviato con successo.");
+    } catch (e) {
+      console.error(e);
     } finally {
       setIsSending(false);
     }
   };
 
-  // Filtro profili
-  const sortedIds = Object.keys(scores).sort((a,b) => scores[b] - scores[a]);
-  const filteredCatIds = (() => {
-    const pos = sortedIds.filter(id => scores[id] >= 10);
-    const neg = sortedIds.filter(id => scores[id] <= -10);
-    return [...new Set([
-      ...(pos.length ? pos : [sortedIds[0]]),
-      ...(neg.length ? neg : [sortedIds[sortedIds.length - 1]])
-    ])];
-  })();
+  const handleSwipe = (direction, question) => {
+    let chosenText = '';
+    if (direction === 'left') chosenText = question.leftOption;
+    if (direction === 'right') chosenText = question.rightOption;
+    if (direction === 'up') chosenText = question.upOption;
 
-  const answered = currentQuestions.length - 1 - currentIndex;
-  const progress = Math.round((answered / (currentQuestions.length - 1)) * 100);
-  const remaining = currentQuestions.length - answered - 1;
+    setResponses(prev => [...prev, {
+      id: question.id,
+      tipo: question.type,
+      risposta: `[${question.title}] -> ${chosenText}`
+    }]);
+
+    if (question.type === 'psych' && direction !== 'up') {
+      const chosenProfiles = direction === 'left' ? question.leftProfiles : question.rightProfiles;
+      const rejectedProfiles = direction === 'left' ? question.rightProfiles : question.leftProfiles;
+      
+      const pAdd = 4 - chosenProfiles.length;
+      const pSub = 4 - rejectedProfiles.length;
+
+      setScores(prev => {
+        const next = { ...prev };
+        chosenProfiles.forEach(p => next[p] += pAdd);
+        rejectedProfiles.forEach(p => next[p] -= pSub);
+        return next;
+      });
+    }
+
+    if (currentIndex === 0) {
+      setShowResult(true);
+    } else {
+      setCurrentIndex(prev => prev - 1);
+    }
+    setSwipeDirection(null); // resetta lo stato visivo dello swipe
+  };
+
+  // Funzione per il click sui bottoni inferiori
+  const swipe = async (dir) => {
+    if (currentIndex >= 0 && currentIndex < deck.length) {
+      if (cardRefs[currentIndex] && cardRefs[currentIndex].current) {
+        await cardRefs[currentIndex].current.swipe(dir);
+      }
+    }
+  };
+
+  const filteredCatIds = Object.keys(scores)
+    .filter(id => scores[id] >= 10)
+    .sort((a, b) => scores[b] - scores[a]);
+
+  // Calcoli per la barra di progresso
+  const totalQuestions = deck.length;
+  const currentQNum = totalQuestions - currentIndex;
+  const progressPercent = Math.round((currentQNum / totalQuestions) * 100);
+  const remaining = totalQuestions - currentQNum;
 
   return (
     <div className="app-container">
-
-      {/* HERO BANNER */}
-      <div className="hero-banner">
-        <img src={BannerImg} alt="Serie TV Libri Pop" className="hero-image" />
-      </div>
-
-      {/* HERO TEXT */}
-      <div className="hero-text">
-        <h1>🐱 Scopri il tuo gatto</h1>
-        <p className="hero-subtitle">Un test rapido per capire quale gatto sul sofà ti rappresenta davvero.</p>
-        <div className="hero-badges">
-          <span className="badge">37 domande</span>
-          <span className="badge">~3 minuti</span>
+      
+      {showResult ? (
+        <div className="result-container scrollable-results">
+          <div className="sticky-banner">
+            🛡️ Analisi Psicometrica Completata 🛡️
+          </div>
+          
+          {isSending && <p style={{textAlign: 'center', color: 'rgba(255,255,255,0.7)'}}><em>Sincronizzazione dati in corso...</em></p>}
+          
+          <div className="results-list">
+            {filteredCatIds.length > 0 ? (
+              filteredCatIds.map(id => (
+                <div key={id} className="cat-result-box">
+                  <h4>{catProfiles[id].name}</h4>
+                  <img src={catProfiles[id].image} alt={catProfiles[id].name} className="cat-image-small" />
+                  
+                  <p style={{fontSize: '14px', textAlign: 'left', marginTop: '15px'}}>
+                    <strong>Personalità:</strong> {catProfiles[id].profile}
+                  </p>
+                  <p style={{fontSize: '14px', textAlign: 'left', color: '#834d6c'}}>
+                    <strong>📺 Serie Consigliate:</strong><br/>
+                    {catProfiles[id].genre}
+                  </p>
+                </div>
+              ))
+            ) : (
+              <div className="cat-result-box">
+                <p>Nessun profilo dominante! Sei perfettamente bilanciato tra tutte le personalità feline.</p>
+              </div>
+            )}
+          </div>
+          <button onClick={() => window.location.reload()} className="swipe-btn" style={{width: '100%', marginTop: '20px', backgroundColor: '#e2a07c', color: '#fff', border: 'none'}}>Rifai il test</button>
         </div>
-      </div>
-
-      {/* ── QUIZ ── */}
-      {!showResult && (
-        <>
-          {/* Progress */}
-          <div className="progress-area">
-            <div className="progress-labels">
-              <span>Domanda {answered + 1} di {currentQuestions.length}</span>
-              <span>{progress}%</span>
-            </div>
-            <p className="progress-sublabel">Mancano {remaining} domande</p>
-            <div className="progress-track">
-              <div className="progress-fill" style={{ width: `${Math.max(progress, 1.5)}%` }} />
+      ) : (
+        <div className="test-interface">
+          
+          <div className="app-header">
+            {/* Sostituisci il src con {CoverImg} se hai importato l'immagine */}
+            <img src="https://via.placeholder.com/500x150/49284d/ffffff?text=SERIE+TV+LIBRI+POP" alt="Hero" className="hero-img" />
+            <h1>Scopri il tuo gatto</h1>
+            <p>Un test rapido per capire quale gatto sul sofà ti rappresenta davvero.</p>
+            <div className="tags">
+              <span className="tag">64 domande</span>
+              <span className="tag">~3 minuti</span>
             </div>
           </div>
 
-          {/* Card stack */}
+          <div className="progress-section">
+            <div className="progress-text">
+              <span>Domanda {currentQNum} di {totalQuestions}</span>
+              <span>{progressPercent}%</span>
+            </div>
+            <div className="progress-subtext">
+              Mancano {remaining} domande
+            </div>
+            <div className="progress-bar-container">
+              <div className="progress-fill" style={{ width: `${progressPercent}%` }}></div>
+            </div>
+          </div>
+          
           <div className="card-container">
-            {currentQuestions.map((q, i) => (
+            {deck.map((q, index) => (
               <TinderCard
-                key={q.id}
-                ref={cardRefs[i]}
+                key={q.id + index}
+                ref={cardRefs[index]}
                 className="swipe"
-                preventSwipe={isDesktop ? ['up','down','left','right'] : ['up','down']}
-                onSwipe={dir => handleSwipe(dir, q)}
+                preventSwipe={['down']} 
+                onSwipe={(dir) => handleSwipe(dir, q)}
+                onCardLeftScreen={() => setSwipeDirection(null)}
               >
                 <div className="card">
                   <h2>{q.title}</h2>
-                  <p className="hint">Trascina la carta o usa i pulsanti</p>
+                  <p className="card-subtitle">Trascina la carta o usa i pulsanti in basso</p>
                 </div>
               </TinderCard>
             ))}
           </div>
 
-          {/* Answer buttons — only for active card */}
-          {currentQuestions.map((q, i) =>
-            i !== currentIndex ? null : (
-              <div key={q.id} className="options">
-                <div className="left-option" onClick={() => swipe('left', i)}>
-                  <span className="option-label-left">← {q.leftOption}</span>
-                </div>
-                <div className="right-option" onClick={() => swipe('right', i)}>
-                  <span className="option-label-right">{q.rightOption} →</span>
-                </div>
-              </div>
-            )
-          )}
-        </>
-      )}
-
-      {/* ── RESULTS ── */}
-      {showResult && (
-        <div className="result-container">
-          <div className="scroll-notice">
-            ⬇️ Scorri fino in fondo per vedere tutti i risultati e lasciarci il tuo feedback!
-          </div>
-
-          {filteredCatIds.map(id => {
-            const cat = catProfiles[id];
-            const isPos = scores[id] >= 10;
-            return (
-              <div key={id} className={`cat-result-box ${isPos ? 'positive-card' : 'negative-card'}`}>
-                <img src={cat.image} alt={cat.name} className="cat-image" />
-                <h3>{cat.name}</h3>
-                <span className="cat-subtitle">{cat.subtitle}</span>
-                <p className="cat-profile"><strong>Personalità:</strong> {cat.profile}</p>
-                <p className={`recommendation ${isPos ? 'positive' : 'negative'}`}>
-                  <strong>{isPos ? '✅ Serie Consigliate:' : '❌ Da EVITARE:'}</strong><br />{cat.tv}
-                </p>
-              </div>
-            );
-          })}
-
-          <hr />
-
-          <div className="feedback-section">
-            <h3>Cosa ne pensi?</h3>
-            <p>Aiutaci a migliorare l'algoritmo lasciando un feedback!</p>
-
-            {!formSubmitted ? (
-              <form onSubmit={handleFormSubmit} className="feedback-form">
-                <div className="form-group">
-                  <label>Sesso:</label>
-                  <select name="gender" value={formData.gender} onChange={handleFormChange} required>
-                    <option value="">Seleziona...</option>
-                    <option value="M">Uomo</option>
-                    <option value="F">Donna</option>
-                    <option value="Altro">Altro / Preferisco non specificare</option>
-                  </select>
-                </div>
-                <div className="form-group">
-                  <label>Età:</label>
-                  <input type="number" name="age" value={formData.age} onChange={handleFormChange} required min="10" max="100" placeholder="Es. 25" />
-                </div>
-                <div className="form-group">
-                  <label>Ti ritrovi con la descrizione del gatto?</label>
-                  <select name="catMatch" value={formData.catMatch} onChange={handleFormChange} required>
-                    <option value="">Seleziona...</option>
-                    <option value="Molto">Molto</option>
-                    <option value="Abbastanza">Abbastanza</option>
-                    <option value="Poco">Poco</option>
-                    <option value="Per niente">Per niente</option>
-                  </select>
-                </div>
-                <div className="form-group">
-                  <label>Confermi l'attinenza delle serie TV proposte/sconsigliate?</label>
-                  <select name="tvMatch" value={formData.tvMatch} onChange={handleFormChange} required>
-                    <option value="">Seleziona...</option>
-                    <option value="Assolutamente sì">Assolutamente sì</option>
-                    <option value="In parte">In parte</option>
-                    <option value="No">No</option>
-                  </select>
-                </div>
-                <div className="form-group">
-                  <label>Lascia un commento (obbligatorio):</label>
-                  <textarea name="feedback" value={formData.feedback} onChange={handleFormChange}
-                    maxLength="300" rows="3" required placeholder="Scrivi qui i tuoi pensieri..." />
-                  <small className="char-count">{formData.feedback.length} / 300 caratteri</small>
-                </div>
-                <div className="form-group privacy-group">
-                  <label style={{ display:'flex', alignItems:'flex-start', fontWeight:'normal', fontSize:'12px', cursor:'pointer' }}>
-                    <input type="checkbox" name="privacyAccepted" checked={formData.privacyAccepted}
-                      onChange={handleFormChange} required style={{ marginRight:'10px', marginTop:'3px' }} />
-                    <span>Acconsento al trattamento dei miei dati in forma anonima a scopo statistico e di ricerca per il miglioramento dell'algoritmo, nel rispetto del GDPR.</span>
-                  </label>
-                </div>
-                <button type="submit" className="submit-btn" disabled={isSending}>
-                  {isSending ? "Invio in corso..." : "Invia Feedback"}
+          {deck[currentIndex] && (
+            <div className="action-buttons-container">
+              <button className="swipe-btn" onClick={() => swipe('left')}>
+                <span className="arrow">←</span>
+                <span className="btn-text">{deck[currentIndex].leftOption}</span>
+              </button>
+              
+              {deck[currentIndex].upOption && (
+                <button className="swipe-btn" onClick={() => swipe('up')}>
+                  <span className="arrow">↑</span>
+                  <span className="btn-text">{deck[currentIndex].upOption}</span>
                 </button>
-              </form>
-            ) : (
-              <div className="thank-you-message">
-                <h4>Grazie per aver partecipato! 🐾</h4>
-                <p>Il tuo feedback è stato registrato.</p>
-              </div>
-            )}
-          </div>
+              )}
 
-          <button onClick={resetTest} className="restart-btn">Rifai il test</button>
+              <button className="swipe-btn" onClick={() => swipe('right')}>
+                <span className="arrow">→</span>
+                <span className="btn-text">{deck[currentIndex].rightOption}</span>
+              </button>
+            </div>
+          )}
+
         </div>
       )}
     </div>
   );
 }
+
+export default App;
