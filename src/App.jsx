@@ -138,7 +138,6 @@ function App() {
   const [isSending, setIsSending] = useState(false);
   const [ageValue, setAgeValue] = useState('');
 
-  const ageInputRef = useRef(null);
   const cardRefs = useMemo(() => Array(deck.length).fill(0).map(() => React.createRef()), [deck]);
 
   const sendDataToGoogle = async () => {
@@ -160,13 +159,6 @@ function App() {
     if (showResult) sendDataToGoogle();
   }, [showResult]);
 
-  useEffect(() => {
-    const q = deck[currentIndex];
-    if (q && q.type === 'demo_age') {
-      setTimeout(() => { if (ageInputRef.current) ageInputRef.current.focus(); }, 300);
-    }
-  }, [currentIndex, deck]);
-
   const swipe = async (dir) => {
     if (currentIndex >= 0 && cardRefs[currentIndex]?.current) {
       await cardRefs[currentIndex].current.swipe(dir);
@@ -174,6 +166,23 @@ function App() {
   };
 
   const handleAgeSubmit = () => { if (ageValue) swipe('right'); };
+
+  // RIPRISTINO FRECCE TASTIERA
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (showResult) return;
+      
+      // Permettiamo i tasti se non siamo nell'input dell'età o se l'input non ha il focus
+      const isInputActive = document.activeElement.tagName === 'INPUT';
+      
+      if (e.key === 'ArrowLeft' && !isInputActive) swipe('left');
+      if (e.key === 'ArrowRight' && !isInputActive) swipe('right');
+      if (e.key === 'ArrowUp' && !isInputActive && deck[currentIndex]?.upOption) swipe('up');
+      if (e.key === 'Enter' && isInputActive && deck[currentIndex]?.type === 'demo_age') handleAgeSubmit();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [currentIndex, showResult, deck, ageValue]);
 
   const handleSwipe = (direction, question) => {
     let chosen = direction === 'left' ? question.leftOption : direction === 'right' ? question.rightOption : question.upOption;
@@ -198,9 +207,9 @@ function App() {
   const positiveCats = Object.keys(scores).filter(id => scores[id] >= 10).sort((a, b) => scores[b] - scores[a]);
   const negativeCats = Object.keys(scores).filter(id => scores[id] <= -10).sort((a, b) => scores[a] - scores[b]);
   
-  // FORMULA CORRETTA PERCENTUALE
-  const totalQuestions = deck.length;
-  const currentQNum = totalQuestions - currentIndex;
+  // PERCENTUALE FORZATA NUMERICA
+  const totalQuestions = Number(deck.length);
+  const currentQNum = Number(totalQuestions - currentIndex);
   const progressPercent = Math.round((currentQNum / totalQuestions) * 100);
 
   const currentQuestion = deck[currentIndex];
@@ -221,7 +230,7 @@ function App() {
           <div className="progress-section">
             <div className="progress-text">
               <span>Domanda {currentQNum} di {totalQuestions}</span>
-              <span>{progressPercent}%</span>
+              <span className="percent-label">{progressPercent}%</span>
             </div>
             <div className="progress-bar-container"><div className="progress-fill" style={{ width: `${progressPercent}%` }}></div></div>
           </div>
@@ -230,7 +239,6 @@ function App() {
             {currentQuestion && currentQuestion.type === 'demo_age' && (
               <div className="age-overlay">
                 <input 
-                  ref={ageInputRef}
                   type="number" 
                   inputMode="numeric"
                   pattern="[0-9]*"
