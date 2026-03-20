@@ -72,37 +72,31 @@ const catValidationQuestions = [
 // 2. DATASET: SERIE TV (30 totali)
 // ==========================================
 const tvQuestions = [
-  // PACIOCK
   { id: "T1", type: "tv", title: "Cosa ne pensi di 'The Office'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
   { id: "T2", type: "tv", title: "Cosa ne pensi di 'Friends'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
   { id: "T3", type: "tv", title: "Cosa ne pensi di 'Boris'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
   { id: "T4", type: "tv", title: "Cosa ne pensi di 'Scrubs'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
   { id: "T5", type: "tv", title: "Cosa ne pensi di 'Ted Lasso'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
-  // PEPPA PIG
   { id: "T6", type: "tv", title: "Cosa ne pensi di 'This Is Us'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
   { id: "T7", type: "tv", title: "Cosa ne pensi di 'Normal People'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
   { id: "T8", type: "tv", title: "Cosa ne pensi di 'The Crown'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
   { id: "T9", type: "tv", title: "Cosa ne pensi di 'Scenes from a Marriage'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
   { id: "T10", type: "tv", title: "Cosa ne pensi di 'Mad Men'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
-  // JOEY
   { id: "T11", type: "tv", title: "Cosa ne pensi di 'Game of Thrones'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
   { id: "T12", type: "tv", title: "Cosa ne pensi di 'Lost'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
   { id: "T13", type: "tv", title: "Cosa ne pensi di 'The Boys'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
   { id: "T14", type: "tv", title: "Cosa ne pensi di 'Vikings'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
   { id: "T15", type: "tv", title: "Cosa ne pensi di 'Arcane'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
-  // MISS MARPLE
   { id: "T16", type: "tv", title: "Cosa ne pensi di 'True Detective' (S1)?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
   { id: "T17", type: "tv", title: "Cosa ne pensi di 'Mindhunter'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
   { id: "T18", type: "tv", title: "Cosa ne pensi di 'House of Cards'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
   { id: "T19", type: "tv", title: "Cosa ne pensi di 'Succession'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
   { id: "T20", type: "tv", title: "Cosa ne pensi di 'Fargo'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
-  // HANNIBAL
   { id: "T21", type: "tv", title: "Cosa ne pensi di 'Breaking Bad'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
   { id: "T22", type: "tv", title: "Cosa ne pensi di 'The Sopranos'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
   { id: "T23", type: "tv", title: "Cosa ne pensi di 'Dark'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
   { id: "T24", type: "tv", title: "Cosa ne pensi di 'Black Mirror'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
   { id: "T25", type: "tv", title: "Cosa ne pensi di 'Mr. Robot'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
-  // LULÙ
   { id: "T26", type: "tv", title: "Cosa ne pensi di 'Euphoria'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
   { id: "T27", type: "tv", title: "Cosa ne pensi di 'Elite'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
   { id: "T28", type: "tv", title: "Cosa ne pensi di 'Dawson’s Creek'?", leftOption: "Non mi piace", upOption: "Mai vista", rightOption: "La amo" },
@@ -358,7 +352,7 @@ function App() {
                       </div>
                     )}
                     
-                    <h2 style={{ fontSize: q.type === 'cat' ? '18px' : '22px' }}>{q.title}</h2>
+                    <h2 style={{ fontSize: q.type === 'cat' ? '16px' : '20px', marginBottom: q.type === 'cat' ? '5px' : '0' }}>{q.title}</h2>
                     
                     {isAgeCard ? (
                       <div className="age-input-container">

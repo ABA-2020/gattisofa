@@ -106,14 +106,15 @@ body {
 }
 
 /* =========================================
-   IL MAZZO DI CARTE (Clean e Flat)
+   IL MAZZO DI CARTE (Dimensione fissa e standard)
    ========================================= */
 .card-container {
   position: relative;
   width: 100%;
-  height: 38vh; /* Altezza dinamica che lascia spazio ai bottoni sotto */
-  min-height: 250px;
-  margin-bottom: 30px;
+  height: 45vh; /* Leggermente più alto per far respirare i testi */
+  min-height: 320px; /* IMPEDISCE alle carte di rimpicciolirsi troppo */
+  max-height: 450px; /* Limite massimo per schermi grandi */
+  margin-bottom: 20px;
 }
 
 /* Sovrascrivo le proprietà intrinseche del componente TinderCard */
@@ -128,24 +129,24 @@ body {
   width: 100%;
   height: 100%;
   background: #ffffff;
-  border-radius: 24px; /* Angoli stondati e morbidi */
+  border-radius: 24px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 30px;
+  padding: 20px; /* Ridotto da 30 a 20 per dare più spazio utile al testo */
   box-sizing: border-box;
-  /* Rimuovo le ombre invadenti, metto un'ombra piccolissima per separare dal fondo */
   box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important; 
   color: #1a1a1a;
   text-align: center;
+  overflow: hidden; /* FONDAMENTALE: Taglia via tutto ciò che sborda dalla carta */
 }
 
 .card h2 {
-  font-size: 22px;
+  font-size: 20px; /* Uniformato */
   font-weight: 600;
   margin: 0;
-  line-height: 1.4;
+  line-height: 1.3;
   color: #2b1b3d;
 }
 
@@ -154,6 +155,49 @@ body {
   color: #888;
   margin-top: 20px;
   font-weight: 500;
+}
+
+/* =========================================
+   STILI PER LE CARTE GATTO (Validation)
+   ========================================= */
+.cat-preview-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.cat-circle-img {
+  width: 75px; 
+  height: 75px;
+  border-radius: 50%;
+  /* Contain + padding evita che i bordi SVG sbordino o vengano tagliati */
+  object-fit: contain; 
+  padding: 5px; 
+  border: 3px solid #e2a07c; /* Bordo identico e fisso per tutti */
+  background-color: #fdfaf6;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-sizing: border-box; /* Assicura che il bordo non alteri le dimensioni matematiche */
+  flex-shrink: 0; /* IMPEDISCE all'immagine di schiacciarsi se il testo sotto è lungo */
+}
+
+.cat-full-desc {
+  font-size: 13px; 
+  font-style: italic;
+  color: #555;
+  line-height: 1.3;
+  margin: 0 0 10px 0;
+  padding: 0 5px;
+  text-align: center;
+  
+  /* TRUCCO UX: Se il testo è troppo lungo, lo tronca con i "..." dopo 5 righe,
+     così non romperà MAI la carta, anche sugli schermi più piccoli! */
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;  
+  overflow: hidden;
 }
 
 /* =========================================
