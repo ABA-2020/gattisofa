@@ -69,7 +69,7 @@ body {
 }
 
 /* =========================================
-   BARRA DI PROGRESSO (Viola brillante)
+   BARRA DI PROGRESSO
    ========================================= */
 .progress-section {
   margin-bottom: 30px;
@@ -103,13 +103,13 @@ body {
   border-radius: 6px;
   transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
 /* =========================================
-   IL MAZZO DI CARTE (Dimensione fissa e standard)
+   IL MAZZO DI CARTE (Dimensione fissa)
    ========================================= */
 .card-container {
   position: relative;
   width: 100%;
-  /* L'altezza e la larghezza del contenitore dettano le regole per tutte le carte */
   height: 420px; 
   margin-bottom: 20px;
 }
@@ -118,7 +118,6 @@ body {
   position: absolute;
   width: 100%;
   height: 100%;
-  /* Aggiungendo left e top forziamo l'elemento a occupare esattamente tutto lo spazio */
   left: 0;
   top: 0;
 }
@@ -137,7 +136,6 @@ body {
   align-items: center;
   padding: 20px; 
   box-sizing: border-box;
-  /* L'ombra morbida che abbiamo ripristinato prima */
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25) !important; 
   color: #1a1a1a;
   text-align: center;
@@ -247,7 +245,7 @@ body {
 }
 
 /* =========================================
-   SCHERMATA RISULTATI (Visuale Finale)
+   SCHERMATA RISULTATI (Visuale Finale Pulita)
    ========================================= */
 .result-container {
   padding-bottom: 40px;
@@ -267,27 +265,29 @@ body {
 
 .cat-result-box {
   background: #fdfaf6; 
-  border-radius: 24px;
-  padding: 30px 20px;
-  margin-bottom: 20px;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 12px;
   color: #1a1a1a;
   text-align: center;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
-.cat-result-box h4 {
-  font-size: 24px;
-  font-weight: 700;
-  color: #2b1b3d;
-  margin: 0 0 15px 0;
+.section-title {
+  font-size: 18px;
+  color: white;
+  text-align: center;
+  margin: 25px 0 15px 0;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
-.cat-image-small {
-  width: 120px;
-  height: 120px;
-  object-fit: contain;
-  margin: 0 auto 15px auto;
-  display: block;
+.positive-box {
+  border-left: 6px solid #28a745;
+}
+
+.negative-box {
+  background-color: #fff5f5;
+  border-left: 6px solid #dc3545;
 }
 
 /* =========================================

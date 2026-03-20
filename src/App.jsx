@@ -187,36 +187,35 @@ function App() {
 
   useEffect(() => {
     if (showResult) sendDataToGoogle();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showResult]);
 
-const sendDataToGoogle = async () => {
+  const sendDataToGoogle = async () => {
     setIsSending(true);
     const topCatId = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
 
     // 1. CREIAMO LO SCHELETRO DELL'ORDINE PERFETTO (75 Domande)
     const orderedIds = [
-      "D1", "D2", // Sesso ed Età
-      ...Array.from({length: 6}, (_, i) => `C${i+1}`),  // Gatti C1-C6
-      ...Array.from({length: 30}, (_, i) => `T${i+1}`), // TV T1-T30
-      ...Array.from({length: 37}, (_, i) => `P${i+1}`)  // Psicologiche P1-P37
+      "D1", "D2", 
+      ...Array.from({length: 6}, (_, i) => `C${i+1}`), 
+      ...Array.from({length: 30}, (_, i) => `T${i+1}`), 
+      ...Array.from({length: 37}, (_, i) => `P${i+1}`)  
     ];
 
-    // 2. ESTRAIAMO LE RISPOSTE E LE INCASELLIAMO NELL'ORDINE CORRETTO
+    // 2. ESTRAIAMO LE RISPOSTE NELL'ORDINE CORRETTO
     const risposteOrdinate = orderedIds.map(id => {
       const found = responses.find(r => r.id === id);
-      // Salva la stringa completa: "[Titolo] -> Risposta"
       return found ? found.risposta : `[Nessuna risposta per ${id}] -> Vuoto`;
     });
 
     const dataToSend = {
       punteggi_raw: scores,
       gatto_vincitore: catProfiles[topCatId].name,
-      tutte_le_risposte: risposteOrdinate // Ora è un array di 75 stringhe ordinate!
+      tutte_le_risposte: risposteOrdinate 
     };
 
     try {
-      // HO LASCIATO IL TUO LINK ORIGINALE, COSÌ FUNZIONA SUBITO!
-      const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzbxnZX56YkfBmbZH_33KiB9dI0MkblC5LfVfpszznE2DohFptkNTzF2taMFwIg3V1X/exec";
+      const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxjyygOfGka_MczHbUUjJBHNnDWygKaOOTnarb5Y5wtXUCeaTLW83sqUgh_aUt9593S/exec";
       await fetch(GOOGLE_SCRIPT_URL, {
         method: "POST",
         headers: { "Content-Type": "text/plain;charset=utf-8" },
@@ -301,9 +300,14 @@ const sendDataToGoogle = async () => {
     else setCurrentIndex(prev => prev - 1);
   };
 
-  const filteredCatIds = Object.keys(scores)
+  // --- SEPARIAMO I GATTI POSITIVI E QUELLI NEGATIVI ---
+  const positiveCats = Object.keys(scores)
     .filter(id => scores[id] >= 10)
-    .sort((a, b) => scores[b] - scores[a]);
+    .sort((a, b) => scores[b] - scores[a]); 
+
+  const negativeCats = Object.keys(scores)
+    .filter(id => scores[id] <= -10)
+    .sort((a, b) => scores[a] - scores[b]); 
 
   const totalQuestions = deck.length;
   const currentQNum = totalQuestions - currentIndex;
@@ -315,22 +319,39 @@ const sendDataToGoogle = async () => {
         <div className="result-container scrollable-results">
           <div className="sticky-banner">🛡️ Analisi Completata 🛡️</div>
           <div className="results-list">
-            {filteredCatIds.length > 0 ? (
-              filteredCatIds.map(id => (
-                <div key={id} className="cat-result-box">
-                  <h4>{catProfiles[id].name}</h4>
-                  <img src={catProfiles[id].image} alt={catProfiles[id].name} className="cat-image-small" />
-                  <p style={{fontSize: '14px', textAlign: 'left', marginTop: '15px'}}>
-                    <strong>Personalità:</strong> {catProfiles[id].profile}
-                  </p>
-                  <p style={{fontSize: '14px', textAlign: 'left', color: '#834d6c', marginTop: '10px'}}>
-                    <strong>📺 Serie Consigliate:</strong><br/>{catProfiles[id].genre}
-                  </p>
-                </div>
-              ))
+            {positiveCats.length > 0 || negativeCats.length > 0 ? (
+              <>
+                {/* --- SEZIONE POSITIVA (SERIE CONSIGLIATE) --- */}
+                {positiveCats.length > 0 && (
+                  <div className="results-section">
+                    <h3 className="section-title">✅ Serie e Generi Consigliati</h3>
+                    {positiveCats.map(id => (
+                      <div key={id} className="cat-result-box positive-box">
+                        <p style={{fontSize: '18px', textAlign: 'center', color: '#28a745', margin: '0', fontWeight: 'bold'}}>
+                          {catProfiles[id].genre}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* --- SEZIONE NEGATIVA (SERIE SCONSIGLIATE) --- */}
+                {negativeCats.length > 0 && (
+                  <div className="results-section">
+                    <h3 className="section-title">❌ Serie e Generi da Evitare</h3>
+                    {negativeCats.map(id => (
+                      <div key={id} className="cat-result-box negative-box">
+                        <p style={{fontSize: '18px', textAlign: 'center', color: '#dc3545', margin: '0', fontWeight: 'bold'}}>
+                          {catProfiles[id].genre}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </>
             ) : (
               <div className="cat-result-box">
-                <p>Nessun profilo dominante! Sei perfettamente bilanciato tra tutte le personalità feline.</p>
+                <p>Sei perfettamente bilanciato! Non ci sono limitazioni: puoi guardare qualsiasi genere senza problemi!</p>
               </div>
             )}
           </div>
@@ -364,10 +385,10 @@ const sendDataToGoogle = async () => {
                   onSwipe={(dir) => handleSwipe(dir, q)}
                 >
                   <div className="card">
+                    {/* MOSTRIAMO LA DESCRIZIONE POSITIVA DEL GATTO DURANTE LO SWIPE */}
                     {q.type === 'cat' && (
                       <div className="cat-preview-container">
                         <img src={catProfiles[q.catId].image} alt="Cat" className="cat-circle-img" />
-                        {/* Aggiunto il nome del gatto come titoletto per chiarezza */}
                         <strong style={{color: '#834d6c', marginBottom: '5px', fontSize: '14px'}}>{catProfiles[q.catId].name}</strong>
                         <p className="cat-full-desc">"{catProfiles[q.catId].profile}"</p>
                       </div>
