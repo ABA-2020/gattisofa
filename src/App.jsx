@@ -240,15 +240,6 @@ function App() {
     }
   };
 
-  // Funzione per il click sui bottoni inferiori
-  const swipe = async (dir) => {
-    if (currentIndex >= 0 && currentIndex < deck.length) {
-      if (cardRefs[currentIndex] && cardRefs[currentIndex].current) {
-        await cardRefs[currentIndex].current.swipe(dir);
-      }
-    }
-  };
-
   // --- LISTENER PER LE FRECCETTE DELLA TASTIERA ---
   useEffect(() => {
     const handleKeyDown = (event) => {
