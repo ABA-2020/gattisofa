@@ -11,30 +11,35 @@ import HannibalImg from './assets/gatti/Hannibal.svg';
 const catProfiles = {
   1: {
     name: "Paciock",
+    subtitle: "Il gatto del relax",
     image: PaciockImg,
     profile: "Una personalità riflessiva e pacata. Ami la stabilità e trovi il tuo equilibrio nella dolcezza dei piccoli gesti quotidiani. Sei una presenza rassicurante, capace di offrire grande tolleranza e un affetto costante a chi ti circonda.",
     tv: "Schitt's Creek, Boris, Camera Café, Derry Girls, 30 Rock, The Good Place."
   },
   2: {
     name: "Peppa Pig",
+    subtitle: "Il gatto empatico",
     image: PeppaPigImg,
     profile: "Sei una persona empatica e comunicativa, che vive di relazioni profonde e autentiche. Ami condividere i tuoi pensieri e le tue emozioni, cercando sempre una sintonia speciale con gli altri attraverso il gioco e il dialogo continuo.",
-    tv: "L’Amica Geniale, Downton Abbey, Un medico in famiglia, La meglio gioventù, Babylon Berlin."
+    tv: "L'Amica Geniale, Downton Abbey, Un medico in famiglia, La meglio gioventù, Babylon Berlin."
   },
   3: {
     name: "Joey",
+    subtitle: "Il gatto sociale",
     image: JoeyImg,
     profile: "Dotato di una socialità innata e di una grande lealtà. Sei una personalità brillante, aperta alle novità e capace di adattarsi con intelligenza a ogni contesto. La tua energia è contagiosa e la tua natura è limpida come l'acqua che tanto ami.",
     tv: "Heartstopper, Sex Education, Normal People, SKAM Italia, Friday Night Lights."
   },
   4: {
     name: "Miss Marple",
+    subtitle: "Il gatto investigativo",
     image: MissMarpleImg,
-    profile: "Una mente brillante e dinamica, sempre alla ricerca di nuovi stimoli. La tua curiosità ti spinge a osservare il mondo con occhio critico e investigativo. Sei un’anima attiva e propositiva, che usa l’intelletto per navigare la realtà con gentilezza.",
+    profile: "Una mente brillante e dinamica, sempre alla ricerca di nuovi stimoli. La tua curiosità ti spinge a osservare il mondo con occhio critico e investigativo. Sei un'anima attiva e propositiva, che usa l'intelletto per navigare la realtà con gentilezza.",
     tv: "Il Commissario Montalbano, Don Matteo, Sherlock, Distretto di Polizia, Borgen, House of Cards."
   },
   5: {
     name: "Hannibal",
+    subtitle: "Il gatto oscuro",
     image: HannibalImg,
     profile: "Una personalità anticonformista e audace, che trova bellezza negli aspetti più insoliti e profondi della vita. Ami tutto ciò che è fuori dagli schemi e non temi di esplorare atmosfere intense e misteriose. Sei uno spirito libero che sfida le convenzioni con originalità.",
     tv: "Hannibal, Dark, American Horror Story, Fargo, Gomorra – La serie."
@@ -81,7 +86,6 @@ const questions = [
   { id: 37, title: "Preferisci...", leftOption: "Pretty Woman", leftProfiles: [1, 3], rightOption: "C'era una volta in America", rightProfiles: [2, 4, 5] }
 ];
 
-// --- FUNZIONE PER MISCHIARE L'ARRAY (Fisher-Yates Shuffle) ---
 const shuffleArray = (array) => {
   let shuffled = [...array];
   for (let i = shuffled.length - 1; i > 0; i--) {
@@ -92,31 +96,40 @@ const shuffleArray = (array) => {
 };
 
 function App() {
-  // Inizializziamo lo stato delle domande già mischiato
   const [currentQuestions, setCurrentQuestions] = useState(() => shuffleArray(questions));
-  
   const [scores, setScores] = useState({ 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 });
-  const [userAnswers, setUserAnswers] = useState([]); 
+  const [userAnswers, setUserAnswers] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(currentQuestions.length - 1);
   const [showResult, setShowResult] = useState(false);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth > 768);
 
   const [formData, setFormData] = useState({
-    gender: '',
-    age: '',
-    catMatch: '',
-    tvMatch: '',
-    feedback: '',
-    privacyAccepted: false
+    gender: '', age: '', catMatch: '', tvMatch: '', feedback: '', privacyAccepted: false
   });
   const [formSubmitted, setFormSubmitted] = useState(false);
-  const [isSending, setIsSending] = useState(false); 
+  const [isSending, setIsSending] = useState(false);
 
   useEffect(() => {
     const handleResize = () => setIsDesktop(window.innerWidth > 768);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  // --- LOG IN CONSOLE DEI PUNTEGGI FINALI ---
+  useEffect(() => {
+    if (showResult) {
+      console.log("=== PUNTEGGI FINALI ===");
+      console.table(
+        Object.entries(scores).map(([id, score]) => ({
+          ID: id,
+          Gatto: catProfiles[id].name,
+          Punteggio: score,
+          Stato: score >= 10 ? "✅ CONSIGLIATO" : score <= -10 ? "❌ DA EVITARE" : "⚪ NEUTRO"
+        }))
+      );
+      console.log("Soglia attiva: ≥ +10 consigliato | ≤ -10 da evitare");
+    }
+  }, [showResult, scores]);
 
   const cardRefs = useMemo(
     () => Array(currentQuestions.length).fill(0).map(() => React.createRef()),
@@ -129,9 +142,7 @@ function App() {
     }
   };
 
-  const calculatePoints = (profiles) => {
-    return 4 - profiles.length; 
-  };
+  const calculatePoints = (profiles) => 4 - profiles.length;
 
   const handleSwipe = (direction, question) => {
     let chosenProfiles = [];
@@ -147,10 +158,9 @@ function App() {
       rejectedProfiles = question.leftProfiles;
       chosenText = question.rightOption;
     } else {
-      return; 
+      return;
     }
 
-    // Salviamo l'ID insieme al testo della risposta per poter riordinare tutto alla fine
     setUserAnswers(prev => [...prev, {
       id: question.id,
       domanda: question.title,
@@ -175,12 +185,10 @@ function App() {
   };
 
   const resetTest = () => {
-    // Rimescoliamo le domande al riavvio
     const newShuffled = shuffleArray(questions);
     setCurrentQuestions(newShuffled);
-    
     setScores({ 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 });
-    setUserAnswers([]); 
+    setUserAnswers([]);
     setCurrentIndex(newShuffled.length - 1);
     setShowResult(false);
     setFormData({ gender: '', age: '', catMatch: '', tvMatch: '', feedback: '', privacyAccepted: false });
@@ -189,24 +197,16 @@ function App() {
 
   const handleFormChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData(prev => ({ 
-      ...prev, 
-      [name]: type === 'checkbox' ? checked : value 
-    }));
+    setFormData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
   };
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     setIsSending(true);
 
-    // 1. Riordiniamo le risposte per ID e UNIAMO il titolo alla risposta scelta
     const sortedAnswers = [...userAnswers]
       .sort((a, b) => a.id - b.id)
-      .map(item => ({
-        ...item,
-        // Questo concatena tutto in una stringa perfetta per l'AI
-        scelta: `[${item.domanda}] -> ${item.scelta}` 
-      }));
+      .map(item => ({ ...item, scelta: `[${item.domanda}] -> ${item.scelta}` }));
 
     const dataToSend = {
       ...formData,
@@ -221,29 +221,21 @@ function App() {
     };
 
     console.log("=== INIZIO INVIO DATI A GOOGLE ===");
-    console.log("Pacchetto dati (Ordinato e formattato):", dataToSend);
+    console.log("Pacchetto dati:", dataToSend);
 
     try {
       const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzVfL9_W03IJDP9s3rIOcQvvf2W80pGdqXqYvvOukq3M8EBJBU2LIL5YXTTuwFdeir0/exec";
-
-      // 2. Il fetch aggiornato con l'header text/plain per sicurezza CORS
       const response = await fetch(GOOGLE_SCRIPT_URL, {
         method: "POST",
-        headers: {
-          "Content-Type": "text/plain;charset=utf-8", 
-        },
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
         body: JSON.stringify(dataToSend)
       });
-      
-      const resultText = await response.text();
-
       if (response.ok) {
         setFormSubmitted(true);
-        console.log("Dati salvati con successo sul Foglio Google!");
+        console.log("Dati salvati con successo!");
       } else {
         alert("Errore dal server Google: " + response.status);
       }
-
     } catch (error) {
       alert("La richiesta è stata bloccata. Controlla la console.");
       console.error("ERRORE DI RETE/CORS:", error);
@@ -252,51 +244,128 @@ function App() {
     }
   };
 
-  const filteredCatIds = Object.keys(scores)
-    .filter(catId => scores[catId] <= -10 || scores[catId] >= 10)
-    .sort((a, b) => scores[b] - scores[a]);
+  // --- LOGICA FILTRO PROFILI ---
+  const sortedCatIds = Object.keys(scores).sort((a, b) => scores[b] - scores[a]);
+
+  const filteredCatIds = (() => {
+    const aboveThreshold = sortedCatIds.filter(catId => scores[catId] >= 10);
+    const belowThreshold = sortedCatIds.filter(catId => scores[catId] <= -10);
+    const positives = aboveThreshold.length > 0 ? aboveThreshold : [sortedCatIds[0]];
+    const negatives = belowThreshold.length > 0 ? belowThreshold : [sortedCatIds[sortedCatIds.length - 1]];
+    return [...new Set([...positives, ...negatives])];
+  })();
+
+  // Progresso (0–100)
+  const answeredCount = currentQuestions.length - 1 - currentIndex;
+  const progress = Math.round((answeredCount / (currentQuestions.length - 1)) * 100);
 
   return (
     <div className="app-container">
-      <h1>Scopri la tua gatto+ list</h1>
+      <h1>Scopri il tuo gatto</h1>
 
+      {/* ── QUIZ ── */}
+      {!showResult && (
+        <>
+          {/* Progress info */}
+          <p className="counter">
+            <span>Domanda {answeredCount + 1} di {currentQuestions.length}</span>
+            <span>{progress}%</span>
+          </p>
+
+          {/* Progress bar */}
+          <div style={{
+            width: '90vw',
+            maxWidth: '480px',
+            height: '6px',
+            background: 'rgba(255,255,255,0.15)',
+            borderRadius: '999px',
+            marginBottom: '16px',
+            overflow: 'hidden'
+          }}>
+            <div style={{
+              height: '100%',
+              width: `${Math.max(progress, 3)}%`,
+              background: 'linear-gradient(90deg, #a855f7, #f59e0b)',
+              borderRadius: '999px',
+              transition: 'width 0.4s ease'
+            }} />
+          </div>
+
+          {/* Card stack */}
+          <div className="card-container">
+            {currentQuestions.map((q, index) => (
+              <TinderCard
+                key={q.id}
+                ref={cardRefs[index]}
+                className="swipe"
+                preventSwipe={isDesktop ? ['up', 'down', 'left', 'right'] : ['up', 'down']}
+                onSwipe={(dir) => handleSwipe(dir, q)}
+              >
+                <div className="card">
+                  <h2>{q.title}</h2>
+                  <p className="hint">
+                    {isDesktop ? 'Clicca su un\'opzione' : 'Trascina la carta o usa i pulsanti'}
+                  </p>
+                </div>
+              </TinderCard>
+            ))}
+          </div>
+
+          {/* Answer buttons — rendered only for the active card */}
+          {currentQuestions.map((q, index) =>
+            index === currentIndex ? (
+              <div key={q.id} className="options">
+                <div
+                  className="left-option"
+                  onClick={() => handleButtonClick('left', index)}
+                >
+                  <span>←</span>
+                  <p>{q.leftOption}</p>
+                </div>
+                <div
+                  className="right-option"
+                  onClick={() => handleButtonClick('right', index)}
+                >
+                  <span>→</span>
+                  <p>{q.rightOption}</p>
+                </div>
+              </div>
+            ) : null
+          )}
+        </>
+      )}
+
+      {/* ── RESULTS ── */}
       {showResult && (
         <div className="result-container scrollable-results">
-          
-          <div style={{
-            backgroundColor: '#fff3cd',
-            color: '#856404',
-            padding: '12px',
-            borderRadius: '8px',
-            marginBottom: '20px',
-            textAlign: 'center',
-            fontWeight: 'bold',
-            border: '1px solid #ffeeba',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-          }}>
-            ⬇️ Scorri fino in fondo per vedere tutti i risultati e lasciarci il tuo feedback! ⬇️
+
+          <div className="scroll-notice">
+            ⬇️ Scorri fino in fondo per vedere tutti i risultati e lasciarci il tuo feedback!
           </div>
 
           {filteredCatIds.length > 0 ? (
             filteredCatIds.map(catId => {
               const cat = catProfiles[catId];
               const score = scores[catId];
+              const isPositive = score >= 10;
               return (
-                <div key={catId} className="cat-result-box" style={{ textAlign: 'center' }}>
+                <div
+                  key={catId}
+                  className={`cat-result-box ${isPositive ? 'positive-card' : 'negative-card'}`}
+                >
                   <img src={cat.image} alt={cat.name} className="cat-image" />
                   <h3>{cat.name}</h3>
-                  
-                  <p style={{ fontSize: '14px', fontStyle: 'italic', marginBottom: '15px' }}>
+                  <p className="cat-subtitle">{cat.subtitle}</p>
+                  <p style={{ fontSize: '14px', fontStyle: 'italic', marginBottom: '14px' }}>
                     <strong>Personalità:</strong> {cat.profile}
                   </p>
-                  
-                  {score >= 10 ? (
+                  {isPositive ? (
                     <p className="recommendation positive">
-                      <strong>✅ Serie Consigliate:</strong><br /> {cat.tv}
+                      <strong>✅ Serie Consigliate:</strong><br />{cat.tv}
                     </p>
                   ) : (
                     <p className="recommendation negative">
-                      <strong>❌ Da EVITARE:</strong><br /> {cat.tv}
+                      <strong>❌ Da EVITARE:</strong><br />{cat.tv}
                     </p>
                   )}
                 </div>
@@ -304,19 +373,18 @@ function App() {
             })
           ) : (
             <p className="recommendation neutral">
-              Wow! I tuoi gusti sono perfettamente bilanciati. Non hai una preferenza estrema per nessun genere in particolare!
+              Wow! I tuoi gusti sono perfettamente bilanciati. Non hai una preferenza estrema per nessun genere!
             </p>
           )}
-          
+
           <hr />
 
           <div className="feedback-section">
             <h3>Cosa ne pensi?</h3>
             <p>Aiutaci a migliorare l'algoritmo lasciando un feedback!</p>
-            
+
             {!formSubmitted ? (
               <form onSubmit={handleFormSubmit} className="feedback-form">
-                
                 <div className="form-group">
                   <label>Sesso:</label>
                   <select name="gender" value={formData.gender} onChange={handleFormChange} required>
@@ -355,13 +423,13 @@ function App() {
 
                 <div className="form-group">
                   <label>Lascia un commento (obbligatorio):</label>
-                  <textarea 
-                    name="feedback" 
-                    value={formData.feedback} 
-                    onChange={handleFormChange} 
-                    maxLength="300" 
-                    rows="3" 
-                    required 
+                  <textarea
+                    name="feedback"
+                    value={formData.feedback}
+                    onChange={handleFormChange}
+                    maxLength="300"
+                    rows="3"
+                    required
                     placeholder="Scrivi qui i tuoi pensieri..."
                   />
                   <small className="char-count">{formData.feedback.length} / 300 caratteri</small>
@@ -369,12 +437,12 @@ function App() {
 
                 <div className="form-group privacy-group">
                   <label style={{ display: 'flex', alignItems: 'flex-start', fontWeight: 'normal', fontSize: '12px', cursor: 'pointer' }}>
-                    <input 
-                      type="checkbox" 
-                      name="privacyAccepted" 
-                      checked={formData.privacyAccepted} 
-                      onChange={handleFormChange} 
-                      required 
+                    <input
+                      type="checkbox"
+                      name="privacyAccepted"
+                      checked={formData.privacyAccepted}
+                      onChange={handleFormChange}
+                      required
                       style={{ marginRight: '10px', marginTop: '3px' }}
                     />
                     <span>
@@ -396,43 +464,6 @@ function App() {
           </div>
 
           <button onClick={resetTest} className="restart-btn">Rifai il test</button>
-        </div>
-      )}
-
-      {!showResult && (
-        <div className="card-container">
-          <p className="counter">Domanda {currentQuestions.length - currentIndex} di {currentQuestions.length}</p>
-          {currentQuestions.map((q, index) => (
-            <TinderCard
-              key={q.id}
-              ref={cardRefs[index]}
-              className="swipe"
-              preventSwipe={isDesktop ? ['up', 'down', 'left', 'right'] : ['up', 'down']} 
-              onSwipe={(dir) => handleSwipe(dir, q)}
-            >
-              <div className="card">
-                <h2>{q.title}</h2>
-                <div className="options">
-                  <div 
-                    className="left-option"
-                    onClick={() => isDesktop && index === currentIndex && handleButtonClick('left', index)}
-                    style={{ cursor: isDesktop ? 'pointer' : 'default' }}
-                  >
-                    <span>⬅️ {isDesktop ? 'Clicca qui' : 'Swipe Sinistra'}</span>
-                    <p>{q.leftOption}</p>
-                  </div>
-                  <div 
-                    className="right-option"
-                    onClick={() => isDesktop && index === currentIndex && handleButtonClick('right', index)}
-                    style={{ cursor: isDesktop ? 'pointer' : 'default' }}
-                  >
-                    <span>{isDesktop ? 'Clicca qui' : 'Swipe Destra'} ➡️</span>
-                    <p>{q.rightOption}</p>
-                  </div>
-                </div>
-              </div>
-            </TinderCard>
-          ))}
         </div>
       )}
     </div>
