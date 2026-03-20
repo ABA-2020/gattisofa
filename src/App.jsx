@@ -7,7 +7,7 @@ import PeppaPigImg from './assets/gatti/Peppa_pig.svg';
 import JoeyImg from './assets/gatti/Joey.svg';
 import MissMarpleImg from './assets/gatti/Miss_Marple.svg';
 import HannibalImg from './assets/gatti/Hannibal.svg';
-import LuluImg from './assets/gatti/Lulu.svg'; 
+import LuluImg from './assets/gatti/lulu.svg'; 
 // Se hai l'immagine di copertina (quella con la scritta SERIE TV LIBRI POP), importala qui:
 // import CoverImg from './assets/cover.jpeg'; 
 
