@@ -138,6 +138,7 @@ function App() {
   const [isSending, setIsSending] = useState(false);
   const [ageValue, setAgeValue] = useState('');
 
+  const ageInputRef = useRef(null);
   const cardRefs = useMemo(() => Array(deck.length).fill(0).map(() => React.createRef()), [deck]);
 
   const sendDataToGoogle = async () => {
@@ -159,17 +160,20 @@ function App() {
     if (showResult) sendDataToGoogle();
   }, [showResult]);
 
+  useEffect(() => {
+    const q = deck[currentIndex];
+    if (q && q.type === 'demo_age') {
+      setTimeout(() => { if (ageInputRef.current) ageInputRef.current.focus(); }, 300);
+    }
+  }, [currentIndex, deck]);
+
   const swipe = async (dir) => {
     if (currentIndex >= 0 && cardRefs[currentIndex]?.current) {
       await cardRefs[currentIndex].current.swipe(dir);
     }
   };
 
-  const handleAgeSubmit = () => {
-    if (ageValue && ageValue.trim() !== "") {
-      swipe('right');
-    }
-  };
+  const handleAgeSubmit = () => { if (ageValue) swipe('right'); };
 
   const handleSwipe = (direction, question) => {
     let chosen = direction === 'left' ? question.leftOption : direction === 'right' ? question.rightOption : question.upOption;
@@ -193,7 +197,11 @@ function App() {
 
   const positiveCats = Object.keys(scores).filter(id => scores[id] >= 10).sort((a, b) => scores[b] - scores[a]);
   const negativeCats = Object.keys(scores).filter(id => scores[id] <= -10).sort((a, b) => scores[a] - scores[b]);
-  const progressPercent = Math.round(((deck.length - currentIndex) / deck.length) * 100);
+  
+  // FORMULA CORRETTA PERCENTUALE
+  const totalQuestions = deck.length;
+  const currentQNum = totalQuestions - currentIndex;
+  const progressPercent = Math.round((currentQNum / totalQuestions) * 100);
 
   const currentQuestion = deck[currentIndex];
 
@@ -212,38 +220,31 @@ function App() {
         <div className="test-interface">
           <div className="progress-section">
             <div className="progress-text">
-              <span>Domanda {deck.length - currentIndex} di {deck.length}</span>
+              <span>Domanda {currentQNum} di {totalQuestions}</span>
               <span>{progressPercent}%</span>
             </div>
             <div className="progress-bar-container"><div className="progress-fill" style={{ width: `${progressPercent}%` }}></div></div>
           </div>
 
           <div className="card-container">
-            {/* INPUT ETÀ FISSO (APPARS SOLO QUANDO SERVE) */}
             {currentQuestion && currentQuestion.type === 'demo_age' && (
               <div className="age-overlay">
                 <input 
+                  ref={ageInputRef}
                   type="number" 
                   inputMode="numeric"
                   pattern="[0-9]*"
                   className="age-input-fixed"
-                  placeholder="Inserisci la tua età"
+                  placeholder="Scrivi qui..." 
                   value={ageValue}
                   onChange={(e) => setAgeValue(e.target.value)}
-                  autoFocus
                 />
                 <button className="age-submit-btn-fixed" onClick={handleAgeSubmit} disabled={!ageValue}>Avanti</button>
               </div>
             )}
 
             {deck.map((q, index) => (
-              <TinderCard 
-                key={q.id + index} 
-                ref={cardRefs[index]} 
-                className="swipe" 
-                preventSwipe={q.type === 'demo_age' ? ['up','down','left','right'] : ['down', ...(q.upOption ? [] : ['up'])]} 
-                onSwipe={(dir) => handleSwipe(dir, q)}
-              >
+              <TinderCard key={q.id + index} ref={cardRefs[index]} className="swipe" preventSwipe={q.type === 'demo_age' ? ['up','down','left','right'] : ['down', ...(q.upOption ? [] : ['up'])]} onSwipe={(dir) => handleSwipe(dir, q)}>
                 <div className="card">
                   {q.type === 'cat' && <div className="cat-preview-container"><img src={catProfiles[q.catId].image} alt="Cat" className="cat-circle-img" /><strong>{catProfiles[q.catId].name}</strong><p className="cat-full-desc">"{catProfiles[q.catId].profile}"</p></div>}
                   <h2 style={{ fontSize: q.type === 'cat' ? '18px' : '22px' }}>{q.title}</h2>
