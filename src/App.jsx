@@ -198,7 +198,7 @@ function App() {
       tutte_le_risposte: responses
     };
     try {
-      const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzVfL9_W03IJDP9s3rIOcQvvf2W80pGdqXqYvvOukq3M8EBJBU2LIL5YXTTuwFdeir0/exec";
+      const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxjyygOfGka_MczHbUUjJBHNnDWygKaOOTnarb5Y5wtXUCeaTLW83sqUgh_aUt9593S/exec";
       await fetch(GOOGLE_SCRIPT_URL, {
         method: "POST",
         headers: { "Content-Type": "text/plain;charset=utf-8" },
