@@ -9,7 +9,7 @@ import MissMarpleImg from './assets/gatti/Miss_Marple.svg';
 import HannibalImg from './assets/gatti/Hannibal.svg';
 import LuluImg from './assets/gatti/lulu.svg'; 
 // Se hai l'immagine di copertina (quella con la scritta SERIE TV LIBRI POP), importala qui:
-// import CoverImg from './assets/cover.jpeg'; 
+import CoverImg from './assets/banner.jpeg'; 
 
 const catProfiles = {
   1: { name: "Paciock", image: PaciockImg, profile: "Il pigro: calmo, abitudinario, rilassato. Ama il comfort.", genre: "Comedy / Sitcom" },
@@ -240,6 +240,48 @@ function App() {
     }
   };
 
+  // Funzione per il click sui bottoni inferiori
+  const swipe = async (dir) => {
+    if (currentIndex >= 0 && currentIndex < deck.length) {
+      if (cardRefs[currentIndex] && cardRefs[currentIndex].current) {
+        await cardRefs[currentIndex].current.swipe(dir);
+      }
+    }
+  };
+
+  // --- LISTENER PER LE FRECCETTE DELLA TASTIERA ---
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      // Se siamo alla schermata finale, disabilita i tasti
+      if (showResult) return;
+
+      switch (event.key) {
+        case 'ArrowLeft':
+          swipe('left');
+          break;
+        case 'ArrowRight':
+          swipe('right');
+          break;
+        case 'ArrowUp':
+          // Controlliamo che la carta corrente abbia l'opzione "Up"
+          if (deck[currentIndex] && deck[currentIndex].upOption) {
+            swipe('up');
+          }
+          break;
+        default:
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    // Funzione di pulizia: rimuove il listener quando il componente si aggiorna
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [currentIndex, showResult, deck]);
+
+  // Risultati mostrati: Tutti i gatti sopra i 10 punti
   const filteredCatIds = Object.keys(scores)
     .filter(id => scores[id] >= 10)
     .sort((a, b) => scores[b] - scores[a]);
@@ -291,11 +333,11 @@ function App() {
           <div className="app-header">
             {/* Sostituisci il src con {CoverImg} se hai importato l'immagine */}
             <img src="https://via.placeholder.com/500x150/49284d/ffffff?text=SERIE+TV+LIBRI+POP" alt="Hero" className="hero-img" />
-            <h1>Scopri il tuo gatto</h1>
-            <p>Un test rapido per capire quale gatto sul sofà ti rappresenta davvero.</p>
+            <h1>Quiz</h1>
+            <p></p>
             <div className="tags">
-              <span className="tag">64 domande</span>
-              <span className="tag">~3 minuti</span>
+              <span className="tag">75 domande</span>
+              <span className="tag">~5 minuti</span>
             </div>
           </div>
 
