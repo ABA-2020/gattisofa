@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import TinderCard from 'react-tinder-card';
-import './App.css'; 
+import './App.css';
+
+import BannerImg from './assets/banner.jpg'; // ← copia unnamed.jpg in src/assets/ con nome banner.jpg
 
 import PaciockImg from './assets/gatti/Paciock.svg';
 import PeppaPigImg from './assets/gatti/Peppa_pig.svg';
@@ -115,7 +117,6 @@ function App() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // --- LOG IN CONSOLE DEI PUNTEGGI FINALI ---
   useEffect(() => {
     if (showResult) {
       console.log("=== PUNTEGGI FINALI ===");
@@ -127,7 +128,6 @@ function App() {
           Stato: score >= 10 ? "✅ CONSIGLIATO" : score <= -10 ? "❌ DA EVITARE" : "⚪ NEUTRO"
         }))
       );
-      console.log("Soglia attiva: ≥ +10 consigliato | ≤ -10 da evitare");
     }
   }, [showResult, scores]);
 
@@ -145,10 +145,7 @@ function App() {
   const calculatePoints = (profiles) => 4 - profiles.length;
 
   const handleSwipe = (direction, question) => {
-    let chosenProfiles = [];
-    let rejectedProfiles = [];
-    let chosenText = '';
-
+    let chosenProfiles = [], rejectedProfiles = [], chosenText = '';
     if (direction === 'left') {
       chosenProfiles = question.leftProfiles;
       rejectedProfiles = question.rightProfiles;
@@ -157,15 +154,9 @@ function App() {
       chosenProfiles = question.rightProfiles;
       rejectedProfiles = question.leftProfiles;
       chosenText = question.rightOption;
-    } else {
-      return;
-    }
+    } else return;
 
-    setUserAnswers(prev => [...prev, {
-      id: question.id,
-      domanda: question.title,
-      scelta: chosenText
-    }]);
+    setUserAnswers(prev => [...prev, { id: question.id, domanda: question.title, scelta: chosenText }]);
 
     const pointsToAdd = calculatePoints(chosenProfiles);
     const pointsToSubtract = calculatePoints(rejectedProfiles);
@@ -177,11 +168,8 @@ function App() {
       return newScores;
     });
 
-    if (currentIndex === 0) {
-      setShowResult(true);
-    } else {
-      setCurrentIndex(prev => prev - 1);
-    }
+    if (currentIndex === 0) setShowResult(true);
+    else setCurrentIndex(prev => prev - 1);
   };
 
   const resetTest = () => {
@@ -203,26 +191,14 @@ function App() {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     setIsSending(true);
-
     const sortedAnswers = [...userAnswers]
       .sort((a, b) => a.id - b.id)
       .map(item => ({ ...item, scelta: `[${item.domanda}] -> ${item.scelta}` }));
-
     const dataToSend = {
       ...formData,
-      punteggi_finali: {
-        "1 Paciock": scores[1],
-        "2 Peppa Pig": scores[2],
-        "3 Joey": scores[3],
-        "4 Miss Marple": scores[4],
-        "5 Hannibal": scores[5],
-      },
+      punteggi_finali: { "1 Paciock": scores[1], "2 Peppa Pig": scores[2], "3 Joey": scores[3], "4 Miss Marple": scores[4], "5 Hannibal": scores[5] },
       tutte_le_risposte: sortedAnswers
     };
-
-    console.log("=== INIZIO INVIO DATI A GOOGLE ===");
-    console.log("Pacchetto dati:", dataToSend);
-
     try {
       const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzVfL9_W03IJDP9s3rIOcQvvf2W80pGdqXqYvvOukq3M8EBJBU2LIL5YXTTuwFdeir0/exec";
       const response = await fetch(GOOGLE_SCRIPT_URL, {
@@ -230,68 +206,60 @@ function App() {
         headers: { "Content-Type": "text/plain;charset=utf-8" },
         body: JSON.stringify(dataToSend)
       });
-      if (response.ok) {
-        setFormSubmitted(true);
-        console.log("Dati salvati con successo!");
-      } else {
-        alert("Errore dal server Google: " + response.status);
-      }
+      if (response.ok) { setFormSubmitted(true); }
+      else { alert("Errore dal server Google: " + response.status); }
     } catch (error) {
-      alert("La richiesta è stata bloccata. Controlla la console.");
-      console.error("ERRORE DI RETE/CORS:", error);
+      alert("La richiesta è stata bloccata.");
+      console.error(error);
     } finally {
       setIsSending(false);
     }
   };
 
-  // --- LOGICA FILTRO PROFILI ---
   const sortedCatIds = Object.keys(scores).sort((a, b) => scores[b] - scores[a]);
-
   const filteredCatIds = (() => {
-    const aboveThreshold = sortedCatIds.filter(catId => scores[catId] >= 10);
-    const belowThreshold = sortedCatIds.filter(catId => scores[catId] <= -10);
-    const positives = aboveThreshold.length > 0 ? aboveThreshold : [sortedCatIds[0]];
-    const negatives = belowThreshold.length > 0 ? belowThreshold : [sortedCatIds[sortedCatIds.length - 1]];
+    const above = sortedCatIds.filter(id => scores[id] >= 10);
+    const below = sortedCatIds.filter(id => scores[id] <= -10);
+    const positives = above.length > 0 ? above : [sortedCatIds[0]];
+    const negatives = below.length > 0 ? below : [sortedCatIds[sortedCatIds.length - 1]];
     return [...new Set([...positives, ...negatives])];
   })();
 
-  // Progresso (0–100)
   const answeredCount = currentQuestions.length - 1 - currentIndex;
   const progress = Math.round((answeredCount / (currentQuestions.length - 1)) * 100);
 
   return (
     <div className="app-container">
-      <h1>Scopri il tuo gatto</h1>
+
+      {/* ── HERO BANNER ── */}
+      <div className="hero-banner">
+        <img src={BannerImg} alt="Serie TV Libri Pop" className="hero-image" />
+      </div>
+
+      {/* ── TITOLO + SOTTOTITOLO ── */}
+      <div className="hero-text">
+        <h1>🐱 Scopri il tuo gatto</h1>
+        <p className="hero-subtitle">Un test rapido per capire quale gatto sul sofà ti rappresenta davvero.</p>
+        <div className="hero-badges">
+          <span className="badge">37 domande</span>
+          <span className="badge">~3 minuti</span>
+        </div>
+      </div>
 
       {/* ── QUIZ ── */}
       {!showResult && (
         <>
-          {/* Progress info */}
-          <p className="counter">
-            <span>Domanda {answeredCount + 1} di {currentQuestions.length}</span>
-            <span>{progress}%</span>
-          </p>
-
-          {/* Progress bar */}
-          <div style={{
-            width: '90vw',
-            maxWidth: '480px',
-            height: '6px',
-            background: 'rgba(255,255,255,0.15)',
-            borderRadius: '999px',
-            marginBottom: '16px',
-            overflow: 'hidden'
-          }}>
-            <div style={{
-              height: '100%',
-              width: `${Math.max(progress, 3)}%`,
-              background: 'linear-gradient(90deg, #a855f7, #f59e0b)',
-              borderRadius: '999px',
-              transition: 'width 0.4s ease'
-            }} />
+          <div className="progress-area">
+            <div className="progress-labels">
+              <span>Domanda {answeredCount + 1} di {currentQuestions.length}</span>
+              <span>{progress}%</span>
+            </div>
+            <p className="progress-sublabel">Mancano {currentQuestions.length - answeredCount - 1} domande</p>
+            <div className="progress-track">
+              <div className="progress-fill" style={{ width: `${Math.max(progress, 2)}%` }} />
+            </div>
           </div>
 
-          {/* Card stack */}
           <div className="card-container">
             {currentQuestions.map((q, index) => (
               <TinderCard
@@ -311,22 +279,15 @@ function App() {
             ))}
           </div>
 
-          {/* Answer buttons — rendered only for the active card */}
           {currentQuestions.map((q, index) =>
             index === currentIndex ? (
               <div key={q.id} className="options">
-                <div
-                  className="left-option"
-                  onClick={() => handleButtonClick('left', index)}
-                >
-                  <span>←</span>
+                <div className="left-option" onClick={() => handleButtonClick('left', index)}>
+                  <span className="option-arrow">←</span>
                   <p>{q.leftOption}</p>
                 </div>
-                <div
-                  className="right-option"
-                  onClick={() => handleButtonClick('right', index)}
-                >
-                  <span>→</span>
+                <div className="right-option" onClick={() => handleButtonClick('right', index)}>
+                  <span className="option-arrow">→</span>
                   <p>{q.rightOption}</p>
                 </div>
               </div>
@@ -337,45 +298,26 @@ function App() {
 
       {/* ── RESULTS ── */}
       {showResult && (
-        <div className="result-container scrollable-results">
-
+        <div className="result-container">
           <div className="scroll-notice">
             ⬇️ Scorri fino in fondo per vedere tutti i risultati e lasciarci il tuo feedback!
           </div>
 
-          {filteredCatIds.length > 0 ? (
-            filteredCatIds.map(catId => {
-              const cat = catProfiles[catId];
-              const score = scores[catId];
-              const isPositive = score >= 10;
-              return (
-                <div
-                  key={catId}
-                  className={`cat-result-box ${isPositive ? 'positive-card' : 'negative-card'}`}
-                >
-                  <img src={cat.image} alt={cat.name} className="cat-image" />
-                  <h3>{cat.name}</h3>
-                  <p className="cat-subtitle">{cat.subtitle}</p>
-                  <p style={{ fontSize: '14px', fontStyle: 'italic', marginBottom: '14px' }}>
-                    <strong>Personalità:</strong> {cat.profile}
-                  </p>
-                  {isPositive ? (
-                    <p className="recommendation positive">
-                      <strong>✅ Serie Consigliate:</strong><br />{cat.tv}
-                    </p>
-                  ) : (
-                    <p className="recommendation negative">
-                      <strong>❌ Da EVITARE:</strong><br />{cat.tv}
-                    </p>
-                  )}
-                </div>
-              );
-            })
-          ) : (
-            <p className="recommendation neutral">
-              Wow! I tuoi gusti sono perfettamente bilanciati. Non hai una preferenza estrema per nessun genere!
-            </p>
-          )}
+          {filteredCatIds.map(catId => {
+            const cat = catProfiles[catId];
+            const isPositive = scores[catId] >= 10;
+            return (
+              <div key={catId} className={`cat-result-box ${isPositive ? 'positive-card' : 'negative-card'}`}>
+                <img src={cat.image} alt={cat.name} className="cat-image" />
+                <h3>{cat.name}</h3>
+                <p className="cat-subtitle">{cat.subtitle}</p>
+                <p className="cat-profile"><strong>Personalità:</strong> {cat.profile}</p>
+                <p className={`recommendation ${isPositive ? 'positive' : 'negative'}`}>
+                  <strong>{isPositive ? '✅ Serie Consigliate:' : '❌ Da EVITARE:'}</strong><br />{cat.tv}
+                </p>
+              </div>
+            );
+          })}
 
           <hr />
 
@@ -394,12 +336,10 @@ function App() {
                     <option value="Altro">Altro / Preferisco non specificare</option>
                   </select>
                 </div>
-
                 <div className="form-group">
                   <label>Età:</label>
                   <input type="number" name="age" value={formData.age} onChange={handleFormChange} required min="10" max="100" placeholder="Es. 25" />
                 </div>
-
                 <div className="form-group">
                   <label>Ti ritrovi con la descrizione del gatto?</label>
                   <select name="catMatch" value={formData.catMatch} onChange={handleFormChange} required>
@@ -410,7 +350,6 @@ function App() {
                     <option value="Per niente">Per niente</option>
                   </select>
                 </div>
-
                 <div className="form-group">
                   <label>Confermi l'attinenza delle serie TV proposte/sconsigliate?</label>
                   <select name="tvMatch" value={formData.tvMatch} onChange={handleFormChange} required>
@@ -420,37 +359,17 @@ function App() {
                     <option value="No">No</option>
                   </select>
                 </div>
-
                 <div className="form-group">
                   <label>Lascia un commento (obbligatorio):</label>
-                  <textarea
-                    name="feedback"
-                    value={formData.feedback}
-                    onChange={handleFormChange}
-                    maxLength="300"
-                    rows="3"
-                    required
-                    placeholder="Scrivi qui i tuoi pensieri..."
-                  />
+                  <textarea name="feedback" value={formData.feedback} onChange={handleFormChange} maxLength="300" rows="3" required placeholder="Scrivi qui i tuoi pensieri..." />
                   <small className="char-count">{formData.feedback.length} / 300 caratteri</small>
                 </div>
-
                 <div className="form-group privacy-group">
                   <label style={{ display: 'flex', alignItems: 'flex-start', fontWeight: 'normal', fontSize: '12px', cursor: 'pointer' }}>
-                    <input
-                      type="checkbox"
-                      name="privacyAccepted"
-                      checked={formData.privacyAccepted}
-                      onChange={handleFormChange}
-                      required
-                      style={{ marginRight: '10px', marginTop: '3px' }}
-                    />
-                    <span>
-                      Acconsento al trattamento dei miei dati in forma anonima a scopo statistico e di ricerca per il miglioramento dell'algoritmo, nel rispetto del GDPR.
-                    </span>
+                    <input type="checkbox" name="privacyAccepted" checked={formData.privacyAccepted} onChange={handleFormChange} required style={{ marginRight: '10px', marginTop: '3px' }} />
+                    <span>Acconsento al trattamento dei miei dati in forma anonima a scopo statistico e di ricerca per il miglioramento dell'algoritmo, nel rispetto del GDPR.</span>
                   </label>
                 </div>
-
                 <button type="submit" className="submit-btn" disabled={isSending}>
                   {isSending ? "Invio in corso..." : "Invia Feedback"}
                 </button>
