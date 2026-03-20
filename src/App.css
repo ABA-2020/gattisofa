@@ -103,14 +103,13 @@ body {
   border-radius: 6px;
   transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
 /* =========================================
    IL MAZZO DI CARTE (Dimensione fissa e standard)
    ========================================= */
 .card-container {
   position: relative;
   width: 100%;
-  /* Altezza RIGIDA e FISSA in modo che nessuna carta si deformi o scali! */
+  /* L'altezza e la larghezza del contenitore dettano le regole per tutte le carte */
   height: 420px; 
   margin-bottom: 20px;
 }
@@ -119,12 +118,17 @@ body {
   position: absolute;
   width: 100%;
   height: 100%;
+  /* Aggiungendo left e top forziamo l'elemento a occupare esattamente tutto lo spazio */
+  left: 0;
+  top: 0;
 }
 
 .card {
   position: absolute;
   width: 100%;
   height: 100%;
+  left: 0;
+  top: 0;
   background: #ffffff;
   border-radius: 24px;
   display: flex;
@@ -133,7 +137,8 @@ body {
   align-items: center;
   padding: 20px; 
   box-sizing: border-box;
-  box-shadow: 0 0 0 0 rgba(0,0,0,0.25) !important; 
+  /* L'ombra morbida che abbiamo ripristinato prima */
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25) !important; 
   color: #1a1a1a;
   text-align: center;
   overflow: hidden; 
