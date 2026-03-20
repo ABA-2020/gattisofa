@@ -143,10 +143,9 @@ function App() {
 const sendDataToGoogle = async () => {
     setIsSending(true);
     
-    // Creiamo una mappa ID -> Risposta per lo script
+    // Mappa ID -> Risposta (prende solo la parte dopo "->")
     const mappaRisposte = {};
     responses.forEach(r => {
-      // Estraiamo solo il valore dopo la freccia "->"
       const parts = r.risposta.split(" -> ");
       mappaRisposte[r.id] = parts.length > 1 ? parts[1] : r.risposta;
     });
@@ -156,11 +155,11 @@ const sendDataToGoogle = async () => {
     const dataToSend = {
       punteggi_raw: scores,
       gatto_vincitore: catProfiles[topCatId].name,
-      risposte_mappate: mappaRisposte // Inviato come oggetto { D1: "Uomo", T1: "La amo", ... }
+      risposte_mappate: mappaRisposte
     };
 
     try {
-      const URL = "https://script.google.com/macros/s/AKfycbxc0243b1IRVoGCzZMGMhfiK5TTX40qsNMxzKCfrMLLdNmhVzOH-jJQsLGpD9GgJyXA/exec";
+      const URL = "https://script.google.com/macros/s/AKfycbzi0QuhxQmBqKtNXASYlj0bpIiWUa8_aUWfqPEg3P7W83WuEdEocqPG5uRonF-05Hky/exec";
       
       await fetch(URL, { 
         method: "POST", 
@@ -169,9 +168,9 @@ const sendDataToGoogle = async () => {
         body: JSON.stringify(dataToSend) 
       });
       
-      console.log("Dati inviati correttamente al file Excel");
+      console.log("Dati inviati con successo");
     } catch (e) { 
-      console.error("Errore invio:", e); 
+      console.error("Errore:", e); 
     } finally { 
       setIsSending(false); 
     }
