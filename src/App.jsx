@@ -27,7 +27,7 @@ const shuffleArray = (array) => {
   return shuffled;
 };
 
-// DATASET COMPLETO
+// DATASET
 const demographicQuestions = [
   { id: "D1", type: "demo", title: "Qual è il tuo sesso?", leftOption: "Uomo", upOption: "Altro / ND", rightOption: "Donna" },
   { id: "D2", type: "demo_age", title: "Quanti anni hai?" },
@@ -141,10 +141,6 @@ function App() {
 
   const cardRefs = useMemo(() => Array(deck.length).fill(0).map(() => React.createRef()), [deck]);
 
-  useEffect(() => {
-    if (showResult) sendDataToGoogle();
-  }, [showResult]);
-
   const sendDataToGoogle = async () => {
     setIsSending(true);
     const topCatId = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
@@ -160,13 +156,21 @@ function App() {
     } catch (e) { console.error(e); } finally { setIsSending(false); }
   };
 
+  useEffect(() => {
+    if (showResult) sendDataToGoogle();
+  }, [showResult]);
+
   const swipe = async (dir) => {
     if (currentIndex >= 0 && cardRefs[currentIndex]?.current) {
       await cardRefs[currentIndex].current.swipe(dir);
     }
   };
 
-  const handleAgeSubmit = () => { if (ageValue) swipe('right'); };
+  const handleAgeSubmit = () => {
+    if (ageValue && ageValue.trim() !== "") {
+      swipe('right');
+    }
+  };
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -183,7 +187,9 @@ function App() {
   const handleSwipe = (direction, question) => {
     let chosen = direction === 'left' ? question.leftOption : direction === 'right' ? question.rightOption : question.upOption;
     if (question.type === 'demo_age') chosen = ageValue;
+
     setResponses(prev => [...prev, { id: question.id, risposta: `[${question.title}] -> ${chosen}` }]);
+
     if (question.type === 'psych' && direction !== 'up') {
       const chosenP = direction === 'left' ? question.leftProfiles : question.rightProfiles;
       const rejectedP = direction === 'left' ? question.rightProfiles : question.leftProfiles;
@@ -202,6 +208,8 @@ function App() {
   const negativeCats = Object.keys(scores).filter(id => scores[id] <= -10).sort((a, b) => scores[a] - scores[b]);
   const progressPercent = Math.round(((deck.length - currentIndex) / deck.length) * 100);
 
+  const currentQuestion = deck[currentIndex];
+
   return (
     <div className="app-container">
       {showResult ? (
@@ -215,19 +223,57 @@ function App() {
         </div>
       ) : (
         <div className="test-interface">
-          <div className="progress-section"><div className="progress-text"><span>Domanda {deck.length - currentIndex} di {deck.length}</span><span>{progressPercent}%</span></div><div className="progress-bar-container"><div className="progress-fill" style={{ width: `${progressPercent}%` }}></div></div></div>
-          <div className="card-container">
-            {deck.map((q, index) => (
-              <TinderCard key={q.id + index} ref={cardRefs[index]} className="swipe" preventSwipe={q.type === 'demo_age' ? ['up','down','left','right'] : ['down', ...(q.upOption ? [] : ['up'])]} onSwipe={(dir) => handleSwipe(dir, q)}>
-                <div className="card">
-                  {q.type === 'cat' && <div className="cat-preview-container"><img src={catProfiles[q.catId].image} alt="Cat" className="cat-circle-img" /><strong>{catProfiles[q.catId].name}</strong><p className="cat-full-desc">"{catProfiles[q.catId].profile}"</p></div>}
-                  <h2 style={{ fontSize: q.type === 'cat' ? '18px' : '22px' }}>{q.title}</h2>
-                  {q.type === 'demo_age' ? <div className="age-input-container"><input type="number" className="age-input" placeholder="Es. 25" value={ageValue} onChange={(e) => setAgeValue(e.target.value)} /><button className="age-submit-btn" onClick={handleAgeSubmit} disabled={!ageValue}>Avanti</button></div> : <p className="card-subtitle">Trascina o usa i pulsanti</p>}
-                </div>
-              </TinderCard>
-            ))}
+          <div className="progress-section">
+            <div className="progress-text">
+              <span>Domanda {deck.length - currentIndex} di {deck.length}</span>
+              <span>{progressPercent}%</span>
+            </div>
+            <div className="progress-bar-container"><div className="progress-fill" style={{ width: `${progressPercent}%` }}></div></div>
           </div>
-          {deck[currentIndex]?.type !== 'demo_age' && <div className="action-buttons-container"><button className="swipe-btn" onClick={() => swipe('left')}><span className="arrow">←</span><span className="btn-text">{deck[currentIndex]?.leftOption}</span></button>{deck[currentIndex]?.upOption && <button className="swipe-btn" onClick={() => swipe('up')}><span className="arrow">↑</span><span className="btn-text">{deck[currentIndex]?.upOption}</span></button>}<button className="swipe-btn" onClick={() => swipe('right')}><span className="arrow">→</span><span className="btn-text">{deck[currentIndex]?.rightOption}</span></button></div>}
+
+          <div className="card-container">
+            {deck.map((q, index) => {
+              const isAge = q.type === 'demo_age';
+              return (
+                <TinderCard 
+                  key={q.id + index} 
+                  ref={cardRefs[index]} 
+                  className="swipe" 
+                  preventSwipe={isAge ? ['up','down','left','right'] : ['down', ...(q.upOption ? [] : ['up'])]} 
+                  onSwipe={(dir) => handleSwipe(dir, q)}
+                >
+                  <div className="card">
+                    {q.type === 'cat' && <div className="cat-preview-container"><img src={catProfiles[q.catId].image} alt="Cat" className="cat-circle-img" /><strong>{catProfiles[q.catId].name}</strong><p className="cat-full-desc">"{catProfiles[q.catId].profile}"</p></div>}
+                    <h2 style={{ fontSize: q.type === 'cat' ? '18px' : '22px' }}>{q.title}</h2>
+                    {isAge ? (
+                      <div className="age-input-container">
+                        <input 
+                          type="number" 
+                          inputMode="numeric" 
+                          pattern="[0-9]*"
+                          className="age-input" 
+                          placeholder="Età" 
+                          value={ageValue} 
+                          onChange={(e) => setAgeValue(e.target.value)} 
+                        />
+                        <button className="age-submit-btn" onClick={handleAgeSubmit} disabled={!ageValue || ageValue.trim()===""}>Avanti</button>
+                      </div>
+                    ) : (
+                      <p className="card-subtitle">Trascina o usa i pulsanti</p>
+                    )}
+                  </div>
+                </TinderCard>
+              );
+            })}
+          </div>
+
+          {currentQuestion && currentQuestion.type !== 'demo_age' && (
+            <div className="action-buttons-container">
+              <button className="swipe-btn" onClick={() => swipe('left')}><span className="arrow">←</span><span className="btn-text">{currentQuestion.leftOption}</span></button>
+              {currentQuestion.upOption && <button className="swipe-btn" onClick={() => swipe('up')}><span className="arrow">↑</span><span className="btn-text">{currentQuestion.upOption}</span></button>}
+              <button className="swipe-btn" onClick={() => swipe('right')}><span className="arrow">→</span><span className="btn-text">{currentQuestion.rightOption}</span></button>
+            </div>
+          )}
         </div>
       )}
     </div>
