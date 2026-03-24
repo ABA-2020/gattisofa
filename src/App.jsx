@@ -120,7 +120,7 @@ function App() {
     };
 
     try {
-      const URL = "INSERISCI_QUI_IL_TUO_URL_SCRIPT";
+      const URL = "https://script.google.com/macros/s/AKfycbycQsX4B9V-E0h96f7tSqbCvJML2j3eDOq5y1captwRJHybmvGuMH-nurJFR8DXWk-duQ/exec";
       await fetch(URL, { 
         method: "POST", 
         mode: "no-cors", 
