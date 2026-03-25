@@ -16,19 +16,37 @@ body {
 }
 
 /* PROGRESS BAR */
-.progress-bar { 
-  width: 100%; 
-  height: 8px; 
-  background: rgba(255,255,255,0.2); 
-  border-radius: 6px; 
-  margin-bottom: 30px; 
-  overflow: hidden; 
+.progress-section {
+  width: 100%;
+  margin-bottom: 25px;
 }
-.progress-bar .fill { 
-  height: 100%; 
-  background: #a855f7; 
-  transition: width 0.4s; 
+
+.progress-info {
+  display: flex;
+  justify-content: space-between; /* Mette il numero domanda a sx e % a dx */
+  align-items: center;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
 }
+
+.progress-bar-container {
+  width: 100%;
+  height: 12px; /* Leggermente più alta per visibilità */
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #a855f7, #d8b4fe);
+  border-radius: 10px;
+  transition: width 0.4s ease-out;
+}
+
 
 /* LOGICA ANTI-SPOILER: Nasconde fisicamente le carte non attive */
 .hidden-card {
@@ -147,6 +165,8 @@ body {
 }
 .swipe-btn {
   flex: 1; 
+  height: 85px;
+  min-width: 0;
   background: rgba(255,255,255,0.95); 
   border: 1px solid rgba(0,0,0,0.1);
   border-radius: 18px; 
@@ -170,10 +190,17 @@ body {
   color: #834d6c; 
   margin-bottom: 4px; 
 }
-.swipe-btn .btn-text { 
-  font-size: 13px; 
-  font-weight: 600; 
-  text-align: center; 
+
+.swipe-btn .btn-text {
+  font-size: 13px;
+  line-height: 1.2;
+  text-align: center;
+  color: #2b1b3d;
+  /* Forza il testo su max 2 righe e mette i puntini se è più lungo */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 /* GRAFICO RISULTATI */

@@ -15,7 +15,7 @@ const catProfiles = {
   3: { name: "Joey", image: JoeyImg },
   4: { name: "Miss Marple", image: MissMarpleImg },
   5: { name: "Hannibal", image: HannibalImg },
-  6: { name: "Duchessa", image: LuluImg } // CORRETTO: Duchessa
+  6: { name: "Duchessa", image: LuluImg } // Duchessa corretta
 };
 
 const shuffleArray = (array) => {
@@ -27,7 +27,6 @@ const shuffleArray = (array) => {
   return shuffled;
 };
 
-// Qui vanno le tue 60 domande P1-P60
 const psychQuestions = [
   { id: "P1", type: "psych", title: "Cosa preferiresti vedere?", leftOption: "Pretty Woman", catL: 1, rightOption: "Il Gattopardo", catR: 2 },
   { id: "P2", type: "psych", title: "Cosa preferiresti vedere?", leftOption: "Notting Hill", catL: 1, rightOption: "Via col Vento", catR: 2 },
@@ -93,7 +92,6 @@ const psychQuestions = [
 
 const buildDeck = () => {
   const shuffledPsych = shuffleArray(psychQuestions);
-  // D1 e D2 appaiono per PRIME grazie all'ordine dell'array
   return [
     ...shuffledPsych,
     { id: "D2", type: "demo_age", title: "Quanti anni hai?" },
@@ -111,24 +109,20 @@ function App() {
   
   const cardRefs = useMemo(() => Array(deck.length).fill(0).map(() => React.createRef()), [deck]);
 
-  // FUNZIONE DI INVIO DATI
   const sendDataToGoogle = async (finalScores, finalResponses) => {
     const mappaRisposte = {};
     finalResponses.forEach(r => { mappaRisposte[r.id] = r.risposta; });
     const dataToSend = { punteggi_raw: finalScores, risposte_mappate: mappaRisposte };
 
     try {
-      const URL = "https://script.google.com/macros/s/AKfycbwI71lkCOWvykAdorI1TASq9TP7SSapyPrQ7hF_HqhtalwLYUei8hdFKzlvFOQHLXWW8Q/exec"; //  l'URL dell'applicazione web
+      const URL = "https://script.google.com/macros/s/AKfycbwI71lkCOWvykAdorI1TASq9TP7SSapyPrQ7hF_HqhtalwLYUei8hdFKzlvFOQHLXWW8Q/exec";
       await fetch(URL, { 
         method: "POST", 
         mode: "no-cors", 
         cache: "no-cache", 
         body: JSON.stringify(dataToSend) 
       });
-      console.log("Dati inviati con successo!");
-    } catch (e) { 
-      console.error("Errore nell'invio:", e); 
-    }
+    } catch (e) { console.error(e); }
   };
 
   const swipe = async (dir) => {
@@ -201,17 +195,24 @@ function App() {
         </div>
       ) : (
         <div className="test-interface">
-          <div className="progress-bar"><div className="fill" style={{width: `${progressPercent}%`}}></div></div>
+          <div className="progress-section">
+            <div className="progress-info">
+              <span>Domanda {deck.length - currentIndex} di {deck.length}</span>
+              <span className="percent-text">{progressPercent}%</span>
+            </div>
+            <div className="progress-bar-container">
+              <div className="progress-fill" style={{ width: `${progressPercent}%` }}></div>
+            </div>
+          </div>
+          
           <div className="card-container">
-            {deck.map((q, index) => {
-              const isCurrent = index === currentIndex;
-              return (
+            {deck.map((q, index) => (
                 <TinderCard 
                   key={q.id} 
                   ref={cardRefs[index]} 
                   onSwipe={(dir) => handleSwipe(dir, q)}
                   preventSwipe={q.id === 'D2' ? ['up','down','left','right'] : ['up', 'down']}
-                  className={`swipe ${isCurrent ? 'active-card' : 'hidden-card'}`}
+                  className={`swipe ${index === currentIndex ? 'active-card' : 'hidden-card'}`}
                 >
                   <div className="card">
                     <h2>{q.title}</h2>
@@ -237,8 +238,7 @@ function App() {
                     )}
                   </div>
                 </TinderCard>
-              );
-            })}
+            ))}
           </div>
 
           {currentQuestion && currentQuestion.id !== 'D2' && (
