@@ -2,7 +2,6 @@ import React, { useState, useEffect, useMemo, useRef } from 'react';
 import TinderCard from 'react-tinder-card';
 import './App.css'; 
 
-// Assets - Assicurati che i file siano in src/assets/gatti/
 import PaciockImg from './assets/gatti/Paciock.svg';
 import PeppaPigImg from './assets/gatti/Peppa_pig.svg';
 import JoeyImg from './assets/gatti/Joey.svg';
@@ -27,12 +26,6 @@ const shuffleArray = (array) => {
   }
   return shuffled;
 };
-
-// --- DATASET: DEMOGRAFICHE ---
-const demoQuestions = [
-  { id: "D1", type: "demo", title: "Qual è il tuo sesso?", leftOption: "Uomo", rightOption: "Donna" },
-  { id: "D2", type: "demo_age", title: "Quanti anni hai?" },
-];
 
 // --- DATASET: LE 60 DOMANDE PSICOLOGICHE (P1-P60) ---
 const psychQuestions = [
@@ -98,8 +91,16 @@ const psychQuestions = [
   { id: "P60", type: "psych", title: "Segui più...", leftOption: "La realtà", catL: 5, rightOption: "Il sogno", catR: 6 },
 ];
 
+const buildDeck = () => {
+  // Mescoliamo le 60 domande psicologiche
+  const shuffledPsych = shuffleArray(psychQuestions);
+  // D1 e D2 fisse. Nel mazzo Tinder, l'ultima dell'array è la PRIMA che si vede.
+  // Quindi: [shuffledP1...P60, D2, D1]
+  return [...shuffledPsych, { id: "D2", type: "demo_age", title: "Quanti anni hai?" }, { id: "D1", type: "demo", title: "Qual è il tuo sesso?", leftOption: "Uomo", rightOption: "Donna" }];
+};
+
 function App() {
-  const [deck, setDeck] = useState(() => [...shuffleArray(psychQuestions), ...demoQuestions.reverse()]);
+  const [deck, setDeck] = useState(() => buildDeck());
   const [scores, setScores] = useState({ 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 });
   const [responses, setResponses] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(deck.length - 1);
@@ -113,30 +114,29 @@ function App() {
     setIsSending(true);
     const mappaRisposte = {};
     finalResponses.forEach(r => { mappaRisposte[r.id] = r.risposta; });
-
-    const dataToSend = {
-      punteggi_raw: finalScores,
-      risposte_mappate: mappaRisposte
-    };
-
+    const dataToSend = { punteggi_raw: finalScores, risposte_mappate: mappaRisposte };
     try {
-      const URL = "https://script.google.com/macros/s/AKfycbycQsX4B9V-E0h96f7tSqbCvJML2j3eDOq5y1captwRJHybmvGuMH-nurJFR8DXWk-duQ/exec";
-      await fetch(URL, { 
-        method: "POST", 
-        mode: "no-cors", 
-        cache: "no-cache",
-        body: JSON.stringify(dataToSend) 
-      });
+      const URL = "IL_TUO_URL_SCRIPT"; 
+      await fetch(URL, { method: "POST", mode: "no-cors", cache: "no-cache", body: JSON.stringify(dataToSend) });
     } catch (e) { console.error(e); } finally { setIsSending(false); }
+  };
+
+  const swipe = async (dir) => {
+    if (currentIndex >= 0 && cardRefs[currentIndex]?.current) {
+      await cardRefs[currentIndex].current.swipe(dir);
+    }
+  };
+
+  const handleAgeSubmit = () => {
+    if (ageValue && ageValue.trim() !== "") {
+      swipe('right');
+    }
   };
 
   const handleSwipe = (direction, question) => {
     let chosen = "";
-    if (question.type === 'demo_age') {
-      chosen = ageValue;
-    } else {
-      chosen = direction === 'left' ? question.leftOption : question.rightOption;
-    }
+    if (question.type === 'demo_age') chosen = ageValue;
+    else chosen = direction === 'left' ? question.leftOption : question.rightOption;
 
     const newResponse = { id: question.id, risposta: chosen };
     const updatedResponses = [...responses, newResponse];
@@ -163,6 +163,7 @@ function App() {
   };
 
   const progressPercent = Math.round(((deck.length - currentIndex) / deck.length) * 100);
+  const currentQuestion = deck[currentIndex];
 
   return (
     <div className="app-container">
@@ -193,38 +194,55 @@ function App() {
       ) : (
         <div className="test-interface">
           <div className="progress-bar"><div className="fill" style={{width: `${progressPercent}%`}}></div></div>
+          
           <div className="card-container">
-            {deck.map((q, index) => (
-              <TinderCard 
-                key={q.id} 
-                ref={cardRefs[index]} 
-                onSwipe={(dir) => handleSwipe(dir, q)}
-                preventSwipe={['up', 'down']}
-                className="swipe"
-              >
-                <div className="card">
-                  <h2>{q.title}</h2>
-                  {q.type === 'demo_age' ? (
-                    <div className="age-input-box">
-                      <input 
-                        type="number" 
-                        inputMode="numeric"
-                        value={ageValue} 
-                        onChange={(e) => setAgeValue(e.target.value)} 
-                        placeholder="Quanti anni hai?"
-                        onPointerDown={(e) => e.stopPropagation()}
-                      />
-                    </div>
-                  ) : (
-                    <div className="options-hint">
-                      <span className="left-hint">← {q.leftOption}</span>
-                      <span className="right-hint">{q.rightOption} →</span>
-                    </div>
-                  )}
-                </div>
-              </TinderCard>
-            ))}
+            {deck.map((q, index) => {
+              // LOGICA SPOILER: Nascondiamo le carte che non sono quella corrente
+              const isCurrent = index === currentIndex;
+              return (
+                <TinderCard 
+                  key={q.id} 
+                  ref={cardRefs[index]} 
+                  onSwipe={(dir) => handleSwipe(dir, q)}
+                  preventSwipe={q.id === 'D2' ? ['up','down','left','right'] : ['up', 'down']}
+                  className={`swipe ${isCurrent ? 'active-card' : 'hidden-card'}`}
+                >
+                  <div className="card">
+                    <h2>{q.title}</h2>
+                    {q.id === 'D2' ? (
+                      <div className="age-input-container">
+                        <input 
+                          type="number" 
+                          inputMode="numeric"
+                          pattern="[0-9]*"
+                          className="age-input-fixed"
+                          placeholder="Età" 
+                          value={ageValue}
+                          onChange={(e) => setAgeValue(e.target.value)}
+                        />
+                        <button className="age-submit-btn-fixed" onClick={handleAgeSubmit} disabled={!ageValue}>Avanti</button>
+                      </div>
+                    ) : (
+                      <p className="card-subtitle">Scorri o usa i pulsanti</p>
+                    )}
+                  </div>
+                </TinderCard>
+              );
+            })}
           </div>
+
+          {currentQuestion && currentQuestion.id !== 'D2' && (
+            <div className="action-buttons-container">
+              <button className="swipe-btn left" onClick={() => swipe('left')}>
+                <span className="arrow">←</span>
+                <span className="btn-text">{currentQuestion.leftOption}</span>
+              </button>
+              <button className="swipe-btn right" onClick={() => swipe('right')}>
+                <span className="arrow">→</span>
+                <span className="btn-text">{currentQuestion.rightOption}</span>
+              </button>
+            </div>
+          )}
         </div>
       )}
     </div>

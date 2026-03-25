@@ -151,3 +151,82 @@ body {
   color: white;
   font-weight: bold;
 }
+
+/* ... Base ... */
+body {
+  margin: 0; padding: 0;
+  background: linear-gradient(135deg, #2b1b3d 0%, #49284d 35%, #834d6c 70%, #e2a07c 100%);
+  background-attachment: fixed; color: white;
+  font-family: -apple-system, sans-serif; overflow-x: hidden;
+}
+
+.app-container { max-width: 500px; margin: 0 auto; padding: 20px; min-height: 100vh; display: flex; flex-direction: column; }
+
+/* PROGRESS BAR */
+.progress-bar { width: 100%; height: 8px; background: rgba(255,255,255,0.2); border-radius: 6px; margin-bottom: 30px; overflow: hidden; }
+.progress-bar .fill { height: 100%; background: #a855f7; transition: width 0.4s; }
+
+/* LOGICA SPOILER */
+.hidden-card {
+  opacity: 0 !important;
+  pointer-events: none;
+}
+
+.active-card {
+  opacity: 1 !important;
+  z-index: 10;
+}
+
+/* CARTE */
+.card-container { position: relative; width: 100%; height: 420px; display: flex; justify-content: center; margin-bottom: 20px; }
+.swipe { position: absolute; width: 340px; height: 100%; transition: opacity 0.2s ease-in-out; }
+.card {
+  position: absolute; width: 100%; height: 100%;
+  background: #fff; border-radius: 24px;
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  padding: 30px; box-sizing: border-box; color: #1a1a1a; text-align: center;
+  box-shadow: none !important; border: 1px solid rgba(0,0,0,0.1);
+}
+.card h2 { font-size: 22px; color: #2b1b3d; margin: 0; line-height: 1.2; }
+.card-subtitle { font-size: 13px; color: #888; margin-top: 20px; }
+
+/* ETÀ DENTRO LA CARTA (Pulsante e Input) */
+.age-input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+  width: 100%;
+}
+.age-input-fixed {
+  width: 120px; padding: 12px; font-size: 22px; border-radius: 12px;
+  border: 2px solid #834d6c; text-align: center; margin-bottom: 15px;
+  color: #2b1b3d; background: #f9f9f9;
+}
+.age-submit-btn-fixed {
+  background: #a855f7; color: white; border: none; padding: 12px 40px;
+  border-radius: 20px; font-size: 18px; font-weight: bold; cursor: pointer;
+}
+.age-submit-btn-fixed:disabled { background: #ccc; }
+
+/* PULSANTI SOTTO */
+.action-buttons-container { display: flex; gap: 10px; width: 100%; margin-top: 10px; }
+.swipe-btn {
+  flex: 1; background: rgba(255,255,255,0.95); border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 18px; padding: 15px 5px; cursor: pointer; color: #2b1b3d;
+  display: flex; flex-direction: column; align-items: center; transition: 0.2s;
+}
+.swipe-btn .arrow { font-size: 20px; font-weight: bold; color: #834d6c; margin-bottom: 4px; }
+.swipe-btn .btn-text { font-size: 13px; font-weight: 600; text-align: center; }
+
+/* GRAFICO */
+.chart-container { background: white; border-radius: 20px; padding: 20px; color: #333; }
+.chart-row { display: flex; align-items: center; margin-bottom: 15px; }
+.chart-label { width: 110px; display: flex; align-items: center; font-size: 13px; font-weight: 700; }
+.chart-icon { width: 30px; height: 30px; border-radius: 50%; margin-right: 8px; border: 1px solid #ddd; }
+.chart-bar-bg { flex-grow: 1; height: 22px; background: #f0f0f0; border-radius: 11px; overflow: hidden; position: relative; }
+.chart-bar-fill { height: 100%; transition: width 0.8s ease-out; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px; }
+.chart-bar-fill.pos { background: linear-gradient(90deg, #4caf50, #8bc34a); }
+.chart-bar-fill.neg { background: linear-gradient(90deg, #f44336, #ff7043); }
+.score-val { color: white; font-size: 11px; font-weight: 800; }
+.retry-btn { margin-top: 25px; width: 100%; padding: 15px; background: #e2a07c; border: none; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; }
