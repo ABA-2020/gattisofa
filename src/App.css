@@ -13,16 +13,17 @@ body {
 
 /* LOGICA ANTI-SPOILER */
 .hidden-card {
-  display: none;
+  display: none !important;
 }
 .active-card {
-  display: flex;
+  display: flex !important;
   z-index: 10;
 }
 
 /* CARTE */
 .card-container { position: relative; width: 100%; height: 420px; display: flex; justify-content: center; margin-bottom: 20px; }
 .swipe { position: absolute; width: 340px; height: 100%; }
+
 .card {
   position: absolute; width: 100%; height: 100%;
   background: #fff; border-radius: 24px;
@@ -30,10 +31,24 @@ body {
   padding: 30px; box-sizing: border-box; color: #1a1a1a; text-align: center;
   box-shadow: none !important; border: 1px solid rgba(0,0,0,0.1);
 }
+
 .card h2 { font-size: 22px; color: #2b1b3d; margin: 0; line-height: 1.2; }
 .card-subtitle { font-size: 13px; color: #888; margin-top: 20px; }
 
-/* INPUT ETÀ DENTRO LA CARTA */
+/* FIX TASTIERA MOBILE: OVERLAY DEDICATO */
+.age-input-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+}
+
+.dummy-age-card {
+  position: relative !important;
+  width: 340px !important;
+}
+
 .age-input-container {
   display: flex;
   flex-direction: column;
@@ -41,16 +56,32 @@ body {
   margin-top: 30px;
   width: 100%;
 }
+
 .age-input-fixed {
-  width: 140px; padding: 12px; font-size: 20px; border-radius: 12px;
-  border: 2px solid #834d6c; text-align: center; margin-bottom: 15px;
-  color: #2b1b3d; background: #f9f9f9;
-  -webkit-appearance: none;
+  width: 180px;
+  padding: 15px;
+  font-size: 20px;
+  border-radius: 12px;
+  border: 2px solid #834d6c;
+  text-align: center;
+  margin-bottom: 15px;
+  color: #2b1b3d;
+  background: #f9f9f9;
+  /* Importante per iOS per evitare zoom automatico */
+  font-family: inherit;
 }
+
 .age-submit-btn-fixed {
-  background: #a855f7; color: white; border: none; padding: 12px 40px;
-  border-radius: 20px; font-size: 18px; font-weight: bold; cursor: pointer;
+  background: #a855f7;
+  color: white;
+  border: none;
+  padding: 12px 40px;
+  border-radius: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
 }
+
 .age-submit-btn-fixed:disabled { background: #ccc; }
 
 /* PULSANTI SOTTO */
@@ -63,7 +94,7 @@ body {
 .swipe-btn .arrow { font-size: 20px; font-weight: bold; color: #834d6c; margin-bottom: 4px; }
 .swipe-btn .btn-text { font-size: 13px; font-weight: 600; text-align: center; }
 
-/* GRAFICO */
+/* GRAFICO RISULTATI */
 .chart-container { background: white; border-radius: 20px; padding: 20px; color: #333; }
 .chart-row { display: flex; align-items: center; margin-bottom: 15px; }
 .chart-label { width: 110px; display: flex; align-items: center; font-size: 13px; font-weight: 700; }
