@@ -213,12 +213,19 @@ function App() {
                       <div className="age-input-container">
                         <input 
                           type="number" 
-                          inputMode="numeric"
-                          pattern="[0-9]*"
+                          inputMode="numeric" // Forza il tastierino numerico
+                          pattern="[0-9]*"    // Aiuta iOS a capire che sono solo numeri
                           className="age-input-fixed"
                           placeholder="Età" 
                           value={ageValue}
                           onChange={(e) => setAgeValue(e.target.value)}
+                          
+                          // BLOCCA LA LIBRERIA TINDER DAL RUBARE IL TOCCO
+                          onPointerDown={(e) => e.stopPropagation()}
+                          onTouchStart={(e) => e.stopPropagation()} 
+                          
+                          // FOCUS MANUALE AL CLICK
+                          onClick={(e) => e.target.focus()} 
                         />
                         <button className="age-submit-btn-fixed" onClick={handleAgeSubmit} disabled={!ageValue}>Avanti</button>
                       </div>
