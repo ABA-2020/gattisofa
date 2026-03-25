@@ -3,15 +3,34 @@ body {
   background: linear-gradient(135deg, #2b1b3d 0%, #49284d 35%, #834d6c 70%, #e2a07c 100%);
   background-attachment: fixed; color: white;
   font-family: -apple-system, sans-serif; overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent; /* Migliora UX su mobile */
 }
 
-.app-container { max-width: 500px; margin: 0 auto; padding: 20px; min-height: 100vh; display: flex; flex-direction: column; }
+.app-container { 
+  max-width: 500px; 
+  margin: 0 auto; 
+  padding: 20px; 
+  min-height: 100vh; 
+  display: flex; 
+  flex-direction: column; 
+}
 
 /* PROGRESS BAR */
-.progress-bar { width: 100%; height: 8px; background: rgba(255,255,255,0.2); border-radius: 6px; margin-bottom: 30px; overflow: hidden; }
-.progress-bar .fill { height: 100%; background: #a855f7; transition: width 0.4s; }
+.progress-bar { 
+  width: 100%; 
+  height: 8px; 
+  background: rgba(255,255,255,0.2); 
+  border-radius: 6px; 
+  margin-bottom: 30px; 
+  overflow: hidden; 
+}
+.progress-bar .fill { 
+  height: 100%; 
+  background: #a855f7; 
+  transition: width 0.4s; 
+}
 
-/* LOGICA ANTI-SPOILER */
+/* LOGICA ANTI-SPOILER: Nasconde fisicamente le carte non attive */
 .hidden-card {
   display: none !important;
 }
@@ -21,32 +40,56 @@ body {
 }
 
 /* CARTE */
-.card-container { position: relative; width: 100%; height: 420px; display: flex; justify-content: center; margin-bottom: 20px; }
-.swipe { position: absolute; width: 340px; height: 100%; }
+.card-container { 
+  position: relative; 
+  width: 100%; 
+  height: 420px; 
+  display: flex; 
+  justify-content: center; 
+  margin-bottom: 20px; 
+}
+.swipe { 
+  position: absolute; 
+  width: 340px; 
+  height: 100%; 
+}
 
 .card {
-  position: absolute; width: 100%; height: 100%;
-  background: #fff; border-radius: 24px;
-  display: flex; flex-direction: column; justify-content: center; align-items: center;
-  padding: 30px; box-sizing: border-box; color: #1a1a1a; text-align: center;
-  box-shadow: none !important; border: 1px solid rgba(0,0,0,0.1);
+  position: absolute; 
+  width: 100%; 
+  height: 100%;
+  background: #fff; 
+  border-radius: 24px;
+  display: flex; 
+  flex-direction: column; 
+  justify-content: center; 
+  align-items: center;
+  padding: 30px; 
+  box-sizing: border-box; 
+  color: #1a1a1a; 
+  text-align: center;
+  box-shadow: none !important; 
+  border: 1px solid rgba(0,0,0,0.1);
 }
 
-.card h2 { font-size: 22px; color: #2b1b3d; margin: 0; line-height: 1.2; }
-.card-subtitle { font-size: 13px; color: #888; margin-top: 20px; }
+.card h2 { 
+  font-size: 22px; 
+  color: #2b1b3d; 
+  margin: 0; 
+  line-height: 1.2; 
+}
+.card-subtitle { 
+  font-size: 13px; 
+  color: #888; 
+  margin-top: 20px; 
+}
 
-/* FIX TASTIERA MOBILE: OVERLAY DEDICATO */
-.age-input-overlay {
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  z-index: 100;
+/* FIX TASTIERA MOBILE E AGE INPUT */
+.age-input-overlay-inner {
+  width: 100%;
   display: flex;
-  justify-content: center;
-}
-
-.dummy-age-card {
-  position: relative !important;
-  width: 340px !important;
+  flex-direction: column;
+  align-items: center;
 }
 
 .age-input-container {
@@ -58,17 +101,20 @@ body {
 }
 
 .age-input-fixed {
-  width: 180px;
+  width: 140px;
   padding: 15px;
-  font-size: 20px;
+  font-size: 22px;
   border-radius: 12px;
   border: 2px solid #834d6c;
   text-align: center;
   margin-bottom: 15px;
   color: #2b1b3d;
   background: #f9f9f9;
-  /* Importante per iOS per evitare zoom automatico */
+  z-index: 99;
+  position: relative;
+  /* Previene lo zoom automatico fastidioso su iOS */
   font-family: inherit;
+  -webkit-appearance: none;
 }
 
 .age-submit-btn-fixed {
@@ -80,28 +126,139 @@ body {
   font-size: 18px;
   font-weight: bold;
   cursor: pointer;
+  transition: transform 0.2s;
 }
 
-.age-submit-btn-fixed:disabled { background: #ccc; }
+.age-submit-btn-fixed:active {
+  transform: scale(0.95);
+}
 
-/* PULSANTI SOTTO */
-.action-buttons-container { display: flex; gap: 10px; width: 100%; margin-top: 10px; }
+.age-submit-btn-fixed:disabled { 
+  background: #ccc; 
+  cursor: not-allowed;
+}
+
+/* PULSANTI DI RISPOSTA SOTTO */
+.action-buttons-container { 
+  display: flex; 
+  gap: 10px; 
+  width: 100%; 
+  margin-top: 10px; 
+}
 .swipe-btn {
-  flex: 1; background: rgba(255,255,255,0.95); border: 1px solid rgba(0,0,0,0.1);
-  border-radius: 18px; padding: 15px 5px; cursor: pointer; color: #2b1b3d;
-  display: flex; flex-direction: column; align-items: center; transition: 0.2s;
+  flex: 1; 
+  background: rgba(255,255,255,0.95); 
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 18px; 
+  padding: 15px 5px; 
+  cursor: pointer; 
+  color: #2b1b3d;
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  transition: background 0.2s, transform 0.1s;
 }
-.swipe-btn .arrow { font-size: 20px; font-weight: bold; color: #834d6c; margin-bottom: 4px; }
-.swipe-btn .btn-text { font-size: 13px; font-weight: 600; text-align: center; }
+
+.swipe-btn:active {
+  transform: scale(0.98);
+  background: #f0f0f0;
+}
+
+.swipe-btn .arrow { 
+  font-size: 20px; 
+  font-weight: bold; 
+  color: #834d6c; 
+  margin-bottom: 4px; 
+}
+.swipe-btn .btn-text { 
+  font-size: 13px; 
+  font-weight: 600; 
+  text-align: center; 
+}
 
 /* GRAFICO RISULTATI */
-.chart-container { background: white; border-radius: 20px; padding: 20px; color: #333; }
-.chart-row { display: flex; align-items: center; margin-bottom: 15px; }
-.chart-label { width: 110px; display: flex; align-items: center; font-size: 13px; font-weight: 700; }
-.chart-icon { width: 30px; height: 30px; border-radius: 50%; margin-right: 8px; border: 1px solid #ddd; }
-.chart-bar-bg { flex-grow: 1; height: 22px; background: #f0f0f0; border-radius: 11px; overflow: hidden; position: relative; }
-.chart-bar-fill { height: 100%; transition: width 0.8s ease-out; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px; }
-.chart-bar-fill.pos { background: linear-gradient(90deg, #4caf50, #8bc34a); }
-.chart-bar-fill.neg { background: linear-gradient(90deg, #f44336, #ff7043); }
-.score-val { color: white; font-size: 11px; font-weight: 800; }
-.retry-btn { margin-top: 25px; width: 100%; padding: 15px; background: #e2a07c; border: none; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; }
+.result-container {
+  padding-bottom: 40px;
+}
+
+.chart-container { 
+  background: white; 
+  border-radius: 20px; 
+  padding: 20px; 
+  color: #333; 
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.chart-row { 
+  display: flex; 
+  align-items: center; 
+  margin-bottom: 15px; 
+}
+
+.chart-label { 
+  width: 110px; 
+  display: flex; 
+  align-items: center; 
+  font-size: 13px; 
+  font-weight: 700; 
+}
+
+.chart-icon { 
+  width: 32px; 
+  height: 32px; 
+  border-radius: 50%; 
+  margin-right: 8px; 
+  border: 1px solid #ddd; 
+  background: #f9f9f9;
+  object-fit: cover;
+}
+
+.chart-bar-bg { 
+  flex-grow: 1; 
+  height: 24px; 
+  background: #f0f0f0; 
+  border-radius: 12px; 
+  overflow: hidden; 
+  position: relative; 
+}
+
+.chart-bar-fill { 
+  height: 100%; 
+  transition: width 0.8s ease-out; 
+  display: flex; 
+  align-items: center; 
+  justify-content: flex-end; 
+  padding-right: 10px; 
+  box-sizing: border-box;
+}
+
+.chart-bar-fill.pos { 
+  background: linear-gradient(90deg, #4caf50, #8bc34a); 
+}
+.chart-bar-fill.neg { 
+  background: linear-gradient(90deg, #f44336, #ff7043); 
+}
+
+.score-val { 
+  color: white; 
+  font-size: 11px; 
+  font-weight: 800; 
+  text-shadow: 0 1px 1px rgba(0,0,0,0.2);
+}
+
+.retry-btn { 
+  margin-top: 25px; 
+  width: 100%; 
+  padding: 15px; 
+  background: #e2a07c; 
+  border: none; 
+  border-radius: 12px; 
+  color: white; 
+  font-weight: bold; 
+  cursor: pointer; 
+  font-size: 16px;
+}
+
+.retry-btn:hover {
+  background: #d18f6b;
+}
