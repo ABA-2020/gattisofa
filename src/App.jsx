@@ -15,7 +15,7 @@ const catProfiles = {
   3: { name: "Joey", image: JoeyImg },
   4: { name: "Miss Marple", image: MissMarpleImg },
   5: { name: "Hannibal", image: HannibalImg },
-  6: { name: "Duchessa", image: LuluImg } // Duchessa corretta
+  6: { name: "Duchessa", image: LuluImg } // Nome corretto
 };
 
 const shuffleArray = (array) => {
@@ -122,7 +122,7 @@ function App() {
         cache: "no-cache", 
         body: JSON.stringify(dataToSend) 
       });
-    } catch (e) { console.error(e); }
+    } catch (e) { console.error("Errore invio:", e); }
   };
 
   const swipe = async (dir) => {
@@ -165,6 +165,7 @@ function App() {
   };
 
   const progressPercent = Math.round(((deck.length - currentIndex) / deck.length) * 100);
+  const currentQuestionNum = deck.length - currentIndex;
   const currentQuestion = deck[currentIndex];
 
   return (
@@ -197,7 +198,7 @@ function App() {
         <div className="test-interface">
           <div className="progress-section">
             <div className="progress-info">
-              <span>Domanda {deck.length - currentIndex} di {deck.length}</span>
+              <span>Domanda {currentQuestionNum} di {deck.length}</span>
               <span className="percent-text">{progressPercent}%</span>
             </div>
             <div className="progress-bar-container">
@@ -206,13 +207,15 @@ function App() {
           </div>
           
           <div className="card-container">
-            {deck.map((q, index) => (
+            {deck.map((q, index) => {
+              const isCurrent = index === currentIndex;
+              return (
                 <TinderCard 
                   key={q.id} 
                   ref={cardRefs[index]} 
                   onSwipe={(dir) => handleSwipe(dir, q)}
                   preventSwipe={q.id === 'D2' ? ['up','down','left','right'] : ['up', 'down']}
-                  className={`swipe ${index === currentIndex ? 'active-card' : 'hidden-card'}`}
+                  className={`swipe ${isCurrent ? 'active-card' : 'hidden-card'}`}
                 >
                   <div className="card">
                     <h2>{q.title}</h2>
@@ -238,7 +241,8 @@ function App() {
                     )}
                   </div>
                 </TinderCard>
-            ))}
+              );
+            })}
           </div>
 
           {currentQuestion && currentQuestion.id !== 'D2' && (
