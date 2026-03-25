@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import TinderCard from 'react-tinder-card';
 import './App.css'; 
 
@@ -27,7 +27,6 @@ const shuffleArray = (array) => {
   return shuffled;
 };
 
-// DATASET COMPLETO P1-P60
 const psychQuestions = [
   { id: "P1", type: "psych", title: "Cosa preferiresti vedere?", leftOption: "Pretty Woman", catL: 1, rightOption: "Il Gattopardo", catR: 2 },
   { id: "P2", type: "psych", title: "Cosa preferiresti vedere?", leftOption: "Notting Hill", catL: 1, rightOption: "Via col Vento", catR: 2 },
@@ -93,7 +92,6 @@ const psychQuestions = [
 
 const buildDeck = () => {
   const shuffledPsych = shuffleArray(psychQuestions);
-  // TinderCard legge dal fondo: D1 e D2 alla fine = visti per primi.
   return [
     ...shuffledPsych,
     { id: "D2", type: "demo_age", title: "Quanti anni hai?" },
@@ -111,12 +109,10 @@ function App() {
   
   const cardRefs = useMemo(() => Array(deck.length).fill(0).map(() => React.createRef()), [deck]);
 
-  // Gestione Frecce Tastiera
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (showResult) return;
       const isInputFocused = document.activeElement.tagName === 'INPUT';
-      
       if (e.key === 'ArrowLeft' && !isInputFocused) swipe('left');
       if (e.key === 'ArrowRight' && !isInputFocused) swipe('right');
       if (e.key === 'Enter' && isInputFocused && deck[currentIndex]?.id === 'D2') handleAgeSubmit();
@@ -202,7 +198,7 @@ function App() {
         <div className="test-interface">
           <div className="progress-section">
             <div className="progress-info">
-              <span>Domanda {currentQuestionNum} di {deck.length}</span>
+              <span className="q-count">Domanda {currentQuestionNum} di {deck.length}</span>
               <span className="percent-text">{progressPercent}%</span>
             </div>
             <div className="progress-bar-container">
@@ -211,15 +207,13 @@ function App() {
           </div>
           
           <div className="card-container">
-            {deck.map((q, index) => {
-              const isCurrent = index === currentIndex;
-              return (
+            {deck.map((q, index) => (
                 <TinderCard 
                   key={q.id} 
                   ref={cardRefs[index]} 
                   onSwipe={(dir) => handleSwipe(dir, q)}
                   preventSwipe={q.id === 'D2' ? ['up','down','left','right'] : ['up', 'down']}
-                  className={`swipe ${isCurrent ? 'active-card' : 'hidden-card'}`}
+                  className={`swipe ${index === currentIndex ? 'active-card' : 'hidden-card'}`}
                 >
                   <div className="card">
                     <h2>{q.title}</h2>
@@ -245,8 +239,7 @@ function App() {
                     )}
                   </div>
                 </TinderCard>
-              );
-            })}
+            ))}
           </div>
 
           {currentQuestion && currentQuestion.id !== 'D2' && (
