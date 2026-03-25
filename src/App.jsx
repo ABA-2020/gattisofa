@@ -27,6 +27,7 @@ const shuffleArray = (array) => {
   return shuffled;
 };
 
+// DATASET COMPLETO P1-P60
 const psychQuestions = [
   { id: "P1", type: "psych", title: "Cosa preferiresti vedere?", leftOption: "Pretty Woman", catL: 1, rightOption: "Il Gattopardo", catR: 2 },
   { id: "P2", type: "psych", title: "Cosa preferiresti vedere?", leftOption: "Notting Hill", catL: 1, rightOption: "Via col Vento", catR: 2 },
@@ -92,6 +93,7 @@ const psychQuestions = [
 
 const buildDeck = () => {
   const shuffledPsych = shuffleArray(psychQuestions);
+  // TinderCard legge dal fondo: D1 e D2 alla fine = visti per primi.
   return [
     ...shuffledPsych,
     { id: "D2", type: "demo_age", title: "Quanti anni hai?" },
@@ -167,6 +169,7 @@ function App() {
   };
 
   const progressPercent = Math.round(((deck.length - currentIndex) / deck.length) * 100);
+  const currentQuestionNum = deck.length - currentIndex;
   const currentQuestion = deck[currentIndex];
 
   return (
@@ -199,7 +202,7 @@ function App() {
         <div className="test-interface">
           <div className="progress-section">
             <div className="progress-info">
-              <span>Domanda {deck.length - currentIndex} di {deck.length}</span>
+              <span>Domanda {currentQuestionNum} di {deck.length}</span>
               <span className="percent-text">{progressPercent}%</span>
             </div>
             <div className="progress-bar-container">
@@ -209,7 +212,6 @@ function App() {
           
           <div className="card-container">
             {deck.map((q, index) => {
-              // Anti-spoiler: rendiamo invisibili tutte le carte tranne quella attiva
               const isCurrent = index === currentIndex;
               return (
                 <TinderCard 
@@ -222,20 +224,22 @@ function App() {
                   <div className="card">
                     <h2>{q.title}</h2>
                     {q.id === 'D2' ? (
-                      <form onSubmit={handleAgeSubmit} className="age-input-container">
-                        <input 
-                          type="number" 
-                          inputMode="numeric"
-                          pattern="[0-9]*"
-                          className="age-input-fixed"
-                          placeholder="Età" 
-                          value={ageValue}
-                          onChange={(e) => setAgeValue(e.target.value)}
-                          onPointerDown={(e) => e.stopPropagation()}
-                          onTouchStart={(e) => e.stopPropagation()}
-                        />
-                        <button type="submit" className="age-submit-btn-fixed" disabled={!ageValue}>Avanti</button>
-                      </form>
+                      <div className="age-input-overlay-inner">
+                        <form onSubmit={handleAgeSubmit} className="age-input-container">
+                          <input 
+                            type="number" 
+                            inputMode="numeric"
+                            pattern="[0-9]*"
+                            className="age-input-fixed"
+                            placeholder="Età" 
+                            value={ageValue}
+                            onChange={(e) => setAgeValue(e.target.value)}
+                            onPointerDown={(e) => e.stopPropagation()}
+                            onTouchStart={(e) => e.stopPropagation()}
+                          />
+                          <button type="submit" className="age-submit-btn-fixed" disabled={!ageValue}>Avanti</button>
+                        </form>
+                      </div>
                     ) : (
                       <p className="card-subtitle">Usa le frecce o swippa</p>
                     )}
