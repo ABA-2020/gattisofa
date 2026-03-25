@@ -15,7 +15,7 @@ const catProfiles = {
   3: { name: "Joey", image: JoeyImg },
   4: { name: "Miss Marple", image: MissMarpleImg },
   5: { name: "Hannibal", image: HannibalImg },
-  6: { name: "Duchessa", image: LuluImg } // Nome corretto
+  6: { name: "Lulu", image: LuluImg }
 };
 
 const shuffleArray = (array) => {
@@ -27,16 +27,21 @@ const shuffleArray = (array) => {
   return shuffled;
 };
 
+const demoQuestions = [
+  { id: "D1", type: "demo", title: "Qual è il tuo sesso?", leftOption: "Uomo", rightOption: "Donna" },
+  { id: "D2", type: "demo_age", title: "Quanti anni hai?" },
+];
+
 const psychQuestions = [
   { id: "P1", type: "psych", title: "Cosa preferiresti vedere?", leftOption: "Pretty Woman", catL: 1, rightOption: "Il Gattopardo", catR: 2 },
   { id: "P2", type: "psych", title: "Cosa preferiresti vedere?", leftOption: "Notting Hill", catL: 1, rightOption: "Via col Vento", catR: 2 },
   { id: "P3", type: "psych", title: "Cosa preferiresti vedere?", leftOption: "La Pantera Rosa", catL: 1, rightOption: "Indiana Jones", catR: 3 },
   { id: "P4", type: "psych", title: "Cosa preferiresti vedere?", leftOption: "Pretty Woman", catL: 1, rightOption: "Il Padrino", catR: 3 },
-  { id: "P5", type: "psych", title: "Cosa preferiresti vedere?", leftOption: "Notting Hill", catL: 1, rightOption: "Ass. su Orient Express", catR: 4 },
+  { id: "P5", type: "psych", title: "Cosa preferiresti vedere?", leftOption: "Notting Hill", catL: 1, rightOption: "Assassinio sull'Orient Express", catR: 4 },
   { id: "P6", type: "psych", title: "Cosa preferiresti vedere?", leftOption: "La Pantera Rosa", catL: 1, rightOption: "Mystic River", catR: 4 },
   { id: "P7", type: "psych", title: "Cosa preferiresti vedere?", leftOption: "La Pantera Rosa", catL: 1, rightOption: "Psycho", catR: 5 },
-  { id: "P8", type: "psych", title: "Cosa preferiresti vedere?", leftOption: "Casablanca", catL: 1, rightOption: "Silenzio degli Innocenti", catR: 5 },
-  { id: "P9", type: "psych", title: "Cosa preferiresti vedere?", leftOption: "Casablanca", catL: 1, rightOption: "Fabbricante di Lacrime", catR: 6 },
+  { id: "P8", type: "psych", title: "Cosa preferiresti vedere?", leftOption: "Casablanca", catL: 1, rightOption: "Il Silenzio degli Innocenti", catR: 5 },
+  { id: "P9", type: "psych", title: "Cosa preferiresti vedere?", leftOption: "Casablanca", catL: 1, rightOption: "Il Fabbricante di Lacrime", catR: 6 },
   { id: "P10", type: "psych", title: "Cosa preferiresti vedere?", leftOption: "Casablanca", catL: 1, rightOption: "Cime Tempestose", catR: 6 },
   { id: "P11", type: "psych", title: "Cosa preferiresti vedere?", leftOption: "Via col Vento", catL: 2, rightOption: "Guerre Stellari", catR: 3 },
   { id: "P12", type: "psych", title: "Cosa preferiresti vedere?", leftOption: "Troy", catL: 2, rightOption: "C'era una volta in America", catR: 3 },
@@ -49,15 +54,15 @@ const psychQuestions = [
   { id: "P19", type: "psych", title: "Cosa preferiresti vedere?", leftOption: "Indiana Jones", catL: 3, rightOption: "Sherlock Holmes", catR: 4 },
   { id: "P20", type: "psych", title: "Cosa preferiresti vedere?", leftOption: "Il Padrino", catL: 3, rightOption: "La Casa di Carta", catR: 4 },
   { id: "P21", type: "psych", title: "Cosa preferiresti vedere?", leftOption: "Guerre Stellari", catL: 3, rightOption: "Shining", catR: 5 },
-  { id: "P22", type: "psych", title: "Cosa preferiresti vedere?", leftOption: "C'era una volta in America", catL: 3, rightOption: "Silenzio degli Innocenti", catR: 5 },
+  { id: "P22", type: "psych", title: "Cosa preferiresti vedere?", leftOption: "C'era una volta in America", catL: 3, rightOption: "Il Silenzio degli Innocenti", catR: 5 },
   { id: "P23", type: "psych", title: "Cosa preferiresti vedere?", leftOption: "Indiana Jones", catL: 3, rightOption: "Twilight", catR: 6 },
   { id: "P24", type: "psych", title: "Cosa preferiresti vedere?", leftOption: "Guerre Stellari", catL: 3, rightOption: "Cime Tempestose", catR: 6 },
   { id: "P25", type: "psych", title: "Cosa preferiresti vedere?", leftOption: "Sherlock Holmes", catL: 4, rightOption: "Psycho", catR: 5 },
   { id: "P26", type: "psych", title: "Cosa preferiresti vedere?", leftOption: "Mystic River", catL: 4, rightOption: "Shining", catR: 5 },
-  { id: "P27", type: "psych", title: "Cosa preferiresti vedere?", leftOption: "Sherlock Holmes", catL: 4, rightOption: "Fabbricante di Lacrime", catR: 6 },
+  { id: "P27", type: "psych", title: "Cosa preferiresti vedere?", leftOption: "Sherlock Holmes", catL: 4, rightOption: "Il Fabbricante di Lacrime", catR: 6 },
   { id: "P28", type: "psych", title: "Cosa preferiresti vedere?", leftOption: "La Casa di Carta", catL: 4, rightOption: "Colpa delle Stelle", catR: 6 },
   { id: "P29", type: "psych", title: "Cosa preferiresti vedere?", leftOption: "Shining", catL: 5, rightOption: "Cime Tempestose", catR: 6 },
-  { id: "P30", type: "psych", title: "Cosa preferiresti vedere?", leftOption: "Arancia Meccanica", catL: 5, rightOption: "Fabbricante di Lacrime", catR: 6 },
+  { id: "P30", type: "psych", title: "Cosa preferiresti vedere?", leftOption: "Arancia Meccanica", catL: 5, rightOption: "Il Fabbricante di Lacrime", catR: 6 },
   { id: "P31", type: "psych", title: "Preferisci un film...", leftOption: "Leggero", catL: 1, rightOption: "Impegnato", catR: 2 },
   { id: "P32", type: "psych", title: "Preferisci un film...", leftOption: "Rassicurante", catL: 1, rightOption: "Avventuroso", catR: 3 },
   { id: "P33", type: "psych", title: "Preferisci un film...", leftOption: "Lineare", catL: 1, rightOption: "Enigmatico", catR: 4 },
@@ -90,17 +95,8 @@ const psychQuestions = [
   { id: "P60", type: "psych", title: "Segui più...", leftOption: "La realtà", catL: 5, rightOption: "Il sogno", catR: 6 },
 ];
 
-const buildDeck = () => {
-  const shuffledPsych = shuffleArray(psychQuestions);
-  return [
-    ...shuffledPsych,
-    { id: "D2", type: "demo_age", title: "Quanti anni hai?" },
-    { id: "D1", type: "demo", title: "Qual è il tuo sesso?", leftOption: "Uomo", rightOption: "Donna" }
-  ];
-};
-
 function App() {
-  const [deck] = useState(() => buildDeck());
+  const [deck, setDeck] = useState(() => [...shuffleArray(psychQuestions), ...demoQuestions.reverse()]);
   const [scores, setScores] = useState({ 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 });
   const [responses, setResponses] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(deck.length - 1);
@@ -115,14 +111,9 @@ function App() {
     const dataToSend = { punteggi_raw: finalScores, risposte_mappate: mappaRisposte };
 
     try {
-      const URL = "https://script.google.com/macros/s/AKfycbwI71lkCOWvykAdorI1TASq9TP7SSapyPrQ7hF_HqhtalwLYUei8hdFKzlvFOQHLXWW8Q/exec";
-      await fetch(URL, { 
-        method: "POST", 
-        mode: "no-cors", 
-        cache: "no-cache", 
-        body: JSON.stringify(dataToSend) 
-      });
-    } catch (e) { console.error("Errore invio:", e); }
+      const URL = "IL_TUO_URL_SCRIPT";
+      await fetch(URL, { method: "POST", mode: "no-cors", cache: "no-cache", body: JSON.stringify(dataToSend) });
+    } catch (e) { console.error(e); }
   };
 
   const swipe = async (dir) => {
@@ -132,40 +123,41 @@ function App() {
   };
 
   const handleAgeSubmit = (e) => {
-    if (e) e.preventDefault();
-    if (ageValue && ageValue.trim() !== "") {
-      swipe('right');
-    }
+    e.preventDefault();
+    if (ageValue) swipe('right');
   };
 
   const handleSwipe = (direction, question) => {
-    let chosen = question.type === 'demo_age' ? ageValue : (direction === 'left' ? question.leftOption : question.rightOption);
-    
-    const newResponses = [...responses, { id: question.id, risposta: chosen }];
-    setResponses(newResponses);
+    let chosen = "";
+    if (question.type === 'demo_age') chosen = ageValue;
+    else chosen = direction === 'left' ? question.leftOption : question.rightOption;
 
-    let nextScores = { ...scores };
+    const newResponse = { id: question.id, risposta: chosen };
+    const updatedResponses = [...responses, newResponse];
+    setResponses(updatedResponses);
+
+    let updatedScores = { ...scores };
     if (question.type === 'psych') {
       if (direction === 'left') {
-        nextScores[question.catL] += 1;
-        nextScores[question.catR] -= 1;
+        updatedScores[question.catL] += 1;
+        updatedScores[question.catR] -= 1;
       } else {
-        nextScores[question.catR] += 1;
-        nextScores[question.catL] -= 1;
+        updatedScores[question.catR] += 1;
+        updatedScores[question.catL] -= 1;
       }
-      setScores(nextScores);
+      setScores(updatedScores);
     }
 
     if (currentIndex === 0) {
       setShowResult(true);
-      sendDataToGoogle(nextScores, newResponses);
+      sendDataToGoogle(updatedScores, updatedResponses);
     } else {
       setCurrentIndex(prev => prev - 1);
     }
   };
 
-  const progressPercent = Math.round(((deck.length - currentIndex) / deck.length) * 100);
-  const currentQuestionNum = deck.length - currentIndex;
+  const currentQNum = deck.length - currentIndex;
+  const progressPercent = Math.round((currentQNum / deck.length) * 100);
   const currentQuestion = deck[currentIndex];
 
   return (
@@ -198,60 +190,35 @@ function App() {
         <div className="test-interface">
           <div className="progress-section">
             <div className="progress-info">
-              <span>Domanda {currentQuestionNum} di {deck.length}</span>
+              <span>Domanda {currentQNum} di {deck.length}</span>
               <span className="percent-text">{progressPercent}%</span>
             </div>
-            <div className="progress-bar-container">
-              <div className="progress-fill" style={{ width: `${progressPercent}%` }}></div>
-            </div>
+            <div className="progress-bar"><div className="fill" style={{width: `${progressPercent}%`}}></div></div>
           </div>
           
           <div className="card-container">
-            {deck.map((q, index) => {
-              const isCurrent = index === currentIndex;
-              return (
-                <TinderCard 
-                  key={q.id} 
-                  ref={cardRefs[index]} 
-                  onSwipe={(dir) => handleSwipe(dir, q)}
-                  preventSwipe={q.id === 'D2' ? ['up','down','left','right'] : ['up', 'down']}
-                  className={`swipe ${isCurrent ? 'active-card' : 'hidden-card'}`}
-                >
-                  <div className="card">
-                    <h2>{q.title}</h2>
-                    {q.id === 'D2' ? (
-                      <div className="age-input-overlay-inner">
-                        <form onSubmit={handleAgeSubmit} className="age-input-container">
-                          <input 
-                            type="number" 
-                            inputMode="numeric"
-                            pattern="[0-9]*"
-                            className="age-input-fixed"
-                            placeholder="Età" 
-                            value={ageValue}
-                            onChange={(e) => setAgeValue(e.target.value)}
-                            onPointerDown={(e) => e.stopPropagation()}
-                            onTouchStart={(e) => e.stopPropagation()}
-                          />
-                          <button type="submit" className="age-submit-btn-fixed" disabled={!ageValue}>Avanti</button>
-                        </form>
-                      </div>
-                    ) : (
-                      <p className="card-subtitle">Scorri o usa i pulsanti</p>
-                    )}
-                  </div>
-                </TinderCard>
-              );
-            })}
+            {deck.map((q, index) => (
+              <TinderCard key={q.id} ref={cardRefs[index]} onSwipe={(dir) => handleSwipe(dir, q)} preventSwipe={['up', 'down']} className="swipe">
+                <div className="card">
+                  <h2>{q.title}</h2>
+                  {q.type === 'demo_age' ? (
+                    <form onSubmit={handleAgeSubmit} className="age-input-box">
+                      <input type="number" inputMode="numeric" value={ageValue} onChange={(e) => setAgeValue(e.target.value)} placeholder="Età" onPointerDown={(e) => e.stopPropagation()}/>
+                      <button type="submit" className="age-submit-btn-fixed" disabled={!ageValue}>Avanti</button>
+                    </form>
+                  ) : <p className="card-subtitle">Scorri o usa i pulsanti</p>}
+                </div>
+              </TinderCard>
+            ))}
           </div>
 
-          {currentQuestion && currentQuestion.id !== 'D2' && (
+          {currentQuestion && currentQuestion.type !== 'demo_age' && (
             <div className="action-buttons-container">
-              <button className="swipe-btn left" onClick={() => swipe('left')}>
+              <button className="swipe-btn" onClick={() => swipe('left')}>
                 <span className="arrow">←</span>
                 <span className="btn-text">{currentQuestion.leftOption}</span>
               </button>
-              <button className="swipe-btn right" onClick={() => swipe('right')}>
+              <button className="swipe-btn" onClick={() => swipe('right')}>
                 <span className="arrow">→</span>
                 <span className="btn-text">{currentQuestion.rightOption}</span>
               </button>
