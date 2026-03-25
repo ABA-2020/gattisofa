@@ -27,7 +27,6 @@ const shuffleArray = (array) => {
   return shuffled;
 };
 
-// --- DATASET: LE 60 DOMANDE PSICOLOGICHE (P1-P60) ---
 const psychQuestions = [
   { id: "P1", type: "psych", title: "Cosa preferiresti vedere?", leftOption: "Pretty Woman", catL: 1, rightOption: "Il Gattopardo", catR: 2 },
   { id: "P2", type: "psych", title: "Cosa preferiresti vedere?", leftOption: "Notting Hill", catL: 1, rightOption: "Via col Vento", catR: 2 },
@@ -92,15 +91,17 @@ const psychQuestions = [
 ];
 
 const buildDeck = () => {
-  // Mescoliamo le 60 domande psicologiche
   const shuffledPsych = shuffleArray(psychQuestions);
-  // D1 e D2 fisse. Nel mazzo Tinder, l'ultima dell'array è la PRIMA che si vede.
-  // Quindi: [shuffledP1...P60, D2, D1]
-  return [...shuffledPsych, { id: "D2", type: "demo_age", title: "Quanti anni hai?" }, { id: "D1", type: "demo", title: "Qual è il tuo sesso?", leftOption: "Uomo", rightOption: "Donna" }];
+  // TinderCard legge l'array dal fondo: mettiamo D1 e D2 alla fine per vederle per prime
+  return [
+    ...shuffledPsych,
+    { id: "D2", type: "demo_age", title: "Quanti anni hai?" },
+    { id: "D1", type: "demo", title: "Qual è il tuo sesso?", leftOption: "Uomo", rightOption: "Donna" }
+  ];
 };
 
 function App() {
-  const [deck, setDeck] = useState(() => buildDeck());
+  const [deck] = useState(() => buildDeck());
   const [scores, setScores] = useState({ 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 });
   const [responses, setResponses] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(deck.length - 1);
@@ -127,7 +128,8 @@ function App() {
     }
   };
 
-  const handleAgeSubmit = () => {
+  const handleAgeSubmit = (e) => {
+    if (e) e.preventDefault();
     if (ageValue && ageValue.trim() !== "") {
       swipe('right');
     }
@@ -136,7 +138,7 @@ function App() {
   const handleSwipe = (direction, question) => {
     let chosen = "";
     if (question.type === 'demo_age') chosen = ageValue;
-    else chosen = direction === 'left' ? question.leftOption : question.rightOption;
+    else chosen = (direction === 'left' ? question.leftOption : question.rightOption);
 
     const newResponse = { id: question.id, risposta: chosen };
     const updatedResponses = [...responses, newResponse];
@@ -197,7 +199,6 @@ function App() {
           
           <div className="card-container">
             {deck.map((q, index) => {
-              // LOGICA SPOILER: Nascondiamo le carte che non sono quella corrente
               const isCurrent = index === currentIndex;
               return (
                 <TinderCard 
@@ -210,25 +211,22 @@ function App() {
                   <div className="card">
                     <h2>{q.title}</h2>
                     {q.id === 'D2' ? (
-                      <div className="age-input-container">
+                      <form className="age-input-container" onSubmit={handleAgeSubmit}>
                         <input 
                           type="number" 
-                          inputMode="numeric" // Forza il tastierino numerico
-                          pattern="[0-9]*"    // Aiuta iOS a capire che sono solo numeri
+                          inputMode="numeric"
+                          pattern="[0-9]*"
                           className="age-input-fixed"
-                          placeholder="Età" 
+                          placeholder="Scrivi la tua età" 
                           value={ageValue}
                           onChange={(e) => setAgeValue(e.target.value)}
-                          
-                          // BLOCCA LA LIBRERIA TINDER DAL RUBARE IL TOCCO
                           onPointerDown={(e) => e.stopPropagation()}
-                          onTouchStart={(e) => e.stopPropagation()} 
-                          
-                          // FOCUS MANUALE AL CLICK
-                          onClick={(e) => e.target.focus()} 
+                          onTouchStart={(e) => e.stopPropagation()}
                         />
-                        <button className="age-submit-btn-fixed" onClick={handleAgeSubmit} disabled={!ageValue}>Avanti</button>
-                      </div>
+                        <button type="submit" className="age-submit-btn-fixed" disabled={!ageValue}>
+                          Avanti
+                        </button>
+                      </form>
                     ) : (
                       <p className="card-subtitle">Scorri o usa i pulsanti</p>
                     )}
