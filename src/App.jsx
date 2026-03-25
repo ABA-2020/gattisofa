@@ -106,8 +106,11 @@ function App() {
   const [currentIndex, setCurrentIndex] = useState(deck.length - 1);
   const [showResult, setShowResult] = useState(false);
   const [ageValue, setAgeValue] = useState('');
-  
+
   const cardRefs = useMemo(() => Array(deck.length).fill(0).map(() => React.createRef()), [deck]);
+
+  // ← AGGIUNTO: ref per l'input età
+  const ageInputRef = React.useRef(null);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -121,19 +124,32 @@ function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [currentIndex, showResult, ageValue]);
 
+  // ← AGGIUNTO: forza il focus sull'input quando appare la carta età
+  useEffect(() => {
+    if (currentQuestion?.id === 'D2' && ageInputRef.current) {
+      setTimeout(() => ageInputRef.current?.focus(), 100);
+    }
+  }, [currentIndex]);
+
   const sendDataToGoogle = async (finalScores, finalResponses) => {
     const mappaRisposte = {};
     finalResponses.forEach(r => { mappaRisposte[r.id] = r.risposta; });
-    const dataToSend = { punteggi_raw: finalScores, risposte_mappate: mappaRisposte };
-
+    const payload = { punteggi: finalScores, risposte: mappaRisposte };
     try {
-      const URL = "https://script.google.com/macros/s/AKfycbwI71lkCOWvykAdorI1TASq9TP7SSapyPrQ7hF_HqhtalwLYUei8hdFKzlvFOQHLXWW8Q/exec";
-      await fetch(URL, { method: "POST", mode: "no-cors", cache: "no-cache", body: JSON.stringify(dataToSend) });
-    } catch (e) { console.error("Errore invio:", e); }
+      await fetch("https://script.google.com/macros/s/AKfycbxIuHMfVh5PK5cs9oKdidahtMiN0XBekrGgxqCBdJX5S7a-IlT-y6QHsLkBiKqA4Hmf/exec", {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+    } catch (err) {
+      console.error("Errore invio dati:", err);
+    }
   };
 
   const swipe = async (dir) => {
-    if (currentIndex >= 0 && cardRefs[currentIndex]?.current) {
+    if (currentIndex < 0 || currentIndex >= deck.length) return;
+    if (cardRefs[currentIndex]?.current) {
       await cardRefs[currentIndex].current.swipe(dir);
     }
   };
@@ -220,16 +236,19 @@ function App() {
                     {q.id === 'D2' ? (
                       <div className="age-input-overlay-inner">
                         <form onSubmit={handleAgeSubmit} className="age-input-container">
-                          <input 
-                            type="number" 
+                          <input
+                            ref={ageInputRef}
+                            type="number"
                             inputMode="numeric"
                             pattern="[0-9]*"
                             className="age-input-fixed"
-                            placeholder="Età" 
+                            placeholder="Età"
                             value={ageValue}
                             onChange={(e) => setAgeValue(e.target.value)}
                             onPointerDown={(e) => e.stopPropagation()}
                             onTouchStart={(e) => e.stopPropagation()}
+                            onClick={(e) => e.stopPropagation()}
+                            autoFocus
                           />
                           <button type="submit" className="age-submit-btn-fixed" disabled={!ageValue}>Avanti</button>
                         </form>
