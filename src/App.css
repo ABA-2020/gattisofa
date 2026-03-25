@@ -3,66 +3,167 @@ body {
   background: linear-gradient(135deg, #2b1b3d 0%, #49284d 35%, #834d6c 70%, #e2a07c 100%);
   background-attachment: fixed; color: white;
   font-family: -apple-system, sans-serif; overflow-x: hidden;
-  -webkit-tap-highlight-color: transparent;
 }
 
 .app-container { 
-  max-width: 500px; margin: 0 auto; padding: 20px; 
-  min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+  max-width: 500px; 
+  margin: 0 auto; 
+  padding: 20px; 
+  min-height: 100vh; 
+  display: flex; 
+  flex-direction: column; 
 }
 
-/* BARRA DI PROGRESSO STATICA */
-.progress-section { width: 340px; margin-bottom: 25px; }
-.progress-info { display: flex; justify-content: space-between; font-size: 14px; font-weight: 600; margin-bottom: 8px; }
-.progress-bar { width: 100%; height: 10px; background: rgba(255,255,255,0.2); border-radius: 10px; overflow: hidden; }
-.progress-bar .fill { height: 100%; background: #a855f7; transition: width 0.4s ease; }
+/* PROGRESS BAR */
+.progress-section { 
+  width: 100%; 
+  margin-bottom: 25px; 
+}
 
-/* MAZZO CARTE */
-.card-container { position: relative; width: 340px; height: 400px; margin-bottom: 20px; }
-.swipe { position: absolute; width: 100%; height: 100%; }
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: white;
+}
+
+.percent-text {
+  color: #d8b4fe;
+}
+
+.progress-bar-container { 
+  width: 100%; 
+  height: 10px; 
+  background: rgba(255, 255, 255, 0.2); 
+  border-radius: 10px; 
+  overflow: hidden; 
+}
+
+.progress-fill { 
+  height: 100%; 
+  background: #a855f7; 
+  transition: width 0.4s ease-out; 
+}
+
+/* ANTI-SPOILER LOGIC */
+.hidden-card {
+  display: none !important; /* Nasconde fisicamente la carta dal DOM visivo */
+}
+
+.active-card {
+  display: flex !important;
+  z-index: 10;
+}
+
+/* CARTE */
+.card-container { 
+  position: relative; 
+  width: 100%; 
+  height: 420px; 
+  display: flex; 
+  justify-content: center; 
+  margin-bottom: 20px; 
+}
+
+.swipe { 
+  position: absolute; 
+  width: 340px; 
+  height: 100%; 
+}
+
 .card {
-  position: absolute; width: 100%; height: 100%; background: white; 
-  border-radius: 24px; display: flex; flex-direction: column; justify-content: center; 
-  align-items: center; padding: 30px; box-sizing: border-box; color: #2b1b3d; text-align: center;
-  border: 1px solid rgba(0,0,0,0.1); box-shadow: none !important;
+  position: absolute; 
+  width: 100%; 
+  height: 100%;
+  background: #fff; 
+  border-radius: 24px;
+  display: flex; 
+  flex-direction: column; 
+  justify-content: center; 
+  align-items: center;
+  padding: 30px; 
+  box-sizing: border-box; 
+  color: #1a1a1a; 
+  text-align: center;
+  border: 1px solid rgba(0,0,0,0.1);
 }
-.card h2 { font-size: 22px; margin: 0 0 15px 0; line-height: 1.2; }
-.card-subtitle { font-size: 13px; color: #888; margin: 0; }
+
+.card h2 { font-size: 22px; color: #2b1b3d; margin: 0; line-height: 1.2; }
+.card-subtitle { font-size: 13px; color: #888; margin-top: 20px; }
+
+/* FIX ETÀ */
+.age-input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.age-input-fixed {
+  width: 140px; 
+  padding: 12px; 
+  font-size: 20px; 
+  border-radius: 12px;
+  border: 2px solid #834d6c; 
+  text-align: center; 
+  margin-bottom: 15px;
+  background: #f9f9f9;
+}
+
+.age-submit-btn-fixed {
+  background: #a855f7; color: white; border: none; padding: 10px 30px;
+  border-radius: 20px; font-size: 16px; font-weight: bold; cursor: pointer;
+}
 
 /* PULSANTI FISSI */
-.action-buttons-container { display: flex; gap: 15px; width: 340px; justify-content: center; }
+.action-buttons-container { 
+  display: flex; 
+  justify-content: center;
+  gap: 12px; 
+  width: 100%; 
+  max-width: 400px;
+  margin: 10px auto 0;
+}
+
 .swipe-btn {
-  width: 160px; height: 65px; background: white; border-radius: 18px; 
-  border: 1px solid rgba(0,0,0,0.1); cursor: pointer; display: flex; 
-  flex-direction: column; align-items: center; justify-content: center;
+  flex: 0 0 calc(50% - 6px); /* Dimensione orizzontale fissa */
+  height: 85px;              /* Altezza verticale fissa */
+  background: rgba(255, 255, 255, 0.95); 
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 18px; 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center;
+  padding: 10px;
+  cursor: pointer;
 }
-.swipe-btn .arrow { font-size: 20px; color: #834d6c; font-weight: bold; }
+
 .swipe-btn .btn-text { 
-  font-size: 12px; font-weight: 700; color: #2b1b3d; width: 90%; 
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
+  font-size: 13px; 
+  font-weight: 600; 
+  color: #2b1b3d;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-align: center;
 }
 
-/* INPUT ETÀ */
-.age-input-box { display: flex; flex-direction: column; gap: 15px; align-items: center; }
-.age-input-box input {
-  width: 140px; padding: 12px; font-size: 20px; text-align: center; 
-  border: 2px solid #ddd; border-radius: 12px; outline: none;
-}
-.age-submit-btn-fixed {
-  background: #a855f7; color: white; border: none; padding: 10px 30px; 
-  border-radius: 20px; font-weight: bold; cursor: pointer;
-}
-
-/* RISULTATI E GRAFICO */
-.result-container { width: 340px; text-align: center; }
-.result-title { font-size: 22px; margin-bottom: 20px; }
-.chart-container { background: white; border-radius: 24px; padding: 20px; color: #333; margin-bottom: 20px; }
+/* GRAFICO */
+.chart-container { background: white; border-radius: 20px; padding: 20px; color: #333; }
 .chart-row { display: flex; align-items: center; margin-bottom: 15px; }
-.chart-label { width: 100px; display: flex; align-items: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
-.chart-icon { width: 30px; height: 30px; border-radius: 50%; margin-right: 8px; background: #f0f0f0; }
-.chart-bar-bg { flex-grow: 1; height: 20px; background: #eee; border-radius: 10px; overflow: hidden; position: relative; }
-.chart-bar-fill { height: 100%; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; transition: width 0.8s ease; }
+.chart-label { width: 110px; display: flex; align-items: center; font-size: 13px; font-weight: 700; }
+.chart-icon { width: 32px; height: 32px; border-radius: 50%; margin-right: 8px; border: 1px solid #ddd; }
+.chart-bar-bg { flex-grow: 1; height: 24px; background: #f0f0f0; border-radius: 12px; overflow: hidden; position: relative; }
+.chart-bar-fill { 
+  height: 100%; transition: width 0.8s ease-out; display: flex; align-items: center; 
+  justify-content: flex-end; padding-right: 10px;
+}
 .chart-bar-fill.pos { background: linear-gradient(90deg, #4caf50, #8bc34a); }
 .chart-bar-fill.neg { background: linear-gradient(90deg, #f44336, #ff7043); }
-.score-val { color: white; font-size: 10px; font-weight: 900; }
-.retry-btn { width: 100%; padding: 15px; background: #e2a07c; border: none; border-radius: 15px; color: white; font-weight: bold; cursor: pointer; }
+.score-val { color: white; font-size: 11px; font-weight: 800; }
+.retry-btn { margin-top: 25px; width: 100%; padding: 15px; background: #e2a07c; border: none; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; }
