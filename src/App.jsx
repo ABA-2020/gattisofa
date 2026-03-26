@@ -127,19 +127,23 @@ function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [currentIndex, showResult, ageValue]);
 
-  const sendDataToGoogle = async (finalScores, finalResponses) => {
-      const mappaRisposte = {};
-      finalResponses.forEach(r => { mappaRisposte[r.id] = r.risposta; });
-      try {
-        await fetch('/api/submit', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ punteggi: finalScores, risposte: mappaRisposte }),
-        });
-      } catch (err) {
-        console.error('Errore invio dati:', err);
-      }
-    };
+const sendDataToGoogle = async (finalScores, finalResponses) => {
+  const mappaRisposte = {};
+  finalResponses.forEach(r => { mappaRisposte[r.id] = r.risposta; });
+  try {
+    await fetch('/api/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        token: import.meta.env.VITE_TOKEN,
+        punteggi: finalScores, 
+        risposte: mappaRisposte 
+      }),
+    });
+  } catch (err) {
+    console.error('Errore invio dati:', err);
+  }
+};
 
   const swipe = async (dir) => {
     if (currentIndex < 0 || currentIndex >= deck.length) return;
