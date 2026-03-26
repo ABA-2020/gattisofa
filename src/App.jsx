@@ -108,7 +108,9 @@ function App() {
   const [ageValue, setAgeValue] = useState('');
 
   // --- PRIVACY MODAL STATE ---
-  const [privacyAccepted, setPrivacyAccepted] = useState(false);
+  const [privacyAccepted, setPrivacyAccepted] = useState(
+    () => localStorage.getItem('privacy_accepted') === 'true'
+  );
   const [privacyChecked, setPrivacyChecked] = useState(false);
 
   const cardRefs = useMemo(() => Array(deck.length).fill(0).map(() => React.createRef()), [deck]);
@@ -219,7 +221,10 @@ function App() {
             <button
               className="privacy-accept-btn"
               disabled={!privacyChecked}
-              onClick={() => setPrivacyAccepted(true)}
+              onClick={() => {
+                localStorage.setItem('privacy_accepted', 'true');
+                setPrivacyAccepted(true);
+              }}
             >
               Accetto e continuo
             </button>
