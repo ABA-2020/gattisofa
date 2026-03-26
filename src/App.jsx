@@ -109,16 +109,6 @@ function App() {
 
   const cardRefs = useMemo(() => Array(deck.length).fill(0).map(() => React.createRef()), [deck]);
 
-  // ← AGGIUNTO: ref per l'input età
-  const ageInputRef = React.useRef(null);
-
-  // FIX MOBILE: forza il focus sull'input età quando la carta diventa attiva
-  const currentQuestion = deck[currentIndex];
-  useEffect(() => {
-    if (currentQuestion?.id === 'D2' && ageInputRef.current) {
-      setTimeout(() => ageInputRef.current?.focus(), 150);
-    }
-  }, [currentIndex]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -183,6 +173,7 @@ function App() {
 
   const progressPercent = Math.round(((deck.length - currentIndex) / deck.length) * 100);
   const currentQuestionNum = deck.length - currentIndex;
+  const currentQuestion = deck[currentIndex];
 
   return (
     <div className="app-container">
@@ -223,21 +214,18 @@ function App() {
           </div>
           
           <div className="card-container">
-            {deck.map((q, index) => (
-                <TinderCard 
-                  key={q.id} 
-                  ref={cardRefs[index]} 
-                  onSwipe={(dir) => handleSwipe(dir, q)}
-                  preventSwipe={q.id === 'D2' ? ['up','down','left','right'] : ['up', 'down']}
-                  className={`swipe ${index === currentIndex ? 'active-card' : 'hidden-card'}`}
-                >
-                  <div className="card">
-                    <h2>{q.title}</h2>
-                    {q.id === 'D2' ? (
+            {deck.map((q, index) => {
+              if (q.id === 'D2') {
+                return (
+                  <div
+                    key={q.id}
+                    className={`swipe ${index === currentIndex ? 'active-card' : 'hidden-card'}`}
+                  >
+                    <div className="card">
+                      <h2>{q.title}</h2>
                       <div className="age-input-overlay-inner">
                         <form onSubmit={handleAgeSubmit} className="age-input-container">
                           <input
-                            ref={ageInputRef}
                             type="number"
                             inputMode="numeric"
                             pattern="[0-9]*"
@@ -245,20 +233,29 @@ function App() {
                             placeholder="Età"
                             value={ageValue}
                             onChange={(e) => setAgeValue(e.target.value)}
-                            onPointerDown={(e) => e.stopPropagation()}
-                            onTouchStart={(e) => e.stopPropagation()}
-                            onClick={(e) => e.stopPropagation()}
-                            autoFocus
                           />
                           <button type="submit" className="age-submit-btn-fixed" disabled={!ageValue}>Avanti</button>
                         </form>
                       </div>
-                    ) : (
-                      <p className="card-subtitle">Usa le frecce o swippa</p>
-                    )}
+                    </div>
+                  </div>
+                );
+              }
+              return (
+                <TinderCard
+                  key={q.id}
+                  ref={cardRefs[index]}
+                  onSwipe={(dir) => handleSwipe(dir, q)}
+                  preventSwipe={['up', 'down']}
+                  className={`swipe ${index === currentIndex ? 'active-card' : 'hidden-card'}`}
+                >
+                  <div className="card">
+                    <h2>{q.title}</h2>
+                    <p className="card-subtitle">Usa le frecce o swippa</p>
                   </div>
                 </TinderCard>
-            ))}
+              );
+            })}
           </div>
 
           {currentQuestion && currentQuestion.id !== 'D2' && (
