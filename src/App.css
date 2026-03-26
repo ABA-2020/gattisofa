@@ -189,3 +189,118 @@ body {
 .chart-bar-fill.neg { background: linear-gradient(90deg, #f44336, #ff7043); }
 .score-val { color: white; font-size: 11px; font-weight: 800; text-shadow: 0 1px 1px rgba(0,0,0,0.2); }
 .retry-btn { margin-top: 25px; width: 100%; padding: 15px; background: #e2a07c; border: none; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; }
+
+/* ================================================
+   PRIVACY MODAL
+   ================================================ */
+
+.privacy-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 8, 35, 0.75);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 100;
+}
+
+.privacy-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 101;
+
+  width: 92%;
+  max-width: 340px;
+  max-height: 90vh;
+  overflow-y: auto;
+
+  background: #fff;
+  border-radius: 24px;
+  padding: 28px 24px;
+  box-sizing: border-box;
+
+  color: #1a1a1a;
+  text-align: left;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.45);
+}
+
+.privacy-modal-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: #2b1b3d;
+  margin: 0 0 14px 0;
+  line-height: 1.2;
+}
+
+.privacy-modal-body {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #444;
+  margin: 0 0 16px 0;
+}
+
+.privacy-policy-link {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #834d6c;
+  text-decoration: none;
+  margin-bottom: 20px;
+  border-bottom: 1px dashed #834d6c;
+  padding-bottom: 2px;
+}
+
+.privacy-policy-link:hover {
+  color: #a855f7;
+  border-bottom-color: #a855f7;
+}
+
+.privacy-checkbox-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #2b1b3d;
+  margin-bottom: 22px;
+  cursor: pointer;
+  line-height: 1.4;
+}
+
+.privacy-checkbox {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+  accent-color: #a855f7;
+  cursor: pointer;
+}
+
+.privacy-accept-btn {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(90deg, #834d6c, #a855f7);
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.15s ease;
+}
+
+.privacy-accept-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.privacy-accept-btn:not(:disabled):hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+.privacy-accept-btn:not(:disabled):active {
+  transform: scale(0.98);
+}

@@ -107,8 +107,11 @@ function App() {
   const [showResult, setShowResult] = useState(false);
   const [ageValue, setAgeValue] = useState('');
 
-  const cardRefs = useMemo(() => Array(deck.length).fill(0).map(() => React.createRef()), [deck]);
+  // --- PRIVACY MODAL STATE ---
+  const [privacyAccepted, setPrivacyAccepted] = useState(false);
+  const [privacyChecked, setPrivacyChecked] = useState(false);
 
+  const cardRefs = useMemo(() => Array(deck.length).fill(0).map(() => React.createRef()), [deck]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -180,6 +183,50 @@ function App() {
 
   return (
     <div className="app-container">
+
+      {/* PRIVACY MODAL */}
+      {!privacyAccepted && (
+        <>
+          <div className="privacy-overlay" />
+          <div className="privacy-modal" role="dialog" aria-modal="true" aria-labelledby="privacy-title">
+            <h2 id="privacy-title" className="privacy-modal-title">🔒 Informativa sulla Privacy</h2>
+            <p className="privacy-modal-body">
+              Questo test raccoglie le tue risposte in <strong>forma completamente anonima</strong>,
+              senza alcun dato identificativo personale. Le informazioni vengono utilizzate
+              esclusivamente per <strong>fini di ricerca</strong> sui profili cinematografici e
+              non sono cedute a terzi né usate a scopi commerciali.
+              <br /><br />
+              Non viene effettuato alcun tracciamento identificativo. Non raccogliamo nome,
+              email, indirizzo IP o qualsiasi altro dato che possa ricondurre a te.
+            </p>
+            <a
+              href="/privacy-policy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="privacy-policy-link"
+            >
+              Leggi la Privacy Policy completa →
+            </a>
+            <label className="privacy-checkbox-label">
+              <input
+                type="checkbox"
+                checked={privacyChecked}
+                onChange={(e) => setPrivacyChecked(e.target.checked)}
+                className="privacy-checkbox"
+              />
+              <span>Ho letto e accetto l'informativa sulla privacy</span>
+            </label>
+            <button
+              className="privacy-accept-btn"
+              disabled={!privacyChecked}
+              onClick={() => setPrivacyAccepted(true)}
+            >
+              Accetto e continuo
+            </button>
+          </div>
+        </>
+      )}
+
       {showResult ? (
         <div className="result-container scrollable-results">
           <h2 className="result-title">I tuoi Punteggi Felini</h2>
