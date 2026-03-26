@@ -112,6 +112,14 @@ function App() {
   // ← AGGIUNTO: ref per l'input età
   const ageInputRef = React.useRef(null);
 
+  // FIX MOBILE: forza il focus sull'input età quando la carta diventa attiva
+  const currentQuestion = deck[currentIndex];
+  useEffect(() => {
+    if (currentQuestion?.id === 'D2' && ageInputRef.current) {
+      setTimeout(() => ageInputRef.current?.focus(), 150);
+    }
+  }, [currentIndex]);
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (showResult) return;
@@ -123,13 +131,6 @@ function App() {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [currentIndex, showResult, ageValue]);
-
-  // ← AGGIUNTO: forza il focus sull'input quando appare la carta età
-  useEffect(() => {
-    if (currentQuestion?.id === 'D2' && ageInputRef.current) {
-      setTimeout(() => ageInputRef.current?.focus(), 100);
-    }
-  }, [currentIndex]);
 
   const sendDataToGoogle = async (finalScores, finalResponses) => {
     const mappaRisposte = {};
@@ -182,7 +183,6 @@ function App() {
 
   const progressPercent = Math.round(((deck.length - currentIndex) / deck.length) * 100);
   const currentQuestionNum = deck.length - currentIndex;
-  const currentQuestion = deck[currentIndex];
 
   return (
     <div className="app-container">
