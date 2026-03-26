@@ -128,20 +128,18 @@ function App() {
   }, [currentIndex, showResult, ageValue]);
 
   const sendDataToGoogle = async (finalScores, finalResponses) => {
-    const mappaRisposte = {};
-    finalResponses.forEach(r => { mappaRisposte[r.id] = r.risposta; });
-    const payload = { punteggi: finalScores, risposte: mappaRisposte };
-    try {
-      await fetch("https://script.google.com/macros/s/AKfycbxIuHMfVh5PK5cs9oKdidahtMiN0XBekrGgxqCBdJX5S7a-IlT-y6QHsLkBiKqA4Hmf/exec", {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-    } catch (err) {
-      console.error("Errore invio dati:", err);
-    }
-  };
+      const mappaRisposte = {};
+      finalResponses.forEach(r => { mappaRisposte[r.id] = r.risposta; });
+      try {
+        await fetch('/api/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ punteggi: finalScores, risposte: mappaRisposte }),
+        });
+      } catch (err) {
+        console.error('Errore invio dati:', err);
+      }
+    };
 
   const swipe = async (dir) => {
     if (currentIndex < 0 || currentIndex >= deck.length) return;
