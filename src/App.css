@@ -13,12 +13,12 @@ body {
   min-height: 100vh; 
   display: flex; 
   flex-direction: column; 
-  align-items: center; /* Centra tutto orizzontalmente */
+  align-items: center;
 }
 
 /* PROGRESS SECTION */
 .progress-section { 
-  width: 340px; /* Larghezza identica alla carta per simmetria */
+  width: 340px;
   margin-bottom: 25px; 
   box-sizing: border-box;
 }
@@ -68,7 +68,7 @@ body {
 /* CARTE */
 .card-container { 
   position: relative; 
-  width: 340px; /* Larghezza fissa */
+  width: 340px;
   height: 420px; 
   display: flex; 
   justify-content: center; 
@@ -117,21 +117,27 @@ body {
   border-radius: 20px; font-size: 18px; font-weight: bold; cursor: pointer;
 }
 
-/* PULSANTI DI RISPOSTA - DIMENSIONI FISSE */
+/* ================================================
+   BOTTONI RISPOSTA
+   ================================================ */
+
+/* Container base — 2 bottoni */
 .action-buttons-container { 
   display: flex; 
   justify-content: center;
-  gap: 12px; /* Gap fisso tra i bottoni */
-  width: 340px; /* Esattamente la larghezza della carta */
+  gap: 8px;
+  width: 340px;
   margin: 10px auto 0;
 }
 
+/* Container con 3 bottoni */
+.action-buttons-container.three-buttons {
+  gap: 6px;
+}
+
+/* Bottone base */
 .swipe-btn {
-  /* Larghezza fissa: (340px container - 12px gap) / 2 = 164px */
-  flex: 0 0 164px; 
-  width: 164px;
-  height: 100px; /* Altezza fissa generosa per il testo */
-  
+  height: 100px;
   background: rgba(255, 255, 255, 0.95); 
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 18px; 
@@ -144,6 +150,19 @@ body {
   justify-content: center;
   box-sizing: border-box;
   overflow: hidden;
+  /* Con 2 bottoni: (340 - 8) / 2 = 166px */
+  flex: 1 1 0;
+}
+
+/* Con 3 bottoni i flex-item si dividono equamente;
+   il neutro è leggermente più stretto per dare enfasi ai laterali */
+.action-buttons-container.three-buttons .swipe-btn.left,
+.action-buttons-container.three-buttons .swipe-btn.right {
+  flex: 1.1 1 0;
+}
+
+.action-buttons-container.three-buttons .swipe-btn.neutral {
+  flex: 0.8 1 0;
 }
 
 .swipe-btn:active {
@@ -158,8 +177,13 @@ body {
   margin-bottom: 2px; 
 }
 
+/* Freccia del bottone neutro in grigio/viola tenue */
+.swipe-btn.neutral .arrow {
+  color: #a0a0b0;
+}
+
 .swipe-btn .btn-text { 
-  font-size: 14px; 
+  font-size: 13px; 
   font-weight: 600; 
   text-align: center; 
   line-height: 1.2;
@@ -169,6 +193,13 @@ body {
   -webkit-box-orient: vertical;
   overflow: hidden;
   word-wrap: break-word;
+}
+
+/* Testo del bottone neutro più tenue */
+.swipe-btn.neutral .btn-text {
+  color: #888;
+  font-weight: 500;
+  font-size: 12px;
 }
 
 /* RISULTATI */
