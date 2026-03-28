@@ -116,6 +116,16 @@ function App() {
 
   const cardRefs = useMemo(() => Array(deck.length).fill(0).map(() => React.createRef()), [deck]);
 
+  // Blocca lo scroll durante il test, lo riabilita nella pagina risultati
+  useEffect(() => {
+    if (showResult) {
+      document.body.style.overflow = '';
+    } else {
+      document.body.style.overflow = 'hidden';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [showResult]);
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (showResult) return;

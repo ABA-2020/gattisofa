@@ -130,13 +130,15 @@ body {
   margin: 10px auto 0;
 }
 
-/* Container con 3 bottoni */
+/* Container con 3 bottoni — gap ridotto per stare in 340px */
 .action-buttons-container.three-buttons {
   gap: 6px;
 }
 
-/* Bottone base */
+/* Bottone base — 2 bottoni: (340 - 8) / 2 = 166px */
 .swipe-btn {
+  flex: 0 0 166px;
+  width: 166px;
   height: 100px;
   background: rgba(255, 255, 255, 0.95); 
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -150,19 +152,12 @@ body {
   justify-content: center;
   box-sizing: border-box;
   overflow: hidden;
-  /* Con 2 bottoni: (340 - 8) / 2 = 166px */
-  flex: 1 1 0;
 }
 
-/* Con 3 bottoni i flex-item si dividono equamente;
-   il neutro è leggermente più stretto per dare enfasi ai laterali */
-.action-buttons-container.three-buttons .swipe-btn.left,
-.action-buttons-container.three-buttons .swipe-btn.right {
-  flex: 1.1 1 0;
-}
-
-.action-buttons-container.three-buttons .swipe-btn.neutral {
-  flex: 0.8 1 0;
+/* 3 bottoni uguali: (340 - 6 - 6) / 3 = 109.33px → arrotondiamo a 109px */
+.action-buttons-container.three-buttons .swipe-btn {
+  flex: 0 0 109px;
+  width: 109px;
 }
 
 .swipe-btn:active {
