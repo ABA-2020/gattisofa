@@ -1,5 +1,7 @@
 html {
   height: 100%;
+  /* Necessario per abilitare env(safe-area-inset-*) su iOS Safari */
+  /* Assicurati che index.html abbia: <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"> */
 }
 
 body {
@@ -28,7 +30,8 @@ body {
 .app-container.test-mode {
   height: 100dvh;
   overflow: hidden;
-  padding: 10px 20px 12px; /* ridotto il padding top/bottom per guadagnare spazio */
+  /* env(safe-area-inset-top) rispetta la barra del browser su iOS */
+  padding: calc(env(safe-area-inset-top, 0px) + 18px) 20px 12px;
 }
 
 /* Nella pagina risultati: scroll libero */
