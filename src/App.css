@@ -76,10 +76,7 @@ body {
   width: 340px;
   z-index: 50;
   margin-bottom: 0;
-  /* padding che rispetta sia la safe area iOS che la barra Safari */
   padding: calc(env(safe-area-inset-top, 0px) + 52px) 0 10px;
-  /* sfondo sfumato per leggibilità */
-  background: linear-gradient(180deg, rgba(43,27,61,0.98) 70%, transparent 100%);
 }
 
 .progress-info {
