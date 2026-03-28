@@ -300,6 +300,8 @@ function App() {
         </div>
       ) : (
         <div className="test-interface">
+          {/* Spacer che compensa l'altezza della progress section fixed */}
+          <div className="progress-spacer" />
           <div className="progress-section">
             <div className="progress-info">
               <span className="q-count">Domanda {currentQuestionNum} di {deck.length}</span>

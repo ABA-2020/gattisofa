@@ -30,8 +30,8 @@ body {
 .app-container.test-mode {
   height: 100dvh;
   overflow: hidden;
-  /* env(safe-area-inset-top) rispetta la barra del browser su iOS */
-  padding: calc(env(safe-area-inset-top, 0px) + 18px) 20px 12px;
+  padding: 0 20px 12px;
+  justify-content: flex-end; /* bottoni e card si ancorano in basso */
 }
 
 /* Nella pagina risultati: scroll libero */
@@ -41,11 +41,45 @@ body {
   overflow: visible;
 }
 
-/* PROGRESS SECTION */
+/* test-interface occupa tutto lo spazio disponibile sotto la progress fixed */
+.test-interface {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  flex: 1;
+  justify-content: flex-end;
+  padding-bottom: 10px;
+  box-sizing: border-box;
+}
+
+/* Spacer che tiene il posto della progress section fixed (circa 90px) */
+.progress-spacer {
+  /* altezza = safe-area-top + barra Safari (~52px) + altezza progress section (~38px) */
+  height: calc(env(safe-area-inset-top, 0px) + 100px);
+  flex-shrink: 0;
+}
+
+/* PROGRESS SECTION — fissa in cima, sempre visibile */
 .progress-section { 
   width: 340px;
-  margin-bottom: 12px; /* ridotto da 25px */
+  margin-bottom: 12px;
   box-sizing: border-box;
+}
+
+/* In test-mode la progress section è fixed in cima */
+.test-mode .progress-section {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 340px;
+  z-index: 50;
+  margin-bottom: 0;
+  /* padding che rispetta sia la safe area iOS che la barra Safari */
+  padding: calc(env(safe-area-inset-top, 0px) + 52px) 0 10px;
+  /* sfondo sfumato per leggibilità */
+  background: linear-gradient(180deg, rgba(43,27,61,0.98) 70%, transparent 100%);
 }
 
 .progress-info {
