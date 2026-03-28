@@ -24,10 +24,11 @@ body {
   overflow: hidden;
 }
 
-/* Durante il test: altezza fissa, no scroll */
+/* Durante il test: altezza fissa, no scroll, padding minimo */
 .app-container.test-mode {
   height: 100dvh;
   overflow: hidden;
+  padding: 10px 20px 12px; /* ridotto il padding top/bottom per guadagnare spazio */
 }
 
 /* Nella pagina risultati: scroll libero */
@@ -40,7 +41,7 @@ body {
 /* PROGRESS SECTION */
 .progress-section { 
   width: 340px;
-  margin-bottom: 25px; 
+  margin-bottom: 12px; /* ridotto da 25px */
   box-sizing: border-box;
 }
 
@@ -90,10 +91,10 @@ body {
 .card-container { 
   position: relative; 
   width: 340px;
-  height: 420px; 
+  height: 380px; /* ridotto da 420px */
   display: flex; 
   justify-content: center; 
-  margin-bottom: 20px; 
+  margin-bottom: 12px; /* ridotto da 20px */
 }
 
 .swipe { 
