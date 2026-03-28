@@ -1,8 +1,12 @@
-body {
+html, body {
   margin: 0; padding: 0;
+  height: 100%;
+  overflow: hidden; /* blocca scroll */
+  position: fixed;  /* blocca bounce su iOS */
+  width: 100%;
   background: linear-gradient(135deg, #2b1b3d 0%, #49284d 35%, #834d6c 70%, #e2a07c 100%);
   background-attachment: fixed; color: white;
-  font-family: -apple-system, sans-serif; overflow-x: hidden;
+  font-family: -apple-system, sans-serif;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -10,15 +14,19 @@ body {
   max-width: 500px; 
   margin: 0 auto; 
   padding: 20px; 
-  min-height: 100vh; 
+  height: 100vh;
+  height: 100dvh; /* dynamic viewport height — tiene conto della barra browser su mobile */
   display: flex; 
   flex-direction: column; 
   align-items: center;
+  justify-content: center; /* centra verticalmente il contenuto */
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 /* PROGRESS SECTION */
 .progress-section { 
-  width: 340px;
+  width: 340px; /* Larghezza identica alla carta per simmetria */
   margin-bottom: 25px; 
   box-sizing: border-box;
 }
@@ -68,7 +76,7 @@ body {
 /* CARTE */
 .card-container { 
   position: relative; 
-  width: 340px;
+  width: 340px; /* Larghezza fissa */
   height: 420px; 
   display: flex; 
   justify-content: center; 
@@ -117,27 +125,21 @@ body {
   border-radius: 20px; font-size: 18px; font-weight: bold; cursor: pointer;
 }
 
-/* ================================================
-   BOTTONI RISPOSTA
-   ================================================ */
-
-/* Container base — 2 bottoni */
+/* PULSANTI DI RISPOSTA - DIMENSIONI FISSE */
 .action-buttons-container { 
   display: flex; 
   justify-content: center;
-  gap: 8px;
-  width: 340px;
+  gap: 12px; /* Gap fisso tra i bottoni */
+  width: 340px; /* Esattamente la larghezza della carta */
   margin: 10px auto 0;
 }
 
-/* Container con 3 bottoni */
-.action-buttons-container.three-buttons {
-  gap: 6px;
-}
-
-/* Bottone base */
 .swipe-btn {
-  height: 100px;
+  /* Larghezza fissa: (340px container - 12px gap) / 2 = 164px */
+  flex: 0 0 164px; 
+  width: 164px;
+  height: 100px; /* Altezza fissa generosa per il testo */
+  
   background: rgba(255, 255, 255, 0.95); 
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 18px; 
@@ -150,19 +152,6 @@ body {
   justify-content: center;
   box-sizing: border-box;
   overflow: hidden;
-  /* Con 2 bottoni: (340 - 8) / 2 = 166px */
-  flex: 1 1 0;
-}
-
-/* Con 3 bottoni i flex-item si dividono equamente;
-   il neutro è leggermente più stretto per dare enfasi ai laterali */
-.action-buttons-container.three-buttons .swipe-btn.left,
-.action-buttons-container.three-buttons .swipe-btn.right {
-  flex: 1.1 1 0;
-}
-
-.action-buttons-container.three-buttons .swipe-btn.neutral {
-  flex: 0.8 1 0;
 }
 
 .swipe-btn:active {
@@ -177,13 +166,8 @@ body {
   margin-bottom: 2px; 
 }
 
-/* Freccia del bottone neutro in grigio/viola tenue */
-.swipe-btn.neutral .arrow {
-  color: #a0a0b0;
-}
-
 .swipe-btn .btn-text { 
-  font-size: 13px; 
+  font-size: 14px; 
   font-weight: 600; 
   text-align: center; 
   line-height: 1.2;
@@ -195,15 +179,13 @@ body {
   word-wrap: break-word;
 }
 
-/* Testo del bottone neutro più tenue */
-.swipe-btn.neutral .btn-text {
-  color: #888;
-  font-weight: 500;
-  font-size: 12px;
-}
-
 /* RISULTATI */
-.result-container { width: 340px; }
+.result-container { 
+  width: 340px;
+  max-height: calc(100dvh - 40px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch; /* scroll fluido su iOS */
+}
 .chart-container { 
   background: white; border-radius: 20px; padding: 20px; color: #333; 
   box-shadow: 0 4px 15px rgba(0,0,0,0.2);
