@@ -10,12 +10,12 @@ import HannibalImg from './assets/gatti/Hannibal.svg';
 import LuluImg from './assets/gatti/Lulu.svg'; 
 
 const catProfiles = {
-  1: { name: "L'Abitudinario", image: PaciockImg, profile: "Un gatto riflessivo e pacato. Ama la stabilità del suo territorio e trova il suo equilibrio nella dolcezza di un sonnellino al sole e dei piccoli gesti quotidiani.", genre: "" },
-  2: { name: "L'Anima Sensibile", image: PeppaPigImg, profile: "Un gatto empatico e comunicativo, che vive di fusa e relazioni profonde. Cerca sempre il contatto autentico e il calore della sua famiglia umana.", genre: "" },
-  3: { name: "Il Carismatico", image: JoeyImg, profile: "Dotato di una socialità innata e grande lealtà. Un gatto dalla personalità brillante, capace di conquistare ogni stanza con intelligenza e fascino.", genre: "" },
-  4: { name: "L'Esploratrice", image: MissMarpleImg, profile: "Una mente felina brillante e dinamica, sempre alla ricerca di nuovi stimoli. La sua curiosità la spinge a osservare il mondo dall'alto del punto più nascosto.", genre: "" },
-  5: { name: "L'Alternativo", image: HannibalImg, profile: "Anticonformista e audace, trova bellezza negli angoli più insoliti della casa. Un gatto che ama ciò che è fuori dagli schemi e non teme l'oscurità.", genre: "" },
-  6: { name: "La Sognatrice", image: LuluImg, profile: "Un'anima dolce e profondamente romantica, che vive le emozioni con purezza. Si lascia guidare dal cuore (e da un battito di coda) verso orizzonti incantati.", genre: "n/d" }
+  1: { name: "Paciock", image: PaciockImg, profile: "Un gatto riflessivo e pacato. Ama la stabilità del suo territorio e trova il suo equilibrio nella dolcezza di un sonnellino al sole e dei piccoli gesti quotidiani.", genre: "" },
+  2: { name: "Peppa Pig", image: PeppaPigImg, profile: "Un gatto empatico e comunicativo, che vive di fusa e relazioni profonde. Cerca sempre il contatto autentico e il calore della sua famiglia umana.", genre: "" },
+  3: { name: "Joey", image: JoeyImg, profile: "Dotato di una socialità innata e grande lealtà. Un gatto dalla personalità brillante, capace di conquistare ogni stanza con intelligenza e fascino.", genre: "" },
+  4: { name: "Miss Marple", image: MissMarpleImg, profile: "Una mente felina brillante e dinamica, sempre alla ricerca di nuovi stimoli. La sua curiosità la spinge a osservare il mondo dall'alto del punto più nascosto.", genre: "" },
+  5: { name: "Hannibal", image: HannibalImg, profile: "Anticonformista e audace, trova bellezza negli angoli più insoliti della casa. Un gatto che ama ciò che è fuori dagli schemi e non teme l'oscurità.", genre: "" },
+  6: { name: "Duchessa", image: LuluImg, profile: "Un'anima dolce e profondamente romantica, che vive le emozioni con purezza. Si lascia guidare dal cuore (e da un battito di coda) verso orizzonti incantati.", genre: "n/d" }
 };
 
 const shuffleArray = (array) => {
