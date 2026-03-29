@@ -380,8 +380,11 @@ function App() {
                         <form onSubmit={handleAgeSubmit} className="age-input-container">
                           <input
                             type="number"
+                            id="age-input"
+                            name="age"
                             inputMode="numeric"
                             pattern="[0-9]*"
+                            autoComplete="off"
                             className="age-input-fixed"
                             placeholder="Età"
                             value={ageValue}
