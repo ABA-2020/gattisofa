@@ -10,7 +10,7 @@ body {
   background-attachment: fixed; color: white;
   font-family: -apple-system, sans-serif; overflow-x: hidden;
   -webkit-tap-highlight-color: transparent;
-  height: 100%;
+  min-height: 100%;
 }
 
 .app-container { 
@@ -34,11 +34,13 @@ body {
   justify-content: flex-end; /* bottoni e card si ancorano in basso */
 }
 
-/* Nella pagina risultati: scroll libero */
+/* Nella pagina risultati: scroll libero, sfondo esteso */
 .app-container.results-mode {
   height: auto;
   min-height: 100dvh;
   overflow: visible;
+  padding: 20px;
+  justify-content: flex-start;
 }
 
 /* test-interface occupa tutto lo spazio disponibile sotto la progress fixed */
