@@ -259,13 +259,62 @@ body {
   overflow-y: auto;
   padding-bottom: 30px;
 }
-.chart-container { 
-  background: white; border-radius: 20px; padding: 20px; color: #333; 
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+
+.result-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: white;
+  text-align: center;
+  margin: 24px 0 16px;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.3);
 }
-.chart-row { display: flex; align-items: center; margin-bottom: 15px; }
-.chart-label { width: 110px; display: flex; align-items: center; font-size: 13px; font-weight: 700; }
-.chart-icon { width: 32px; height: 32px; border-radius: 50%; margin-right: 8px; border: 1px solid #ddd; object-fit: cover; }
+
+/* Card singolo gatto nei risultati */
+.cat-result-card {
+  background: white;
+  border-radius: 20px;
+  padding: 18px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  color: #1a1a1a;
+}
+
+.cat-result-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.cat-result-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 2px solid #e0d0f0;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.cat-result-info {
+  flex: 1;
+}
+
+.cat-result-name {
+  font-size: 15px;
+  font-weight: 800;
+  color: #2b1b3d;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.cat-result-profile {
+  font-size: 13px;
+  color: #555;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Barra punteggio — riusa le classi esistenti */
 .chart-bar-bg { flex-grow: 1; height: 24px; background: #f0f0f0; border-radius: 12px; overflow: hidden; position: relative; }
 .chart-bar-fill { 
   height: 100%; transition: width 0.8s ease-out; display: flex; align-items: center; 
@@ -274,7 +323,58 @@ body {
 .chart-bar-fill.pos { background: linear-gradient(90deg, #4caf50, #8bc34a); }
 .chart-bar-fill.neg { background: linear-gradient(90deg, #f44336, #ff7043); }
 .score-val { color: white; font-size: 11px; font-weight: 800; text-shadow: 0 1px 1px rgba(0,0,0,0.2); }
-.retry-btn { margin-top: 25px; width: 100%; padding: 15px; background: #e2a07c; border: none; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; }
+
+/* Likert scale */
+.likert-question {
+  font-size: 13px;
+  font-weight: 600;
+  color: #2b1b3d;
+  margin: 0 0 8px;
+  text-align: center;
+}
+
+.likert-scale {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.likert-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2px solid #d0b8e8;
+  background: white;
+  color: #2b1b3d;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.likert-btn:active {
+  transform: scale(0.93);
+}
+
+.likert-btn.selected {
+  background: linear-gradient(135deg, #834d6c, #a855f7);
+  border-color: #a855f7;
+  color: white;
+}
+
+.likert-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: #999;
+  padding: 0 4px;
+}
+
+.retry-btn { margin-top: 8px; width: 100%; padding: 15px; background: #e2a07c; border: none; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; font-size: 15px; }
 
 /* ================================================
    PRIVACY MODAL

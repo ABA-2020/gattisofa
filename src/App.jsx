@@ -10,12 +10,12 @@ import HannibalImg from './assets/gatti/Hannibal.svg';
 import LuluImg from './assets/gatti/Lulu.svg'; 
 
 const catProfiles = {
-  1: { name: "Paciock", image: PaciockImg },
-  2: { name: "Peppa Pig", image: PeppaPigImg },
-  3: { name: "Joey", image: JoeyImg },
-  4: { name: "Miss Marple", image: MissMarpleImg },
-  5: { name: "Hannibal", image: HannibalImg },
-  6: { name: "Duchessa", image: LuluImg } 
+  1: { name: "L'Abitudinario", image: PaciockImg, profile: "Un gatto riflessivo e pacato. Ama la stabilità del suo territorio e trova il suo equilibrio nella dolcezza di un sonnellino al sole e dei piccoli gesti quotidiani.", genre: "" },
+  2: { name: "L'Anima Sensibile", image: PeppaPigImg, profile: "Un gatto empatico e comunicativo, che vive di fusa e relazioni profonde. Cerca sempre il contatto autentico e il calore della sua famiglia umana.", genre: "" },
+  3: { name: "Il Carismatico", image: JoeyImg, profile: "Dotato di una socialità innata e grande lealtà. Un gatto dalla personalità brillante, capace di conquistare ogni stanza con intelligenza e fascino.", genre: "" },
+  4: { name: "L'Esploratrice", image: MissMarpleImg, profile: "Una mente felina brillante e dinamica, sempre alla ricerca di nuovi stimoli. La sua curiosità la spinge a osservare il mondo dall'alto del punto più nascosto.", genre: "" },
+  5: { name: "L'Alternativo", image: HannibalImg, profile: "Anticonformista e audace, trova bellezza negli angoli più insoliti della casa. Un gatto che ama ciò che è fuori dagli schemi e non teme l'oscurità.", genre: "" },
+  6: { name: "La Sognatrice", image: LuluImg, profile: "Un'anima dolce e profondamente romantica, che vive le emozioni con purezza. Si lascia guidare dal cuore (e da un battito di coda) verso orizzonti incantati.", genre: "n/d" }
 };
 
 const shuffleArray = (array) => {
@@ -107,6 +107,8 @@ function App() {
   const [currentIndex, setCurrentIndex] = useState(deck.length - 1);
   const [showResult, setShowResult] = useState(false);
   const [ageValue, setAgeValue] = useState('');
+  // Likert 1-5 per ciascun gatto nella schermata risultati
+  const [likert, setLikert] = useState({ 1: null, 2: null, 3: null, 4: null, 5: null, 6: null });
 
   // --- PRIVACY MODAL STATE ---
   const [privacyAccepted, setPrivacyAccepted] = useState(
@@ -161,6 +163,31 @@ function App() {
     } catch (err) {
       console.error('Errore invio dati:', err);
     }
+  };
+
+  const sendLikertToGoogle = async (likertValues) => {
+    try {
+      await fetch('/api/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          token: import.meta.env.VITE_TOKEN,
+          likert: likertValues,
+        }),
+      });
+    } catch (err) {
+      console.error('Errore invio likert:', err);
+    }
+  };
+
+  const handleLikert = (catId, value) => {
+    setLikert(prev => {
+      const updated = { ...prev, [catId]: value };
+      // Se tutti e 6 i gatti hanno un valore, invia automaticamente
+      const allFilled = Object.values(updated).every(v => v !== null);
+      if (allFilled) sendLikertToGoogle(updated);
+      return updated;
+    });
   };
 
   const swipe = async (dir) => {
@@ -277,25 +304,52 @@ function App() {
       {showResult ? (
         <div className="result-container scrollable-results">
           <h2 className="result-title">I tuoi Punteggi Felini</h2>
-          <div className="chart-container">
-            {Object.keys(scores).map(id => {
-              const score = scores[id];
-              const percentage = Math.min(Math.max(((score + 20) / 40) * 100, 0), 100);
-              return (
-                <div key={id} className="chart-row">
-                  <div className="chart-label">
-                    <img src={catProfiles[id].image} className="chart-icon" alt="" />
-                    <span>{catProfiles[id].name}</span>
-                  </div>
-                  <div className="chart-bar-bg">
-                    <div className={`chart-bar-fill ${score >= 0 ? 'pos' : 'neg'}`} style={{ width: `${percentage}%` }}>
-                      <span className="score-val">{score}</span>
-                    </div>
+
+          {Object.keys(scores).map(id => {
+            const score = scores[id];
+            const percentage = Math.min(Math.max(((score + 20) / 40) * 100, 0), 100);
+            const cat = catProfiles[id];
+            return (
+              <div key={id} className="cat-result-card">
+
+                {/* Header: immagine + nome + profilo */}
+                <div className="cat-result-header">
+                  <img src={cat.image} className="cat-result-icon" alt={cat.name} />
+                  <div className="cat-result-info">
+                    <span className="cat-result-name">{cat.name}</span>
+                    <p className="cat-result-profile">{cat.profile}</p>
                   </div>
                 </div>
-              );
-            })}
-          </div>
+
+                {/* Barra punteggio */}
+                <div className="chart-bar-bg" style={{ marginBottom: '14px' }}>
+                  <div className={`chart-bar-fill ${score >= 0 ? 'pos' : 'neg'}`} style={{ width: `${percentage}%` }}>
+                    <span className="score-val">{score}</span>
+                  </div>
+                </div>
+
+                {/* Likert scale */}
+                <p className="likert-question">Quanto ti ci ritrovi?</p>
+                <div className="likert-scale">
+                  {[1, 2, 3, 4, 5].map(val => (
+                    <button
+                      key={val}
+                      className={`likert-btn ${likert[id] === val ? 'selected' : ''}`}
+                      onClick={() => handleLikert(id, val)}
+                    >
+                      {val}
+                    </button>
+                  ))}
+                </div>
+                <div className="likert-labels">
+                  <span>Per niente</span>
+                  <span>Moltissimo</span>
+                </div>
+
+              </div>
+            );
+          })}
+
           <button onClick={() => window.location.reload()} className="retry-btn">Ricomincia</button>
         </div>
       ) : (
