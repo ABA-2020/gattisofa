@@ -109,6 +109,16 @@ function App() {
   const [ageValue, setAgeValue] = useState('');
   // Likert 1-5 per ciascun gatto nella schermata risultati
   const [likert, setLikert] = useState({ 1: null, 2: null, 3: null, 4: null, 5: null, 6: null });
+  // Indicatore scroll: scompare dopo che l'utente ha scrollato un po'
+  const [showScrollHint, setShowScrollHint] = useState(true);
+
+  useEffect(() => {
+    if (!showResult) return;
+    setShowScrollHint(true);
+    const onScroll = () => { if (window.scrollY > 80) setShowScrollHint(false); };
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [showResult]);
 
   // --- PRIVACY MODAL STATE ---
   const [privacyAccepted, setPrivacyAccepted] = useState(
@@ -304,6 +314,15 @@ function App() {
       {showResult ? (
         <div className="result-container scrollable-results">
           <h2 className="result-title">I tuoi Punteggi Felini</h2>
+          <p className="result-subtitle">Scorri, scopri i profili e lasciaci il tuo ultimo feedback sui gatti!</p>
+
+          {/* Indicatore scroll — scompare dopo 80px di scroll */}
+          {showScrollHint && (
+            <div className="scroll-hint">
+              <span className="scroll-hint-arrow">↓</span>
+              <span className="scroll-hint-text">Scorri</span>
+            </div>
+          )}
 
           {Object.keys(scores).map(id => {
             const score = scores[id];
@@ -350,7 +369,21 @@ function App() {
             );
           })}
 
-          <button onClick={() => window.location.reload()} className="retry-btn">Ricomincia</button>
+          {/* Messaggio e tasto Ricomincia — compaiono solo quando tutti e 6 i likert sono compilati */}
+          {Object.values(likert).every(v => v !== null) && (
+            <>
+              <div className="thank-you-card">
+                <span className="thank-you-emoji">🐾</span>
+                <h3 className="thank-you-title">Grazie mille!</h3>
+                <p className="thank-you-text">
+                  Le tue risposte ci aiutano a capire meglio i profili felini.
+                  Il tuo contributo è prezioso per la nostra ricerca.
+                </p>
+              </div>
+              <button onClick={() => window.location.reload()} className="retry-btn">Ricomincia</button>
+            </>
+          )}
+
         </div>
       ) : (
         <div className="test-interface">

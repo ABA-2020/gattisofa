@@ -267,8 +267,92 @@ body {
   font-weight: 800;
   color: white;
   text-align: center;
-  margin: 24px 0 16px;
+  margin: 24px 0 8px;
   text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.result-subtitle {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  margin: 0 0 20px;
+  line-height: 1.5;
+  font-style: italic;
+}
+
+/* Indicatore scroll nella pagina risultati */
+.scroll-hint {
+  position: fixed;
+  right: 18px;
+  bottom: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  z-index: 50;
+  animation: scrollBounce 1.4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.scroll-hint-arrow {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: white;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  backdrop-filter: blur(4px);
+}
+
+.scroll-hint-text {
+  font-size: 10px;
+  font-weight: 700;
+  color: white;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+@keyframes scrollBounce {
+  0%, 100% { transform: translateY(0); opacity: 1; }
+  50%       { transform: translateY(8px); opacity: 0.6; }
+}
+
+/* Card ringraziamento finale */
+.thank-you-card {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 20px;
+  padding: 28px 24px;
+  margin-top: 8px;
+  margin-bottom: 16px;
+  text-align: center;
+  backdrop-filter: blur(4px);
+}
+
+.thank-you-emoji {
+  font-size: 36px;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.thank-you-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: white;
+  margin: 0 0 10px;
+}
+
+.thank-you-text {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.6;
+  margin: 0;
 }
 
 /* Card singolo gatto nei risultati */
