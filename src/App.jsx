@@ -313,8 +313,8 @@ function App() {
 
       {showResult ? (
         <div className="result-container scrollable-results">
-          <h2 className="result-title">I tuoi Punteggi Felini</h2>
-          <p className="result-subtitle">Scorri, scopri i profili e lasciaci il tuo ultimo feedback sui gatti!</p>
+          <h2 className="result-title">Scorri, scopri i profili e lasciaci il tuo ultimo feedback sui gatti!</h2>
+          <p className="result-subtitle">I tuoi Punteggi Felini</p>
 
           {/* Indicatore scroll — scompare dopo 80px di scroll */}
           {showScrollHint && (
