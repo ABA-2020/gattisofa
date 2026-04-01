@@ -165,7 +165,6 @@ function App() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
-          token: import.meta.env.VITE_TOKEN,
           punteggi: finalScores, 
           risposte: mappaRisposte 
         }),
@@ -181,7 +180,6 @@ function App() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          token: import.meta.env.VITE_TOKEN,
           likert: likertValues,
         }),
       });
