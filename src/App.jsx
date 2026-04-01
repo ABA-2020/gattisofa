@@ -411,6 +411,9 @@ function App() {
                         <form onSubmit={handleAgeSubmit} className="age-input-container">
                           <input
                             type="number"
+                            min="1"
+                            max="120"
+                            step="1"
                             id="age-input"
                             name="age"
                             inputMode="numeric"
