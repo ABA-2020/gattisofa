@@ -207,10 +207,10 @@ function App() {
 
   const handleAgeSubmit = (e) => {
     if (e) e.preventDefault();
-    if (ageValue && ageValue.trim() !== "") {
-      const ageQuestion = deck.find(q => q.id === 'D2');
-      if (ageQuestion) handleSwipe('right', ageQuestion);
-    }
+    const eta = parseInt(ageValue, 10);
+    if (!ageValue || isNaN(eta) || eta < 1 || eta > 120) return;
+    const ageQuestion = deck.find(q => q.id === 'D2');
+    if (ageQuestion) handleSwipe('right', ageQuestion);
   };
 
   const handleSwipe = (direction, question) => {
