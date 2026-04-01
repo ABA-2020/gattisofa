@@ -10,11 +10,11 @@ import HannibalImg from './assets/gatti/Hannibal.svg';
 import LuluImg from './assets/gatti/Lulu.svg'; 
 
 const catProfiles = {
-  1: { name: "Paciock", image: PaciockImg, profile: "Un gatto riflessivo e pacato. Ama la stabilità del suo territorio e trova il suo equilibrio nella dolcezza di un sonnellino al sole e dei piccoli gesti quotidiani.", genre: "" },
-  2: { name: "Peppa Pig", image: PeppaPigImg, profile: "Un gatto empatico e comunicativo, che vive di fusa e relazioni profonde. Cerca sempre il contatto autentico e il calore della sua famiglia umana.", genre: "" },
-  3: { name: "Joey", image: JoeyImg, profile: "Dotato di una socialità innata e grande lealtà. Un gatto dalla personalità brillante, capace di conquistare ogni stanza con intelligenza e fascino.", genre: "" },
-  4: { name: "Miss Marple", image: MissMarpleImg, profile: "Una mente felina brillante e dinamica, sempre alla ricerca di nuovi stimoli. La sua curiosità la spinge a osservare il mondo dall'alto del punto più nascosto.", genre: "" },
-  5: { name: "Hannibal", image: HannibalImg, profile: "Anticonformista e audace, trova bellezza negli angoli più insoliti della casa. Un gatto che ama ciò che è fuori dagli schemi e non teme l'oscurità.", genre: "" },
+  1: { name: "Paciock", image: PaciockImg, profile: "Un gatto riflessivo e pacato. Ama la stabilità del suo territorio e trova il suo equilibrio nella dolcezza di un sonnellino al sole e dei piccoli gesti quotidiani.", genre: "n/d" },
+  2: { name: "Peppa Pig", image: PeppaPigImg, profile: "Un gatto empatico e comunicativo, che vive di fusa e relazioni profonde. Cerca sempre il contatto autentico e il calore della sua famiglia umana.", genre: "n/d" },
+  3: { name: "Joey", image: JoeyImg, profile: "Dotato di una socialità innata e grande lealtà. Un gatto dalla personalità brillante, capace di conquistare ogni stanza con intelligenza e fascino.", genre: "n/d" },
+  4: { name: "Miss Marple", image: MissMarpleImg, profile: "Una mente felina brillante e dinamica, sempre alla ricerca di nuovi stimoli. La sua curiosità la spinge a osservare il mondo dall'alto del punto più nascosto.", genre: "n/d" },
+  5: { name: "Hannibal", image: HannibalImg, profile: "Anticonformista e audace, trova bellezza negli angoli più insoliti della casa. Un gatto che ama ciò che è fuori dagli schemi e non teme l'oscurità.", genre: "n/d" },
   6: { name: "Duchessa", image: LuluImg, profile: "Un'anima dolce e profondamente romantica, che vive le emozioni con purezza. Si lascia guidare dal cuore (e da un battito di coda) verso orizzonti incantati.", genre: "n/d" }
 };
 
@@ -109,6 +109,7 @@ function App() {
   const [ageValue, setAgeValue] = useState('');
   // Likert 1-5 per ciascun gatto nella schermata risultati
   const [likert, setLikert] = useState({ 1: null, 2: null, 3: null, 4: null, 5: null, 6: null });
+  const [isSending, setIsSending] = useState(false);
   // Indicatore scroll: scompare dopo che l'utente ha scrollato un po'
   const [showScrollHint, setShowScrollHint] = useState(true);
 
@@ -158,8 +159,12 @@ function App() {
   }, [currentIndex, showResult, ageValue]);
 
   const sendDataToGoogle = async (finalScores, finalResponses) => {
+    if (isSending) return;
+    setIsSending(true);
     const mappaRisposte = {};
-    finalResponses.forEach(r => { mappaRisposte[r.id] = r.risposta; });
+    finalResponses.forEach(r => {
+      mappaRisposte[r.id] = String(r.risposta).slice(0, 100);
+    });
     try {
       await fetch('/api/submit', {
         method: 'POST',
@@ -171,6 +176,8 @@ function App() {
       });
     } catch (err) {
       console.error('Errore invio dati:', err);
+    } finally {
+      setIsSending(false);
     }
   };
 
