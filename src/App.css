@@ -76,7 +76,7 @@ body {
   left: 50%;
   transform: translateX(-50%);
   width: 340px;
-  z-index: 50;
+  z-index: 5;
   margin-bottom: 0;
   padding: calc(env(safe-area-inset-top, 0px) + 52px) 0 10px;
 }
@@ -120,7 +120,7 @@ body {
 }
 .active-card {
   display: flex !important;
-  z-index: 10;
+  z-index: 100;
 }
 
 /* CARTE */
@@ -129,7 +129,7 @@ body {
   width: 340px;
   height: 380px; /* ridotto da 420px */
   display: flex; 
-  justify-content: center; 
+  justify-content: center;
   margin-bottom: 12px; /* ridotto da 20px */
 }
 
