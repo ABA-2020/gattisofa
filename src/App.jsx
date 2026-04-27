@@ -10,12 +10,11 @@ import HannibalImg from './assets/gatti/Hannibal.svg';
 import LuluImg from './assets/gatti/Lulu.svg'; 
 
 const catProfiles = {
-  1: { name: "Paciock", image: PaciockImg, profile: "Un gatto riflessivo e pacato. Ama la stabilità del suo territorio e trova il suo equilibrio nella dolcezza di un sonnellino al sole e dei piccoli gesti quotidiani.", genre: "n/d" },
-  2: { name: "Peppa Pig", image: PeppaPigImg, profile: "Un gatto empatico e comunicativo, che vive di fusa e relazioni profonde. Cerca sempre il contatto autentico e il calore della sua famiglia umana.", genre: "n/d" },
-  3: { name: "Joey", image: JoeyImg, profile: "Dotato di una socialità innata e grande lealtà. Un gatto dalla personalità brillante, capace di conquistare ogni stanza con intelligenza e fascino.", genre: "n/d" },
-  4: { name: "Miss Marple", image: MissMarpleImg, profile: "Una mente felina brillante e dinamica, sempre alla ricerca di nuovi stimoli. La sua curiosità la spinge a osservare il mondo dall'alto del punto più nascosto.", genre: "n/d" },
-  5: { name: "Hannibal", image: HannibalImg, profile: "Anticonformista e audace, trova bellezza negli angoli più insoliti della casa. Un gatto che ama ciò che è fuori dagli schemi e non teme l'oscurità.", genre: "n/d" },
-  6: { name: "Duchessa", image: LuluImg, profile: "Un'anima dolce e profondamente romantica, che vive le emozioni con purezza. Si lascia guidare dal cuore (e da un battito di coda) verso orizzonti incantati.", genre: "n/d" }
+  1: { name: "Pink Panther", image: PaciockImg, profile: "Un gatto riflessivo e pacato. Ama la stabilità del suo territorio e trova il suo equilibrio nella dolcezza di un sonnellino al sole e dei piccoli gesti quotidiani.", genre: "Commedy, Dramedy" },
+  2: { name: "Elizabeth", image: PeppaPigImg, profile: "Un gatto empatico e comunicativo, che vive di fusa e relazioni profonde. Cerca sempre il contatto autentico e il calore della sua famiglia umana.", genre: "Pure Drama" },
+  3: { name: "Indiana", image: JoeyImg, profile: "Dotato di una socialità innata e grande lealtà. Un gatto dalla personalità brillante, capace di conquistare ogni stanza con intelligenza e fascino.", genre: "Action, Crime" },
+  4: { name: "Sherlock", image: MissMarpleImg, profile: "Una mente felina brillante e dinamica, sempre alla ricerca di nuovi stimoli. La sua curiosità la spinge a osservare il mondo dall'alto del punto più nascosto.", genre: "Crime, Thriller, horror" },
+  5: { name: "Hermione", image: HannibalImg, profile: "Anticonformista e audace, trova bellezza negli angoli più insoliti della casa. Un gatto che ama ciò che è fuori dagli schemi e non teme l'oscurità.", genre: "Teen drama, Young Adult, Romance, Fantasi, Sci-fi" },
 };
 
 const shuffleArray = (array) => {
@@ -28,66 +27,46 @@ const shuffleArray = (array) => {
 };
 
 const psychQuestions = [
-  { id: "P1", type: "psych", title: "Preferisci", leftOption: "Pretty Woman", catL: 1, rightOption: "Il Gattopardo", catR: 2, neutralOption: "Non conosco" },
-  { id: "P2", type: "psych", title: "Preferisci", leftOption: "Notting Hill", catL: 1, rightOption: "Via col Vento", catR: 2, neutralOption: "Non conosco" },
-  { id: "P3", type: "psych", title: "Preferisci", leftOption: "La Pantera Rosa", catL: 1, rightOption: "Indiana Jones", catR: 3, neutralOption: "Non conosco" },
-  { id: "P4", type: "psych", title: "Preferisci", leftOption: "Pretty Woman", catL: 1, rightOption: "Il Padrino", catR: 3, neutralOption: "Non conosco" },
-  { id: "P5", type: "psych", title: "Preferisci", leftOption: "Notting Hill", catL: 1, rightOption: "Assassinio su Orient Express", catR: 4, neutralOption: "Non conosco" },
-  { id: "P6", type: "psych", title: "Preferisci", leftOption: "La Pantera Rosa", catL: 1, rightOption: "Mystic River", catR: 4, neutralOption: "Non conosco" },
-  { id: "P7", type: "psych", title: "Preferisci", leftOption: "La Pantera Rosa", catL: 1, rightOption: "Psycho", catR: 5, neutralOption: "Non conosco" },
-  { id: "P8", type: "psych", title: "Preferisci", leftOption: "Casablanca", catL: 1, rightOption: "Il Silenzio degli Innocenti", catR: 5, neutralOption: "Non conosco" },
-  { id: "P9", type: "psych", title: "Preferisci", leftOption: "Casablanca", catL: 1, rightOption: "Il Fabbricante di Lacrime", catR: 6, neutralOption: "Non conosco" },
-  { id: "P10", type: "psych", title: "Preferisci", leftOption: "Casablanca", catL: 1, rightOption: "Cime Tempestose", catR: 6, neutralOption: "Non conosco" },
-  { id: "P11", type: "psych", title: "Preferisci", leftOption: "Via col Vento", catL: 2, rightOption: "Guerre Stellari", catR: 3, neutralOption: "Non conosco" },
-  { id: "P12", type: "psych", title: "Preferisci", leftOption: "Troy", catL: 2, rightOption: "C'era una volta in America", catR: 3, neutralOption: "Non conosco" },
-  { id: "P13", type: "psych", title: "Preferisci", leftOption: "Via col Vento", catL: 2, rightOption: "Assassinio sull'Orient Express", catR: 4, neutralOption: "Non conosco" },
-  { id: "P14", type: "psych", title: "Preferisci", leftOption: "Schindler's List", catL: 2, rightOption: "Match Point", catR: 4, neutralOption: "Non conosco" },
-  { id: "P15", type: "psych", title: "Preferisci", leftOption: "Schindler's List", catL: 2, rightOption: "Il Silenzio degli Innocenti", catR: 5, neutralOption: "Non conosco" },
-  { id: "P16", type: "psych", title: "Preferisci", leftOption: "Via col Vento", catL: 2, rightOption: "Profondo Rosso", catR: 5, neutralOption: "Non conosco" },
-  { id: "P17", type: "psych", title: "Preferisci", leftOption: "Troy", catL: 2, rightOption: "Basic Instinct", catR: 6, neutralOption: "Non conosco" },
-  { id: "P18", type: "psych", title: "Preferisci", leftOption: "Schindler's List", catL: 2, rightOption: "Il Fabbricante di Lacrime", catR: 6, neutralOption: "Non conosco" },
-  { id: "P19", type: "psych", title: "Preferisci", leftOption: "Il Padrino", catL: 3, rightOption: "Match Point", catR: 4, neutralOption: "Non conosco" },
-  { id: "P20", type: "psych", title: "Preferisci", leftOption: "Pulp Fiction", catL: 3, rightOption: "Assassinio sull'Orient Express", catR: 4, neutralOption: "Non conosco" },
-  { id: "P21", type: "psych", title: "Preferisci", leftOption: "Indiana Jones", catL: 3, rightOption: "Il Silenzio degli Innocenti", catR: 5, neutralOption: "Non conosco" },
-  { id: "P22", type: "psych", title: "Preferisci", leftOption: "Guerre Stellari", catL: 3, rightOption: "Lo Squalo", catR: 5, neutralOption: "Non conosco" },
-  { id: "P23", type: "psych", title: "Preferisci", leftOption: "Guerre Stellari", catL: 3, rightOption: "Basic Instinct", catR: 6, neutralOption: "Non conosco" },
-  { id: "P24", type: "psych", title: "Preferisci", leftOption: "Indiana Jones", catL: 3, rightOption: "Cime Tempestose", catR: 6, neutralOption: "Non conosco" },
-  { id: "P25", type: "psych", title: "Preferisci", leftOption: "Assassinio sul Nilo", catL: 4, rightOption: "Il Silenzio degli Innocenti", catR: 5, neutralOption: "Non conosco" },
-  { id: "P26", type: "psych", title: "Preferisci", leftOption: "Match Point", catL: 4, rightOption: "Lo Squalo", catR: 5, neutralOption: "Non conosco" },
-  { id: "P27", type: "psych", title: "Preferisci", leftOption: "Match Point", catL: 4, rightOption: "Cime Tempestose", catR: 6, neutralOption: "Non conosco" },
-  { id: "P28", type: "psych", title: "Preferisci", leftOption: "Mystic River", catL: 4, rightOption: "Il Fabbricante di Lacrime", catR: 6, neutralOption: "Non conosco" },
-  { id: "P29", type: "psych", title: "Preferisci", leftOption: "Psycho", catL: 5, rightOption: "Il Fabbricante di Lacrime", catR: 6, neutralOption: "Non conosco" },
-  { id: "P30", type: "psych", title: "Preferisci", leftOption: "Lo Squalo", catL: 5, rightOption: "Cime Tempestose", catR: 6, neutralOption: "Non conosco" },
-  { id: "P31", type: "psych", title: "Ti piacciono più i libri di", leftOption: "Felicia Kingsley", catL: 6, rightOption: "Stephen King", catR: 5, neutralOption: "Non conosco" },
-  { id: "P32", type: "psych", title: "Ti piacciono più i libri su", leftOption: "Cime Tempestose", catL: 6, rightOption: "Maigret", catR: 4, neutralOption: "Non conosco" },
-  { id: "P33", type: "psych", title: "Ti piacciono più i libri di", leftOption: "Felicia Kingsley", catL: 6, rightOption: "Ken Follett", catR: 3, neutralOption: "Non conosco" },
-  { id: "P34", type: "psych", title: "Ti piacciono più i libri su", leftOption: "Cime Tempestose", catL: 6, rightOption: "Mussolini l'uomo del secolo", catR: 2, neutralOption: "Non conosco" },
-  { id: "P35", type: "psych", title: "Ti piacciono più i libri di", leftOption: "Felicia Kingsley", catL: 6, rightOption: "Villaggio/Fantozzi", catR: 1, neutralOption: "Non conosco" },
-  { id: "P36", type: "psych", title: "Ti piacciono più i libri su", leftOption: "Hannibal Lecter", catL: 5, rightOption: "Poirot", catR: 4, neutralOption: "Non conosco" },
-  { id: "P37", type: "psych", title: "Ti piacciono più i libri di", leftOption: "Stephen King", catL: 5, rightOption: "Ken Follett", catR: 3, neutralOption: "Non conosco" },
-  { id: "P38", type: "psych", title: "Ti piacciono più i libri su", leftOption: "Hannibal Lecter", catL: 5, rightOption: "Mussolini l'uomo del secolo", catR: 2, neutralOption: "Non conosco" },
-  { id: "P39", type: "psych", title: "Ti piacciono più i libri di", leftOption: "Stephen King", catL: 5, rightOption: "Villaggio/Fantozzi", catR: 1, neutralOption: "Non conosco" },
-  { id: "P40", type: "psych", title: "Ti piacciono più i libri su", leftOption: "Maigret", catL: 4, rightOption: "James Bond", catR: 3, neutralOption: "Non conosco" },
-  { id: "P41", type: "psych", title: "Ti piacciono più i libri su", leftOption: "Poirot", catL: 4, rightOption: "Mussolini l'uomo del secolo", catR: 2, neutralOption: "Non conosco" },
-  { id: "P42", type: "psych", title: "Ti piacciono più i libri di", leftOption: "Agatha Christie", catL: 4, rightOption: "Villaggio/Fantozzi", catR: 1, neutralOption: "Non conosco" },
-  { id: "P43", type: "psych", title: "Ti piacciono più i libri di", leftOption: "Le Carré", catL: 3, rightOption: "Dostoevsky", catR: 2, neutralOption: "Non conosco" },
-  { id: "P44", type: "psych", title: "Ti piacciono più i libri di", leftOption: "Le Carré", catL: 3, rightOption: "Elena Ferrante/L'Amica Geniale", catR: 1, neutralOption: "Non conosco" },
-  { id: "P45", type: "psych", title: "Ti piacciono più i libri di", leftOption: "Dostoevsky", catL: 2, rightOption: "Elena Ferrante/L'Amica Geniale", catR: 1, neutralOption: "Non conosco" },
-  { id: "P46", type: "psych", title: "Ti piace di più", leftOption: "Chalamet - Bones and All", catL: 6, rightOption: "Hugh Grant - Notting Hill", catR: 1, neutralOption: "Non conosco" },
-  { id: "P47", type: "psych", title: "Ti piace di più", leftOption: "Chalamet - Bones and All", catL: 6, rightOption: "Brad Pitt - Troy", catR: 2, neutralOption: "Non conosco" },
-  { id: "P48", type: "psych", title: "Ti piace di più", leftOption: "Chalamet - Bones and All", catL: 6, rightOption: "Sean Connery - 007", catR: 3, neutralOption: "Non conosco" },
-  { id: "P49", type: "psych", title: "Ti piace di più", leftOption: "Chalamet - Bones and All", catL: 6, rightOption: "De Niro - C'era una volta in America", catR: 4, neutralOption: "Non conosco" },
-  { id: "P50", type: "psych", title: "Ti piace di più", leftOption: "Chalamet - Bones and All", catL: 6, rightOption: "Douglas - Basic Instinct", catR: 5, neutralOption: "Non conosco" },
-  { id: "P51", type: "psych", title: "Ti piace di più", leftOption: "Douglas - Basic Instinct", catL: 5, rightOption: "De Niro - C'era una volta in America", catR: 4, neutralOption: "Non conosco" },
-  { id: "P52", type: "psych", title: "Ti piace di più", leftOption: "Douglas - Basic Instinct", catL: 5, rightOption: "Sean Connery - 007", catR: 3, neutralOption: "Non conosco" },
-  { id: "P53", type: "psych", title: "Ti piace di più", leftOption: "Douglas - Basic Instinct", catL: 5, rightOption: "Brad Pitt - Troy", catR: 2, neutralOption: "Non conosco" },
-  { id: "P54", type: "psych", title: "Ti piace di più", leftOption: "Douglas - Basic Instinct", catL: 5, rightOption: "Hugh Grant - Notting Hill", catR: 1, neutralOption: "Non conosco" },
-  { id: "P55", type: "psych", title: "Ti piace di più", leftOption: "De Niro - C'era una volta in America", catL: 4, rightOption: "Sean Connery - 007", catR: 3, neutralOption: "Non conosco" },
-  { id: "P56", type: "psych", title: "Ti piace di più", leftOption: "De Niro - C'era una volta in America", catL: 4, rightOption: "Brad Pitt - Troy", catR: 2, neutralOption: "Non conosco" },
-  { id: "P57", type: "psych", title: "Ti piace di più", leftOption: "De Niro - C'era una volta in America", catL: 4, rightOption: "Hugh Grant - Notting Hill", catR: 1, neutralOption: "Non conosco" },
-  { id: "P58", type: "psych", title: "Ti piace di più", leftOption: "Sean Connery - 007", catL: 3, rightOption: "Brad Pitt - Troy", catR: 2, neutralOption: "Non conosco" },
-  { id: "P59", type: "psych", title: "Ti piace di più", leftOption: "Sean Connery - 007", catL: 3, rightOption: "Hugh Grant - Notting Hill", catR: 1, neutralOption: "Non conosco" },
-  { id: "P60", type: "psych", title: "Ti piace di più", leftOption: "Brad Pitt - Troy", catL: 2, rightOption: "Hugh Grant - Notting Hill", catR: 1, neutralOption: "Non conosco" },
+  { id: "P1",  type: "psych", title: "Preferisci", leftOption: "Pretty Woman",                catL: 1, rightOption: "Il Gattopardo",                  catR: 2, neutralOption: "Non conosco" },
+  { id: "P2",  type: "psych", title: "Preferisci", leftOption: "Notting Hill",                 catL: 1, rightOption: "Via col Vento",                   catR: 2, neutralOption: "Non conosco" },
+  { id: "P3",  type: "psych", title: "Preferisci", leftOption: "La Pantera Rosa",              catL: 1, rightOption: "Il Discorso del Re",               catR: 2, neutralOption: "Non conosco" },
+  { id: "P4",  type: "psych", title: "Preferisci", leftOption: "La Vita è Bella",              catL: 1, rightOption: "Schindler's List",                 catR: 2, neutralOption: "Non conosco" },
+  { id: "P5",  type: "psych", title: "Preferisci", leftOption: "Pretty Woman",                catL: 1, rightOption: "Il Padrino",                       catR: 3, neutralOption: "Non conosco" },
+  { id: "P6",  type: "psych", title: "Preferisci", leftOption: "Notting Hill",                 catL: 1, rightOption: "Indiana Jones",                   catR: 3, neutralOption: "Non conosco" },
+  { id: "P7",  type: "psych", title: "Preferisci", leftOption: "La Pantera Rosa",              catL: 1, rightOption: "Pulp Fiction",                    catR: 3, neutralOption: "Non conosco" },
+  { id: "P8",  type: "psych", title: "Preferisci", leftOption: "La Vita è Bella",              catL: 1, rightOption: "C'era una Volta in America",      catR: 3, neutralOption: "Non conosco" },
+  { id: "P9",  type: "psych", title: "Preferisci", leftOption: "Pretty Woman",                catL: 1, rightOption: "Il Silenzio degli Innocenti",     catR: 4, neutralOption: "Non conosco" },
+  { id: "P10", type: "psych", title: "Preferisci", leftOption: "Notting Hill",                 catL: 1, rightOption: "Basic Instinct",                  catR: 4, neutralOption: "Non conosco" },
+  { id: "P11", type: "psych", title: "Preferisci", leftOption: "La Pantera Rosa",              catL: 1, rightOption: "Psycho",                          catR: 4, neutralOption: "Non conosco" },
+  { id: "P12", type: "psych", title: "Preferisci", leftOption: "La Vita è Bella",              catL: 1, rightOption: "Seven",                           catR: 4, neutralOption: "Non conosco" },
+  { id: "P13", type: "psych", title: "Preferisci", leftOption: "Pretty Woman",                catL: 1, rightOption: "Guerre Stellari",                  catR: 5, neutralOption: "Non conosco" },
+  { id: "P14", type: "psych", title: "Preferisci", leftOption: "Notting Hill",                 catL: 1, rightOption: "Harry Potter",                    catR: 5, neutralOption: "Non conosco" },
+  { id: "P15", type: "psych", title: "Preferisci", leftOption: "La Pantera Rosa",              catL: 1, rightOption: "Batman",                          catR: 5, neutralOption: "Non conosco" },
+  { id: "P16", type: "psych", title: "Preferisci", leftOption: "La Vita è Bella",              catL: 1, rightOption: "Jurassic Park",                   catR: 5, neutralOption: "Non conosco" },
+  { id: "P17", type: "psych", title: "Preferisci", leftOption: "Il Gattopardo",                catL: 2, rightOption: "Pulp Fiction",                    catR: 3, neutralOption: "Non conosco" },
+  { id: "P18", type: "psych", title: "Preferisci", leftOption: "Via col Vento",                catL: 2, rightOption: "Indiana Jones",                   catR: 3, neutralOption: "Non conosco" },
+  { id: "P19", type: "psych", title: "Preferisci", leftOption: "Il Discorso del Re",           catL: 2, rightOption: "Il Padrino",                       catR: 3, neutralOption: "Non conosco" },
+  { id: "P20", type: "psych", title: "Preferisci", leftOption: "Schindler's List",             catL: 2, rightOption: "C'era una Volta in America",      catR: 3, neutralOption: "Non conosco" },
+  { id: "P21", type: "psych", title: "Preferisci", leftOption: "Il Gattopardo",                catL: 2, rightOption: "Il Silenzio degli Innocenti",     catR: 4, neutralOption: "Non conosco" },
+  { id: "P22", type: "psych", title: "Preferisci", leftOption: "Via col Vento",                catL: 2, rightOption: "Seven",                           catR: 4, neutralOption: "Non conosco" },
+  { id: "P23", type: "psych", title: "Preferisci", leftOption: "Il Discorso del Re",           catL: 2, rightOption: "Psycho",                          catR: 4, neutralOption: "Non conosco" },
+  { id: "P24", type: "psych", title: "Preferisci", leftOption: "Schindler's List",             catL: 2, rightOption: "Basic Instinct",                  catR: 4, neutralOption: "Non conosco" },
+  { id: "P25", type: "psych", title: "Preferisci", leftOption: "Il Gattopardo",                catL: 2, rightOption: "Guerre Stellari",                  catR: 5, neutralOption: "Non conosco" },
+  { id: "P26", type: "psych", title: "Preferisci", leftOption: "Via col Vento",                catL: 2, rightOption: "Harry Potter",                    catR: 5, neutralOption: "Non conosco" },
+  { id: "P27", type: "psych", title: "Preferisci", leftOption: "Il Discorso del Re",           catL: 2, rightOption: "Batman",                          catR: 5, neutralOption: "Non conosco" },
+  { id: "P28", type: "psych", title: "Preferisci", leftOption: "Schindler's List",             catL: 2, rightOption: "Jurassic Park",                   catR: 5, neutralOption: "Non conosco" },
+  { id: "P29", type: "psych", title: "Preferisci", leftOption: "Il Padrino",                   catL: 3, rightOption: "Seven",                           catR: 4, neutralOption: "Non conosco" },
+  { id: "P30", type: "psych", title: "Preferisci", leftOption: "C'era una Volta in America",  catL: 3, rightOption: "Psycho",                          catR: 4, neutralOption: "Non conosco" },
+  { id: "P31", type: "psych", title: "Preferisci", leftOption: "Indiana Jones",                catL: 3, rightOption: "Il Silenzio degli Innocenti",     catR: 4, neutralOption: "Non conosco" },
+  { id: "P32", type: "psych", title: "Preferisci", leftOption: "Pulp Fiction",                 catL: 3, rightOption: "Basic Instinct",                  catR: 4, neutralOption: "Non conosco" },
+  { id: "P33", type: "psych", title: "Preferisci", leftOption: "Il Padrino",                   catL: 3, rightOption: "Guerre Stellari",                  catR: 5, neutralOption: "Non conosco" },
+  { id: "P34", type: "psych", title: "Preferisci", leftOption: "C'era una Volta in America",  catL: 3, rightOption: "Harry Potter",                    catR: 5, neutralOption: "Non conosco" },
+  { id: "P35", type: "psych", title: "Preferisci", leftOption: "Indiana Jones",                catL: 3, rightOption: "Batman",                          catR: 5, neutralOption: "Non conosco" },
+  { id: "P36", type: "psych", title: "Preferisci", leftOption: "Pulp Fiction",                 catL: 3, rightOption: "Jurassic Park",                   catR: 5, neutralOption: "Non conosco" },
+  { id: "P37", type: "psych", title: "Preferisci", leftOption: "Basic Instinct",               catL: 4, rightOption: "Guerre Stellari",                  catR: 5, neutralOption: "Non conosco" },
+  { id: "P38", type: "psych", title: "Preferisci", leftOption: "Seven",                        catL: 4, rightOption: "Harry Potter",                    catR: 5, neutralOption: "Non conosco" },
+  { id: "P39", type: "psych", title: "Preferisci", leftOption: "Il Silenzio degli Innocenti", catL: 4, rightOption: "Batman",                          catR: 5, neutralOption: "Non conosco" },
+  { id: "P40", type: "psych", title: "Preferisci", leftOption: "Psycho",                       catL: 4, rightOption: "Jurassic Park",                   catR: 5, neutralOption: "Non conosco" },
 ];
 
 const buildDeck = () => {
@@ -112,6 +91,9 @@ function App() {
   const [isSending, setIsSending] = useState(false);
   // Indicatore scroll: scompare dopo che l'utente ha scrollato un po'
   const [showScrollHint, setShowScrollHint] = useState(true);
+  // AI consigli
+  const [aiProfile, setAiProfile] = useState(null);
+  const [isAnalyzingAi, setIsAnalyzingAi] = useState(false);
 
   useEffect(() => {
     if (!showResult) return;
@@ -195,12 +177,33 @@ function App() {
     }
   };
 
+  const fetchAiProfile = async (currentScores) => {
+    setIsAnalyzingAi(true);
+    try {
+      const res = await fetch('/api/gemini', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ punteggi: currentScores }),
+      });
+      if (!res.ok) throw new Error('Risposta non valida');
+      const data = await res.json();
+      setAiProfile(data);
+    } catch (err) {
+      console.error('Errore AI:', err);
+      setAiProfile(null);
+    } finally {
+      setIsAnalyzingAi(false);
+    }
+  };
+
   const handleLikert = (catId, value) => {
     setLikert(prev => {
       const updated = { ...prev, [catId]: value };
-      // Se tutti e 6 i gatti hanno un valore, invia automaticamente
       const allFilled = Object.values(updated).every(v => v !== null);
-      if (allFilled) sendLikertToGoogle(updated);
+      if (allFilled) {
+        sendLikertToGoogle(updated);
+        fetchAiProfile(scores); // trigger AI dopo completamento likert
+      }
       return updated;
     });
   };
@@ -321,6 +324,7 @@ function App() {
           <h2 className="result-title">Scorri, scopri i profili e lasciaci il tuo ultimo feedback sui gatti!</h2>
           <p className="result-subtitle">I tuoi Punteggi Felini</p>
 
+
           {/* Indicatore scroll — scompare dopo 80px di scroll */}
           {showScrollHint && (
             <div className="scroll-hint">
@@ -374,7 +378,7 @@ function App() {
             );
           })}
 
-          {/* Messaggio e tasto Ricomincia — compaiono solo quando tutti e 6 i likert sono compilati */}
+          {/* Messaggio, AI e tasto Ricomincia — compaiono solo quando tutti e 6 i likert sono compilati */}
           {Object.values(likert).every(v => v !== null) && (
             <>
               <div className="thank-you-card">
@@ -385,6 +389,46 @@ function App() {
                   Il tuo contributo è prezioso per la nostra ricerca.
                 </p>
               </div>
+
+              {/* Sezione AI */}
+              <div className="ai-recs-card">
+                <h3 className="ai-recs-title">🎬 Serie TV consigliate per te</h3>
+                {isAnalyzingAi && (
+                  <div className="ai-recs-loading">
+                    <div className="ai-recs-spinner" />
+                    <p>I gatti si stanno consultando...</p>
+                  </div>
+                )}
+                {!isAnalyzingAi && aiProfile && aiProfile.gatti && (
+                  <>
+                    {aiProfile.intro && (
+                      <p className="ai-recs-intro">{aiProfile.intro}</p>
+                    )}
+                    <div className="ai-recs-list">
+                      {aiProfile.gatti.map((gattoInfo) => {
+                        const gattoOriginale = catProfiles[gattoInfo.id];
+                        return (
+                          <div key={gattoInfo.id} className="ai-recs-item">
+                            <div className="ai-recs-item-header">
+                              <img
+                                src={gattoOriginale?.image}
+                                alt={gattoInfo.nome}
+                                className="ai-recs-item-icon"
+                              />
+                              <strong className="ai-recs-item-name">{gattoInfo.nome} consiglia:</strong>
+                            </div>
+                            <p className="ai-recs-item-msg">"{gattoInfo.messaggio}"</p>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </>
+                )}
+                {!isAnalyzingAi && !aiProfile && (
+                  <p className="ai-recs-error">Non è stato possibile generare i consigli al momento.</p>
+                )}
+              </div>
+
               <button onClick={() => window.location.reload()} className="retry-btn">Ricomincia</button>
             </>
           )}
