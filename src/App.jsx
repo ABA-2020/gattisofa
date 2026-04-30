@@ -10,7 +10,7 @@ import HermioneImg from './assets/gatti/Hermione.svg';
 
 
 const catProfiles = {
-  1: { name: "Paciock", image: PinkPantherImg, profile: "Un gatto ironico e brillante, con un senso dell'umorismo raffinato e un'eleganza naturale. Trova nelle storie leggere e intelligenti il suo habitat ideale: ride, osserva e non si prende mai troppo sul serio.", genre: "n/d" },
+  1: { name: "Pink Panther", image: PinkPantherImg, profile: "Un gatto ironico e brillante, con un senso dell'umorismo raffinato e un'eleganza naturale. Trova nelle storie leggere e intelligenti il suo habitat ideale: ride, osserva e non si prende mai troppo sul serio.", genre: "n/d" },
   2: { name: "Elizabeth", image: ElizabethImg, profile: "Un gatto empatico e comunicativo, che vive di fusa e relazioni profonde. Cerca sempre il contatto autentico e il calore della sua famiglia umana.", genre: "n/d" },
   3: { name: "Indiana", image: IndianaImg, profile: "Un gatto audace e istintivo, sempre pronto a tuffarsi nell'azione. Ama i territori pericolosi, i personaggi duri e le storie dove il crimine, l'adrenalina e la lealtà si mescolano senza tregua.", genre: "n/d" },
   4: { name: "Sherlock", image: SherlockImg, profile: "Un gatto metodico e infallibile, che non lascia nulla al caso. Osserva ogni dettaglio, segue ogni traccia e non si ferma finché il mistero non è risolto. La verità è l'unica cosa che conta.", genre: "n/d" },
@@ -81,13 +81,13 @@ const buildDeck = () => {
 
 function App() {
   const [deck] = useState(() => buildDeck());
-  const [scores, setScores] = useState({ 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 });
+  const [scores, setScores] = useState({ 1: 0, 2: 0, 3: 0, 4: 0, 5: 0});
   const [responses, setResponses] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(deck.length - 1);
   const [showResult, setShowResult] = useState(false);
   const [ageValue, setAgeValue] = useState('');
   // Likert 1-5 per ciascun gatto nella schermata risultati
-  const [likert, setLikert] = useState({ 1: null, 2: null, 3: null, 4: null, 5: null, 6: null });
+  const [likert, setLikert] = useState({ 1: null, 2: null, 3: null, 4: null, 5: null });
   const [isSending, setIsSending] = useState(false);
   // Indicatore scroll: scompare dopo che l'utente ha scrollato un po'
   const [showScrollHint, setShowScrollHint] = useState(true);

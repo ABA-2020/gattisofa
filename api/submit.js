@@ -31,7 +31,7 @@ function validateRisposte(risposte) {
 
 function validatePunteggi(punteggi) {
   if (!punteggi || typeof punteggi !== 'object') return false;
-  if (Object.keys(punteggi).length !== 6) return false;
+  if (Object.keys(punteggi).length !== 5) return false;
   return Object.values(punteggi).every(v => typeof v === 'number' && v >= -20 && v <= 20);
 }
 
