@@ -44,12 +44,12 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Specifichiamo esplicitamente la versione stabile dell'API
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel(
-    { model: "gemini-pro" }
-    //{ apiVersion: 'v1' } // Aggiungi questa riga
-    );
+    
+    // Usiamo il modello Flash moderno lasciando gestire l'endpoint all'SDK
+    const model = genAI.getGenerativeModel({ 
+      model: "gemini-1.5-flash" 
+    });
 
     const prompt = `
 Sei il motore di profilazione psicologica di un test basato su cinema e serie TV.
