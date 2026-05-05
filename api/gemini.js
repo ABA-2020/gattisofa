@@ -123,22 +123,33 @@ Nessun testo fuori dal JSON. Nessun blocco markdown (\`\`\`json). Solo JSON puro
       },
     });
 
-    const responseText = result.response.text();
+const responseText = result.response.text();
 
-    // Pulisce eventuali backtick markdown prima del parsing
-    const cleanJson = responseText
-      .replace(/```json/gi, '')
-      .replace(/```/g, '')
-      .trim();
+    // 1. Trova l'inizio e la fine del JSON ignorando tutto il resto
+    const startJson = responseText.indexOf('{');
+    const endJson = responseText.lastIndexOf('}');
 
-    const aiData = JSON.parse(cleanJson);
-
-    // Validazione struttura risposta
-    if (!aiData.gatti || !Array.isArray(aiData.gatti) || aiData.gatti.length !== 5) {
-      throw new Error('Formato risposta AI non valido');
+    if (startJson === -1 || endJson === -1) {
+      console.error("L'AI non ha restituito un JSON:", responseText);
+      throw new Error('Formato risposta AI non valido: JSON non trovato');
     }
 
-    return res.status(200).json(aiData);
+    // 2. Estrae solo la stringa racchiusa tra le graffe
+    const cleanJson = responseText.substring(startJson, endJson + 1);
+    
+    try {
+      const aiData = JSON.parse(cleanJson);
+
+      // 3. Validazione struttura risposta
+      if (!aiData.gatti || !Array.isArray(aiData.gatti) || aiData.gatti.length !== 5) {
+        throw new Error('La struttura dei gatti nel JSON è incompleta');
+      }
+
+      return res.status(200).json(aiData);
+    } catch (parseError) {
+      console.error("Errore nel parsing del JSON pulito:", cleanJson);
+      throw new Error('Errore durante la lettura dei dati generati dall\'AI');
+    }
 
   } catch (error) {
     console.error('Errore Gemini:', error.message);
