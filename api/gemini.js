@@ -36,24 +36,6 @@ export default async function handler(req, res) {
   // API key solo server-side
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) return res.status(500).json({ error: 'Chiave API mancante.' });
-  
-  console.log('API Key presente:', !!apiKey);
-// --- INIZIO TEST DEBUG MODELLI ---
-  try {
-    const checkModels = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
-    const dataModels = await checkModels.json();
-    console.log("I MODELLI CHE LA TUA CHIAVE PUO' VEDERE SONO:");
-    // Stampa solo i nomi per comodità
-    if (dataModels.models) {
-      console.log(dataModels.models.map(m => m.name));
-    } else {
-      console.log("Nessun modello trovato o errore:", dataModels);
-    }
-  } catch (err) {
-    console.log("Errore nel controllo modelli:", err);
-  }
-  // --- FINE TEST DEBUG MODELLI ---
-
 
   const { punteggi } = req.body;
   if (!validatePunteggi(punteggi)) {
@@ -137,19 +119,39 @@ Nessun testo fuori dal JSON. Nessun blocco markdown (\`\`\`json). Solo JSON puro
   ]
 }`;
 
-const result = await model.generateContent({
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: {
-        temperature: 0.75,
-        maxOutputTokens: 4000, // Aumentato da 1800 a 4000 per evitare interruzioni a metà frase
-        responseMimeType: "application/json", // IL TRUCCO MAGICO: Forza il modello a parlare SOLO in JSON puro
-      },
-    });
+    // --- INIZIO GESTIONE RETRY (Anti Errore 503) ---
+    let result;
+    let retries = 3; // Quante volte riprovare
+    let delay = 2000; // Tempo di attesa iniziale: 2 secondi
 
-    // Dato che abbiamo forzato application/json, la risposta sarà JSON perfetto e non serve più cercare le graffe!
+    for (let i = 0; i < retries; i++) {
+      try {
+        result = await model.generateContent({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: {
+            temperature: 0.75,
+            maxOutputTokens: 4000,
+            responseMimeType: "application/json",
+          },
+        });
+        break; // Se la chiamata ha successo, esce dal ciclo "for" e prosegue
+      } catch (apiError) {
+        // Se è l'ultimo tentativo, o se NON è un errore di sovraccarico (503/429), lancia l'errore definitivo
+        if (i === retries - 1 || (!apiError.message.includes('503') && !apiError.message.includes('429'))) {
+          throw apiError; 
+        }
+        // Altrimenti, aspetta e ritenta
+        console.warn(`Server Google occupato (Tentativo ${i + 1} fallito). Ritento tra ${delay/1000} secondi...`);
+        await new Promise(resolve => setTimeout(resolve, delay));
+        delay *= 2; // Raddoppia l'attesa per il prossimo tentativo (2s -> 4s)
+      }
+    }
+    // --- FINE GESTIONE RETRY ---
+
     const responseText = result.response.text();
     
     try {
+      // JSON nativo, non serve più pulire i backtick
       const aiData = JSON.parse(responseText);
 
       // Validazione struttura risposta
