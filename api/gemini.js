@@ -65,7 +65,7 @@ export default async function handler(req, res) {
     
     // Usiamo il modello Flash moderno lasciando gestire l'endpoint all'SDK
     const model = genAI.getGenerativeModel({ 
-      model: "gemini-1.5-flash" 
+      model: "gemini-2.5-flash" 
     });
 
     const prompt = `
