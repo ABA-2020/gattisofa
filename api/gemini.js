@@ -44,7 +44,13 @@ export default async function handler(req, res) {
   }
 
   try {
+    // Specifichiamo esplicitamente la versione stabile dell'API
     const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel(
+    { model: "gemini-1.5-flash" },
+    { apiVersion: 'v1' } // Aggiungi questa riga
+    );
+
     const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
     const prompt = `
