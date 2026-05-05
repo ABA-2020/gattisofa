@@ -8,13 +8,12 @@ import IndianaImg from './assets/gatti/Indiana.svg';
 import SherlockImg from './assets/gatti/Sherlock.svg';
 import HermioneImg from './assets/gatti/Hermione.svg';
 
-
 const catProfiles = {
   1: { name: "Pink Panther", image: PinkPantherImg, profile: "Un gatto ironico e brillante, con un senso dell'umorismo raffinato e un'eleganza naturale. Trova nelle storie leggere e intelligenti il suo habitat ideale: ride, osserva e non si prende mai troppo sul serio.", genre: "n/d" },
-  2: { name: "Elizabeth", image: ElizabethImg, profile: "Un gatto empatico e comunicativo, che vive di fusa e relazioni profonde. Cerca sempre il contatto autentico e il calore della sua famiglia umana.", genre: "n/d" },
-  3: { name: "Indiana", image: IndianaImg, profile: "Un gatto audace e istintivo, sempre pronto a tuffarsi nell'azione. Ama i territori pericolosi, i personaggi duri e le storie dove il crimine, l'adrenalina e la lealtà si mescolano senza tregua.", genre: "n/d" },
-  4: { name: "Sherlock", image: SherlockImg, profile: "Un gatto metodico e infallibile, che non lascia nulla al caso. Osserva ogni dettaglio, segue ogni traccia e non si ferma finché il mistero non è risolto. La verità è l'unica cosa che conta.", genre: "n/d" },
-  5: { name: "Hermione", image: HermioneImg, profile: "Un gatto curioso e sognatore, a suo agio tra mondi reali e fantastici. Ama le storie di formazione, i protagonisti giovani, le avventure epiche e i mondi immaginari dove tutto è ancora possibile.", genre: "n/d" },
+  2: { name: "Elizabeth",    image: ElizabethImg,   profile: "Un gatto regale e introspettivo, dalle emozioni profonde e dallo sguardo acuto. Vive di relazioni complesse, di potere silenzioso e di storie che raccontano l'animo umano senza bisogno di colpi di scena.", genre: "n/d" },
+  3: { name: "Indiana",      image: IndianaImg,     profile: "Un gatto audace e istintivo, sempre pronto a tuffarsi nell'azione. Ama i territori pericolosi, i personaggi duri e le storie dove il crimine, l'adrenalina e la lealtà si mescolano senza tregua.", genre: "n/d" },
+  4: { name: "Sherlock",     image: SherlockImg,    profile: "Un gatto metodico e infallibile, che non lascia nulla al caso. Osserva ogni dettaglio, segue ogni traccia e non si ferma finché il mistero non è risolto. La verità è l'unica cosa che conta.", genre: "n/d" },
+  5: { name: "Hermione",     image: HermioneImg,    profile: "Un gatto curioso e sognatore, a suo agio tra mondi reali e fantastici. Ama le storie di formazione, i protagonisti giovani, le avventure epiche e i mondi immaginari dove tutto è ancora possibile.", genre: "n/d" },
 };
 
 const shuffleArray = (array) => {
@@ -27,46 +26,46 @@ const shuffleArray = (array) => {
 };
 
 const psychQuestions = [
-  { id: "P1",  type: "psych", title: "Preferisci", leftOption: "Pretty Woman",                catL: 1, rightOption: "Il Gattopardo",                  catR: 2, neutralOption: "Non conosco" },
-  { id: "P2",  type: "psych", title: "Preferisci", leftOption: "Notting Hill",                 catL: 1, rightOption: "Via col Vento",                   catR: 2, neutralOption: "Non conosco" },
-  { id: "P3",  type: "psych", title: "Preferisci", leftOption: "La Pantera Rosa",              catL: 1, rightOption: "Il Discorso del Re",               catR: 2, neutralOption: "Non conosco" },
-  { id: "P4",  type: "psych", title: "Preferisci", leftOption: "La Vita è Bella",              catL: 1, rightOption: "Schindler's List",                 catR: 2, neutralOption: "Non conosco" },
-  { id: "P5",  type: "psych", title: "Preferisci", leftOption: "Pretty Woman",                catL: 1, rightOption: "Il Padrino",                       catR: 3, neutralOption: "Non conosco" },
-  { id: "P6",  type: "psych", title: "Preferisci", leftOption: "Notting Hill",                 catL: 1, rightOption: "Indiana Jones",                   catR: 3, neutralOption: "Non conosco" },
-  { id: "P7",  type: "psych", title: "Preferisci", leftOption: "La Pantera Rosa",              catL: 1, rightOption: "Pulp Fiction",                    catR: 3, neutralOption: "Non conosco" },
-  { id: "P8",  type: "psych", title: "Preferisci", leftOption: "La Vita è Bella",              catL: 1, rightOption: "C'era una Volta in America",      catR: 3, neutralOption: "Non conosco" },
-  { id: "P9",  type: "psych", title: "Preferisci", leftOption: "Pretty Woman",                catL: 1, rightOption: "Il Silenzio degli Innocenti",     catR: 4, neutralOption: "Non conosco" },
-  { id: "P10", type: "psych", title: "Preferisci", leftOption: "Notting Hill",                 catL: 1, rightOption: "Basic Instinct",                  catR: 4, neutralOption: "Non conosco" },
-  { id: "P11", type: "psych", title: "Preferisci", leftOption: "La Pantera Rosa",              catL: 1, rightOption: "Psycho",                          catR: 4, neutralOption: "Non conosco" },
-  { id: "P12", type: "psych", title: "Preferisci", leftOption: "La Vita è Bella",              catL: 1, rightOption: "Seven",                           catR: 4, neutralOption: "Non conosco" },
-  { id: "P13", type: "psych", title: "Preferisci", leftOption: "Pretty Woman",                catL: 1, rightOption: "Guerre Stellari",                  catR: 5, neutralOption: "Non conosco" },
-  { id: "P14", type: "psych", title: "Preferisci", leftOption: "Notting Hill",                 catL: 1, rightOption: "Harry Potter",                    catR: 5, neutralOption: "Non conosco" },
-  { id: "P15", type: "psych", title: "Preferisci", leftOption: "La Pantera Rosa",              catL: 1, rightOption: "Batman",                          catR: 5, neutralOption: "Non conosco" },
-  { id: "P16", type: "psych", title: "Preferisci", leftOption: "La Vita è Bella",              catL: 1, rightOption: "Jurassic Park",                   catR: 5, neutralOption: "Non conosco" },
-  { id: "P17", type: "psych", title: "Preferisci", leftOption: "Il Gattopardo",                catL: 2, rightOption: "Pulp Fiction",                    catR: 3, neutralOption: "Non conosco" },
-  { id: "P18", type: "psych", title: "Preferisci", leftOption: "Via col Vento",                catL: 2, rightOption: "Indiana Jones",                   catR: 3, neutralOption: "Non conosco" },
-  { id: "P19", type: "psych", title: "Preferisci", leftOption: "Il Discorso del Re",           catL: 2, rightOption: "Il Padrino",                       catR: 3, neutralOption: "Non conosco" },
-  { id: "P20", type: "psych", title: "Preferisci", leftOption: "Schindler's List",             catL: 2, rightOption: "C'era una Volta in America",      catR: 3, neutralOption: "Non conosco" },
-  { id: "P21", type: "psych", title: "Preferisci", leftOption: "Il Gattopardo",                catL: 2, rightOption: "Il Silenzio degli Innocenti",     catR: 4, neutralOption: "Non conosco" },
-  { id: "P22", type: "psych", title: "Preferisci", leftOption: "Via col Vento",                catL: 2, rightOption: "Seven",                           catR: 4, neutralOption: "Non conosco" },
-  { id: "P23", type: "psych", title: "Preferisci", leftOption: "Il Discorso del Re",           catL: 2, rightOption: "Psycho",                          catR: 4, neutralOption: "Non conosco" },
-  { id: "P24", type: "psych", title: "Preferisci", leftOption: "Schindler's List",             catL: 2, rightOption: "Basic Instinct",                  catR: 4, neutralOption: "Non conosco" },
-  { id: "P25", type: "psych", title: "Preferisci", leftOption: "Il Gattopardo",                catL: 2, rightOption: "Guerre Stellari",                  catR: 5, neutralOption: "Non conosco" },
-  { id: "P26", type: "psych", title: "Preferisci", leftOption: "Via col Vento",                catL: 2, rightOption: "Harry Potter",                    catR: 5, neutralOption: "Non conosco" },
-  { id: "P27", type: "psych", title: "Preferisci", leftOption: "Il Discorso del Re",           catL: 2, rightOption: "Batman",                          catR: 5, neutralOption: "Non conosco" },
-  { id: "P28", type: "psych", title: "Preferisci", leftOption: "Schindler's List",             catL: 2, rightOption: "Jurassic Park",                   catR: 5, neutralOption: "Non conosco" },
-  { id: "P29", type: "psych", title: "Preferisci", leftOption: "Il Padrino",                   catL: 3, rightOption: "Seven",                           catR: 4, neutralOption: "Non conosco" },
-  { id: "P30", type: "psych", title: "Preferisci", leftOption: "C'era una Volta in America",  catL: 3, rightOption: "Psycho",                          catR: 4, neutralOption: "Non conosco" },
-  { id: "P31", type: "psych", title: "Preferisci", leftOption: "Indiana Jones",                catL: 3, rightOption: "Il Silenzio degli Innocenti",     catR: 4, neutralOption: "Non conosco" },
-  { id: "P32", type: "psych", title: "Preferisci", leftOption: "Pulp Fiction",                 catL: 3, rightOption: "Basic Instinct",                  catR: 4, neutralOption: "Non conosco" },
-  { id: "P33", type: "psych", title: "Preferisci", leftOption: "Il Padrino",                   catL: 3, rightOption: "Guerre Stellari",                  catR: 5, neutralOption: "Non conosco" },
-  { id: "P34", type: "psych", title: "Preferisci", leftOption: "C'era una Volta in America",  catL: 3, rightOption: "Harry Potter",                    catR: 5, neutralOption: "Non conosco" },
-  { id: "P35", type: "psych", title: "Preferisci", leftOption: "Indiana Jones",                catL: 3, rightOption: "Batman",                          catR: 5, neutralOption: "Non conosco" },
-  { id: "P36", type: "psych", title: "Preferisci", leftOption: "Pulp Fiction",                 catL: 3, rightOption: "Jurassic Park",                   catR: 5, neutralOption: "Non conosco" },
-  { id: "P37", type: "psych", title: "Preferisci", leftOption: "Basic Instinct",               catL: 4, rightOption: "Guerre Stellari",                  catR: 5, neutralOption: "Non conosco" },
-  { id: "P38", type: "psych", title: "Preferisci", leftOption: "Seven",                        catL: 4, rightOption: "Harry Potter",                    catR: 5, neutralOption: "Non conosco" },
-  { id: "P39", type: "psych", title: "Preferisci", leftOption: "Il Silenzio degli Innocenti", catL: 4, rightOption: "Batman",                          catR: 5, neutralOption: "Non conosco" },
-  { id: "P40", type: "psych", title: "Preferisci", leftOption: "Psycho",                       catL: 4, rightOption: "Jurassic Park",                   catR: 5, neutralOption: "Non conosco" },
+  { id: "P1",  type: "psych", title: "Preferisci", leftOption: "Pretty Woman",               catL: 1, rightOption: "Il Gattopardo",                catR: 2, neutralOption: "Non conosco" },
+  { id: "P2",  type: "psych", title: "Preferisci", leftOption: "Notting Hill",                catL: 1, rightOption: "Via col Vento",                 catR: 2, neutralOption: "Non conosco" },
+  { id: "P3",  type: "psych", title: "Preferisci", leftOption: "La Pantera Rosa",             catL: 1, rightOption: "Il Discorso del Re",             catR: 2, neutralOption: "Non conosco" },
+  { id: "P4",  type: "psych", title: "Preferisci", leftOption: "La Vita è Bella",             catL: 1, rightOption: "Schindler's List",               catR: 2, neutralOption: "Non conosco" },
+  { id: "P5",  type: "psych", title: "Preferisci", leftOption: "Pretty Woman",               catL: 1, rightOption: "Il Padrino",                     catR: 3, neutralOption: "Non conosco" },
+  { id: "P6",  type: "psych", title: "Preferisci", leftOption: "Notting Hill",                catL: 1, rightOption: "Indiana Jones",                 catR: 3, neutralOption: "Non conosco" },
+  { id: "P7",  type: "psych", title: "Preferisci", leftOption: "La Pantera Rosa",             catL: 1, rightOption: "Pulp Fiction",                  catR: 3, neutralOption: "Non conosco" },
+  { id: "P8",  type: "psych", title: "Preferisci", leftOption: "La Vita è Bella",             catL: 1, rightOption: "C'era una Volta in America",    catR: 3, neutralOption: "Non conosco" },
+  { id: "P9",  type: "psych", title: "Preferisci", leftOption: "Pretty Woman",               catL: 1, rightOption: "Il Silenzio degli Innocenti",   catR: 4, neutralOption: "Non conosco" },
+  { id: "P10", type: "psych", title: "Preferisci", leftOption: "Notting Hill",                catL: 1, rightOption: "Basic Instinct",                catR: 4, neutralOption: "Non conosco" },
+  { id: "P11", type: "psych", title: "Preferisci", leftOption: "La Pantera Rosa",             catL: 1, rightOption: "Psycho",                        catR: 4, neutralOption: "Non conosco" },
+  { id: "P12", type: "psych", title: "Preferisci", leftOption: "La Vita è Bella",             catL: 1, rightOption: "Seven",                         catR: 4, neutralOption: "Non conosco" },
+  { id: "P13", type: "psych", title: "Preferisci", leftOption: "Pretty Woman",               catL: 1, rightOption: "Guerre Stellari",                catR: 5, neutralOption: "Non conosco" },
+  { id: "P14", type: "psych", title: "Preferisci", leftOption: "Notting Hill",                catL: 1, rightOption: "Harry Potter",                  catR: 5, neutralOption: "Non conosco" },
+  { id: "P15", type: "psych", title: "Preferisci", leftOption: "La Pantera Rosa",             catL: 1, rightOption: "Batman",                        catR: 5, neutralOption: "Non conosco" },
+  { id: "P16", type: "psych", title: "Preferisci", leftOption: "La Vita è Bella",             catL: 1, rightOption: "Jurassic Park",                 catR: 5, neutralOption: "Non conosco" },
+  { id: "P17", type: "psych", title: "Preferisci", leftOption: "Il Gattopardo",               catL: 2, rightOption: "Pulp Fiction",                  catR: 3, neutralOption: "Non conosco" },
+  { id: "P18", type: "psych", title: "Preferisci", leftOption: "Via col Vento",               catL: 2, rightOption: "Indiana Jones",                 catR: 3, neutralOption: "Non conosco" },
+  { id: "P19", type: "psych", title: "Preferisci", leftOption: "Il Discorso del Re",          catL: 2, rightOption: "Il Padrino",                     catR: 3, neutralOption: "Non conosco" },
+  { id: "P20", type: "psych", title: "Preferisci", leftOption: "Schindler's List",            catL: 2, rightOption: "C'era una Volta in America",    catR: 3, neutralOption: "Non conosco" },
+  { id: "P21", type: "psych", title: "Preferisci", leftOption: "Il Gattopardo",               catL: 2, rightOption: "Il Silenzio degli Innocenti",   catR: 4, neutralOption: "Non conosco" },
+  { id: "P22", type: "psych", title: "Preferisci", leftOption: "Via col Vento",               catL: 2, rightOption: "Seven",                         catR: 4, neutralOption: "Non conosco" },
+  { id: "P23", type: "psych", title: "Preferisci", leftOption: "Il Discorso del Re",          catL: 2, rightOption: "Psycho",                        catR: 4, neutralOption: "Non conosco" },
+  { id: "P24", type: "psych", title: "Preferisci", leftOption: "Schindler's List",            catL: 2, rightOption: "Basic Instinct",                catR: 4, neutralOption: "Non conosco" },
+  { id: "P25", type: "psych", title: "Preferisci", leftOption: "Il Gattopardo",               catL: 2, rightOption: "Guerre Stellari",                catR: 5, neutralOption: "Non conosco" },
+  { id: "P26", type: "psych", title: "Preferisci", leftOption: "Via col Vento",               catL: 2, rightOption: "Harry Potter",                  catR: 5, neutralOption: "Non conosco" },
+  { id: "P27", type: "psych", title: "Preferisci", leftOption: "Il Discorso del Re",          catL: 2, rightOption: "Batman",                        catR: 5, neutralOption: "Non conosco" },
+  { id: "P28", type: "psych", title: "Preferisci", leftOption: "Schindler's List",            catL: 2, rightOption: "Jurassic Park",                 catR: 5, neutralOption: "Non conosco" },
+  { id: "P29", type: "psych", title: "Preferisci", leftOption: "Il Padrino",                  catL: 3, rightOption: "Seven",                         catR: 4, neutralOption: "Non conosco" },
+  { id: "P30", type: "psych", title: "Preferisci", leftOption: "C'era una Volta in America", catL: 3, rightOption: "Psycho",                        catR: 4, neutralOption: "Non conosco" },
+  { id: "P31", type: "psych", title: "Preferisci", leftOption: "Indiana Jones",               catL: 3, rightOption: "Il Silenzio degli Innocenti",   catR: 4, neutralOption: "Non conosco" },
+  { id: "P32", type: "psych", title: "Preferisci", leftOption: "Pulp Fiction",                catL: 3, rightOption: "Basic Instinct",                catR: 4, neutralOption: "Non conosco" },
+  { id: "P33", type: "psych", title: "Preferisci", leftOption: "Il Padrino",                  catL: 3, rightOption: "Guerre Stellari",                catR: 5, neutralOption: "Non conosco" },
+  { id: "P34", type: "psych", title: "Preferisci", leftOption: "C'era una Volta in America", catL: 3, rightOption: "Harry Potter",                  catR: 5, neutralOption: "Non conosco" },
+  { id: "P35", type: "psych", title: "Preferisci", leftOption: "Indiana Jones",               catL: 3, rightOption: "Batman",                        catR: 5, neutralOption: "Non conosco" },
+  { id: "P36", type: "psych", title: "Preferisci", leftOption: "Pulp Fiction",                catL: 3, rightOption: "Jurassic Park",                 catR: 5, neutralOption: "Non conosco" },
+  { id: "P37", type: "psych", title: "Preferisci", leftOption: "Basic Instinct",              catL: 4, rightOption: "Guerre Stellari",                catR: 5, neutralOption: "Non conosco" },
+  { id: "P38", type: "psych", title: "Preferisci", leftOption: "Seven",                       catL: 4, rightOption: "Harry Potter",                  catR: 5, neutralOption: "Non conosco" },
+  { id: "P39", type: "psych", title: "Preferisci", leftOption: "Il Silenzio degli Innocenti",catL: 4, rightOption: "Batman",                        catR: 5, neutralOption: "Non conosco" },
+  { id: "P40", type: "psych", title: "Preferisci", leftOption: "Psycho",                      catL: 4, rightOption: "Jurassic Park",                 catR: 5, neutralOption: "Non conosco" },
 ];
 
 const buildDeck = () => {
@@ -74,23 +73,33 @@ const buildDeck = () => {
   return [
     ...shuffledPsych,
     { id: "D2", type: "demo_age", title: "Quanti anni hai?" },
-    // D1: tre opzioni — leftOption / neutralOption / rightOption
     { id: "D1", type: "demo", title: "Qual è il tuo sesso?", leftOption: "Uomo", neutralOption: "Altro", rightOption: "Donna" }
   ];
 };
 
 function App() {
   const [deck] = useState(() => buildDeck());
-  const [scores, setScores] = useState({ 1: 0, 2: 0, 3: 0, 4: 0, 5: 0});
+
+  const [scores, setScores] = useState({ 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 });
   const [responses, setResponses] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(deck.length - 1);
   const [showResult, setShowResult] = useState(false);
   const [ageValue, setAgeValue] = useState('');
-  // Likert 1-5 per ciascun gatto nella schermata risultati
-  const [likert, setLikert] = useState({ 1: null, 2: null, 3: null, 4: null, 5: null });
   const [isSending, setIsSending] = useState(false);
-  // Indicatore scroll: scompare dopo che l'utente ha scrollato un po'
+
+  const [likert, setLikert] = useState({ 1: null, 2: null, 3: null, 4: null, 5: null });
+  const [showThankYouOverlay, setShowThankYouOverlay] = useState(false);
+  const [showAdvice, setShowAdvice] = useState(false);
+  const [aiData, setAiData] = useState(null);
+  const [aiLoading, setAiLoading] = useState(false);
+  const [adviceLikert, setAdviceLikert] = useState({ 1: null, 2: null, 3: null, 4: null, 5: null });
   const [showScrollHint, setShowScrollHint] = useState(true);
+  const [privacyAccepted, setPrivacyAccepted] = useState(
+    () => localStorage.getItem('privacy_accepted') === 'true'
+  );
+  const [privacyChecked, setPrivacyChecked] = useState(false);
+
+  const cardRefs = useMemo(() => Array(deck.length).fill(0).map(() => React.createRef()), [deck]);
 
   useEffect(() => {
     if (!showResult) return;
@@ -100,15 +109,6 @@ function App() {
     return () => window.removeEventListener('scroll', onScroll);
   }, [showResult]);
 
-  // --- PRIVACY MODAL STATE ---
-  const [privacyAccepted, setPrivacyAccepted] = useState(
-    () => localStorage.getItem('privacy_accepted') === 'true'
-  );
-  const [privacyChecked, setPrivacyChecked] = useState(false);
-
-  const cardRefs = useMemo(() => Array(deck.length).fill(0).map(() => React.createRef()), [deck]);
-
-  // Blocca lo scroll durante il test, lo riabilita nella pagina risultati
   useEffect(() => {
     if (showResult) {
       document.body.style.overflow = '';
@@ -123,6 +123,10 @@ function App() {
       document.documentElement.style.height = '';
     };
   }, [showResult]);
+
+  useEffect(() => {
+    if (showAdvice) window.scrollTo(0, 0);
+  }, [showAdvice]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -141,17 +145,12 @@ function App() {
     if (isSending) return;
     setIsSending(true);
     const mappaRisposte = {};
-    finalResponses.forEach(r => {
-      mappaRisposte[r.id] = String(r.risposta).slice(0, 100);
-    });
+    finalResponses.forEach(r => { mappaRisposte[r.id] = String(r.risposta).slice(0, 100); });
     try {
       await fetch('/api/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          punteggi: finalScores, 
-          risposte: mappaRisposte 
-        }),
+        body: JSON.stringify({ punteggi: finalScores, risposte: mappaRisposte }),
       });
     } catch (err) {
       console.error('Errore invio dati:', err);
@@ -165,21 +164,72 @@ function App() {
       await fetch('/api/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          likert: likertValues,
-        }),
+        body: JSON.stringify({ likert: likertValues }),
       });
     } catch (err) {
       console.error('Errore invio likert:', err);
     }
   };
 
+  const sendAdviceLikertToGoogle = async (adviceLikertValues, currentAiData) => {
+    const serieConsigliate = {};
+    if (currentAiData?.gatti) {
+      currentAiData.gatti.forEach(g => {
+        serieConsigliate[`serie_gatto_${g.id}`] = (g.messaggio || '').slice(0, 300);
+      });
+    }
+    try {
+      await fetch('/api/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          tipo: 'advice_likert',
+          advice_likert: adviceLikertValues,
+          serie_consigliate: serieConsigliate,
+        }),
+      });
+    } catch (err) {
+      console.error('Errore invio advice likert:', err);
+    }
+  };
+
+  const fetchAiAdvice = async (currentScores) => {
+    setAiLoading(true);
+    try {
+      const res = await fetch('/api/gemini', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ punteggi: currentScores }),
+      });
+      if (!res.ok) throw new Error('Risposta non valida');
+      const data = await res.json();
+      setAiData(data);
+    } catch (err) {
+      console.error('Errore AI:', err);
+      setAiData(null);
+    } finally {
+      setAiLoading(false);
+    }
+  };
+
   const handleLikert = (catId, value) => {
     setLikert(prev => {
       const updated = { ...prev, [catId]: value };
-      // Se tutti e 6 i gatti hanno un valore, invia automaticamente
       const allFilled = Object.values(updated).every(v => v !== null);
-      if (allFilled) sendLikertToGoogle(updated);
+      if (allFilled) {
+        sendLikertToGoogle(updated);
+        fetchAiAdvice(scores);
+        setShowThankYouOverlay(true);
+      }
+      return updated;
+    });
+  };
+
+  const handleAdviceLikert = (catId, value) => {
+    setAdviceLikert(prev => {
+      const updated = { ...prev, [catId]: value };
+      const allFilled = Object.values(updated).every(v => v !== null);
+      if (allFilled) sendAdviceLikertToGoogle(updated, aiData);
       return updated;
     });
   };
@@ -201,12 +251,9 @@ function App() {
 
   const handleSwipe = (direction, question) => {
     let chosen;
-
     if (question.type === 'demo_age') {
-      // Età: valore numerico inserito
       chosen = ageValue;
     } else if (direction === 'up') {
-      // Opzione neutra: salva il testo del campo neutralOption ("Non conosco" o "Altro")
       chosen = question.neutralOption || 'Non conosco';
     } else if (direction === 'left') {
       chosen = question.leftOption;
@@ -219,7 +266,6 @@ function App() {
 
     let nextScores = { ...scores };
     if (question.type === 'psych') {
-      // Solo left/right modificano i punteggi; up (neutro) non cambia nulla
       if (direction === 'left') {
         nextScores[question.catL] += 1;
         nextScores[question.catR] -= 1;
@@ -227,7 +273,6 @@ function App() {
         nextScores[question.catR] += 1;
         nextScores[question.catL] -= 1;
       }
-      // direction === 'up' → punteggi invariati
       setScores(nextScores);
     }
 
@@ -242,9 +287,8 @@ function App() {
   const progressPercent = Math.round(((deck.length - currentIndex) / deck.length) * 100);
   const currentQuestionNum = deck.length - currentIndex;
   const currentQuestion = deck[currentIndex];
-
-  // True se la domanda corrente ha un'opzione neutra (tutte le psych + D1)
   const hasNeutral = currentQuestion && !!currentQuestion.neutralOption;
+  const allAdviceDone = Object.values(adviceLikert).every(v => v !== null);
 
   return (
     <div className={`app-container ${showResult ? 'results-mode' : 'test-mode'}`}>
@@ -264,12 +308,7 @@ function App() {
               Non viene effettuato alcun tracciamento identificativo. Non raccogliamo nome,
               email, indirizzo IP o qualsiasi altro dato che possa ricondurre a te.
             </p>
-            <a
-              href="/privacy-policy"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="privacy-policy-link"
-            >
+            <a href="/privacy-policy" target="_blank" rel="noopener noreferrer" className="privacy-policy-link">
               Leggi la Privacy Policy completa →
             </a>
             <label className="privacy-checkbox-label">
@@ -289,89 +328,164 @@ function App() {
                 setPrivacyAccepted(true);
               }}
             >
-              Accetto e continuo
+              Accetto e continua
             </button>
           </div>
         </>
       )}
 
       {showResult ? (
-        <div className="result-container scrollable-results">
-          <h2 className="result-title">Scorri, scopri i profili e lasciaci il tuo ultimo feedback sui gatti!</h2>
-          <p className="result-subtitle">I tuoi Punteggi Felini</p>
-
-          {/* Indicatore scroll — scompare dopo 80px di scroll */}
-          {showScrollHint && (
-            <div className="scroll-hint">
-              <span className="scroll-hint-arrow">↓</span>
-              <span className="scroll-hint-text">Scorri</span>
-            </div>
-          )}
-
-          {Object.keys(scores).map(id => {
-            const score = scores[id];
-            const percentage = Math.min(Math.max(((score + 20) / 40) * 100, 0), 100);
-            const cat = catProfiles[id];
-            return (
-              <div key={id} className="cat-result-card">
-
-                {/* Header: immagine + nome + profilo */}
-                <div className="cat-result-header">
-                  <img src={cat.image} className="cat-result-icon" alt={cat.name} />
-                  <div className="cat-result-info">
-                    <span className="cat-result-name">{cat.name}</span>
-                    <p className="cat-result-profile">{cat.profile}</p>
-                  </div>
-                </div>
-
-                {/* Barra punteggio */}
-                <div className="chart-bar-bg" style={{ marginBottom: '14px' }}>
-                  <div className={`chart-bar-fill ${score >= 0 ? 'pos' : 'neg'}`} style={{ width: `${percentage}%` }}>
-                    <span className="score-val">{score}</span>
-                  </div>
-                </div>
-
-                {/* Likert scale */}
-                <p className="likert-question">Quanto ti ci ritrovi?</p>
-                <div className="likert-scale">
-                  {[1, 2, 3, 4, 5].map(val => (
-                    <button
-                      key={val}
-                      className={`likert-btn ${likert[id] === val ? 'selected' : ''}`}
-                      onClick={() => handleLikert(id, val)}
-                    >
-                      {val}
-                    </button>
-                  ))}
-                </div>
-                <div className="likert-labels">
-                  <span>Per niente</span>
-                  <span>Moltissimo</span>
-                </div>
-
-              </div>
-            );
-          })}
-
-          {/* Messaggio e tasto Ricomincia — compaiono solo quando tutti e 6 i likert sono compilati */}
-          {Object.values(likert).every(v => v !== null) && (
+        <>
+          {/* OVERLAY RINGRAZIAMENTO */}
+          {showThankYouOverlay && (
             <>
-              <div className="thank-you-card">
-                <span className="thank-you-emoji">🐾</span>
-                <h3 className="thank-you-title">Grazie mille!</h3>
-                <p className="thank-you-text">
+              <div className="privacy-overlay" />
+              <div className="thankyou-modal" role="dialog" aria-modal="true">
+                <span className="thankyou-modal-emoji">🐾</span>
+                <h2 className="thankyou-modal-title">Grazie mille!</h2>
+                <p className="thankyou-modal-body">
                   Le tue risposte ci aiutano a capire meglio i profili felini.
                   Il tuo contributo è prezioso per la nostra ricerca.
+                  <br /><br />
+                  I gatti hanno ascoltato attentamente… e ora hanno qualcosa da dirti!
                 </p>
+                <button
+                  className="thankyou-modal-btn"
+                  onClick={() => {
+                    setShowThankYouOverlay(false);
+                    setShowAdvice(true);
+                  }}
+                >
+                  Scopri i consigli dei gatti →
+                </button>
               </div>
-              <button onClick={() => window.location.reload()} className="retry-btn">Ricomincia</button>
             </>
           )}
 
-        </div>
+          {/* SCHERMATA CONSIGLI AI */}
+          {showAdvice ? (
+            <div className="result-container">
+              <h2 className="result-title">🎬 I Gatti Consigliano</h2>
+              <p className="result-subtitle">Cosa pensano i gatti dei tuoi gusti? Dicci se il consiglio ti garba!</p>
+
+              {aiLoading && (
+                <div className="ai-recs-card">
+                  <div className="ai-recs-loading">
+                    <div className="ai-recs-spinner" />
+                    <p>I gatti si stanno consultando…</p>
+                  </div>
+                </div>
+              )}
+
+              {!aiLoading && !aiData && (
+                <div className="ai-recs-card">
+                  <p className="ai-recs-error">Non è stato possibile generare i consigli al momento.</p>
+                </div>
+              )}
+
+              {!aiLoading && aiData?.gatti && (
+                <>
+                  {aiData.intro && (
+                    <div className="ai-intro-card">
+                      <p>{aiData.intro}</p>
+                    </div>
+                  )}
+                  {aiData.gatti.map((gattoAi) => {
+                    const catId = parseInt(gattoAi.id);
+                    const cat = catProfiles[catId];
+                    if (!cat) return null;
+                    return (
+                      <div key={catId} className="ai-recs-card">
+                        <div className="ai-recs-item-header">
+                          <img src={cat.image} alt={cat.name} className="ai-recs-item-icon" />
+                          <strong className="ai-recs-item-name">{gattoAi.nome} dice:</strong>
+                        </div>
+                        <p className="ai-recs-item-msg">"{gattoAi.messaggio}"</p>
+                        <p className="likert-question advice-likert-q">Ti garba il consiglio?</p>
+                        <div className="likert-scale">
+                          {[1, 2, 3, 4, 5].map(val => (
+                            <button
+                              key={val}
+                              className={`likert-btn advice-likert-btn ${adviceLikert[catId] === val ? 'selected' : ''}`}
+                              onClick={() => handleAdviceLikert(catId, val)}
+                            >
+                              {val}
+                            </button>
+                          ))}
+                        </div>
+                        <div className="likert-labels advice-likert-labels">
+                          <span>Per niente</span>
+                          <span>Moltissimo</span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </>
+              )}
+
+              {!aiLoading && aiData && allAdviceDone && (
+                <button onClick={() => window.location.reload()} className="retry-btn">
+                  🔄 Rifai il test
+                </button>
+              )}
+            </div>
+
+          ) : (
+            /* SCHERMATA RISULTATI */
+            <div className="result-container scrollable-results">
+              <h2 className="result-title">I tuoi Punteggi Felini</h2>
+              <p className="result-subtitle">Scopri i profili e lasciaci il tuo feedback!</p>
+
+              {showScrollHint && (
+                <div className="scroll-hint">
+                  <span className="scroll-hint-arrow">↓</span>
+                  <span className="scroll-hint-text">Scorri</span>
+                </div>
+              )}
+
+              {Object.keys(scores).map(id => {
+                const score = scores[id];
+                const percentage = Math.min(Math.max(((score + 20) / 40) * 100, 0), 100);
+                const cat = catProfiles[id];
+                return (
+                  <div key={id} className="cat-result-card">
+                    <div className="cat-result-header">
+                      <img src={cat.image} className="cat-result-icon" alt={cat.name} />
+                      <div className="cat-result-info">
+                        <span className="cat-result-name">{cat.name}</span>
+                        <p className="cat-result-profile">{cat.profile}</p>
+                      </div>
+                    </div>
+                    <div className="chart-bar-bg" style={{ marginBottom: '14px' }}>
+                      <div className={`chart-bar-fill ${score >= 0 ? 'pos' : 'neg'}`} style={{ width: `${percentage}%` }}>
+                        <span className="score-val">{score}</span>
+                      </div>
+                    </div>
+                    <p className="likert-question">Quanto ti ci ritrovi?</p>
+                    <div className="likert-scale">
+                      {[1, 2, 3, 4, 5].map(val => (
+                        <button
+                          key={val}
+                          className={`likert-btn ${likert[id] === val ? 'selected' : ''}`}
+                          onClick={() => handleLikert(id, val)}
+                        >
+                          {val}
+                        </button>
+                      ))}
+                    </div>
+                    <div className="likert-labels">
+                      <span>Per niente</span>
+                      <span>Moltissimo</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </>
       ) : (
+        /* SCHERMATA TEST */
         <div className="test-interface">
-          {/* Spacer che compensa l'altezza della progress section fixed */}
           <div className="progress-spacer" />
           <div className="progress-section">
             <div className="progress-info">
@@ -382,31 +496,21 @@ function App() {
               <div className="progress-fill" style={{ width: `${progressPercent}%` }}></div>
             </div>
           </div>
-          
+
           <div className="card-container">
             {deck.map((q, index) => {
               if (q.id === 'D2') {
                 return (
-                  <div
-                    key={q.id}
-                    className={`swipe ${index === currentIndex ? 'active-card' : 'hidden-card'}`}
-                  >
+                  <div key={q.id} className={`swipe ${index === currentIndex ? 'active-card' : 'hidden-card'}`}>
                     <div className="card">
                       <h2>{q.title}</h2>
                       <div className="age-input-overlay-inner">
                         <form onSubmit={handleAgeSubmit} className="age-input-container">
                           <input
-                            type="number"
-                            min="1"
-                            max="120"
-                            step="1"
-                            id="age-input"
-                            name="age"
-                            inputMode="numeric"
-                            pattern="[0-9]*"
-                            autoComplete="off"
-                            className="age-input-fixed"
-                            placeholder="Età"
+                            type="number" min="1" max="120" step="1"
+                            id="age-input" name="age"
+                            inputMode="numeric" pattern="[0-9]*" autoComplete="off"
+                            className="age-input-fixed" placeholder="Età"
                             value={ageValue}
                             onChange={(e) => setAgeValue(e.target.value)}
                           />
@@ -434,22 +538,18 @@ function App() {
             })}
           </div>
 
-          {/* BOTTONI RISPOSTA */}
           {currentQuestion && currentQuestion.id !== 'D2' && (
             <div className={`action-buttons-container ${hasNeutral ? 'three-buttons' : ''}`}>
               <button className="swipe-btn left" onClick={() => swipe('left')}>
                 <span className="arrow">←</span>
                 <span className="btn-text">{currentQuestion.leftOption}</span>
               </button>
-
-              {/* Bottone neutro centrale — visibile solo se la domanda ha neutralOption */}
               {hasNeutral && (
                 <button className="swipe-btn neutral" onClick={() => swipe('up')}>
                   <span className="arrow">↑</span>
                   <span className="btn-text">{currentQuestion.neutralOption}</span>
                 </button>
               )}
-
               <button className="swipe-btn right" onClick={() => swipe('right')}>
                 <span className="arrow">→</span>
                 <span className="btn-text">{currentQuestion.rightOption}</span>

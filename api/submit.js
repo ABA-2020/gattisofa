@@ -31,7 +31,7 @@ function validateRisposte(risposte) {
 
 function validatePunteggi(punteggi) {
   if (!punteggi || typeof punteggi !== 'object') return false;
-  if (Object.keys(punteggi).length !== 5) return false;
+  if (Object.keys(punteggi).length !== 5) return false; // 5 gatti
   return Object.values(punteggi).every(v => typeof v === 'number' && v >= -20 && v <= 20);
 }
 
@@ -40,9 +40,20 @@ function validateLikert(likert) {
   return Object.values(likert).every(v => v === null || (Number.isInteger(v) && v >= 1 && v <= 5));
 }
 
+function validateAdviceLikert(advice_likert) {
+  if (!advice_likert || typeof advice_likert !== 'object') return false;
+  if (Object.keys(advice_likert).length !== 5) return false; // 5 gatti
+  return Object.values(advice_likert).every(v => v === null || (Number.isInteger(v) && v >= 1 && v <= 5));
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  // Blocca richieste con Content-Type sbagliato
+  if (!req.headers['content-type']?.includes('application/json')) {
+    return res.status(415).json({ error: 'Unsupported Media Type' });
   }
 
   // Rate limiting per IP
@@ -53,13 +64,13 @@ export default async function handler(req, res) {
 
   // Token e URL solo lato server — mai esposti al frontend
   const GOOGLE_SCRIPT_URL = process.env.GOOGLE_SCRIPT_URL;
-  const TOKEN = process.env.TOKEN; // ⚠️ rinominata da VITE_TOKEN a TOKEN in Vercel env vars
+  const TOKEN = process.env.TOKEN;
 
   if (!GOOGLE_SCRIPT_URL || !TOKEN) {
     return res.status(500).json({ error: 'Configurazione mancante' });
   }
 
-  const { punteggi, risposte, likert } = req.body;
+  const { punteggi, risposte, likert, tipo, advice_likert, serie_consigliate } = req.body;
 
   // ── Invio test (punteggi + risposte) ──────────────────────────────
   if (punteggi && risposte) {
@@ -87,7 +98,7 @@ export default async function handler(req, res) {
     }
   }
 
-  // ── Invio likert ───────────────────────────────────────────────────
+  // ── Invio likert profili ───────────────────────────────────────────
   if (likert) {
     if (!validateLikert(likert)) {
       return res.status(400).json({ error: 'Valori likert non validi' });
@@ -109,5 +120,37 @@ export default async function handler(req, res) {
     }
   }
 
-  return res.status(400).json({ error: 'Dati mancanti' });
+  // ── Invio likert consigli AI + serie consigliate ───────────────────
+  if (tipo === 'advice_likert' && advice_likert) {
+    if (!validateAdviceLikert(advice_likert)) {
+      return res.status(400).json({ error: 'Valori advice likert non validi' });
+    }
+
+    // Sanitizza le serie consigliate — tronca a 300 caratteri per gatto
+    const serieClean = {};
+    if (serie_consigliate && typeof serie_consigliate === 'object') {
+      Object.entries(serie_consigliate).forEach(([key, val]) => {
+        serieClean[key] = String(val || '').slice(0, 300);
+      });
+    }
+
+    try {
+      await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          token: TOKEN,
+          tipo: 'advice_likert',
+          advice_likert_gatti: advice_likert,
+          serie_consigliate: serieClean,
+        }),
+      });
+      return res.status(200).json({ ok: true });
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Errore invio advice likert' });
+    }
+  }
+
+  return res.status(400).json({ error: 'Dati mancanti o tipo non riconosciuto' });
 }

@@ -17,7 +17,6 @@ body {
   max-width: 500px; 
   margin: 0 auto; 
   padding: 20px; 
-  /* dvh = dynamic viewport height: non si riduce quando appare la tastiera mobile */
   min-height: 100dvh;
   height: 100dvh;
   display: flex; 
@@ -31,7 +30,7 @@ body {
   height: 100dvh;
   overflow: hidden;
   padding: 0 20px 12px;
-  justify-content: flex-end; /* bottoni e card si ancorano in basso */
+  justify-content: flex-end;
 }
 
 /* Nella pagina risultati: scroll libero, sfondo esteso */
@@ -55,9 +54,8 @@ body {
   box-sizing: border-box;
 }
 
-/* Spacer che tiene il posto della progress section fixed (circa 90px) */
+/* Spacer che tiene il posto della progress section fixed */
 .progress-spacer {
-  /* altezza = safe-area-top + barra Safari (~52px) + altezza progress section (~38px) */
   height: calc(env(safe-area-inset-top, 0px) + 100px);
   flex-shrink: 0;
 }
@@ -69,7 +67,6 @@ body {
   box-sizing: border-box;
 }
 
-/* In test-mode la progress section è fixed in cima */
 .test-mode .progress-section {
   position: fixed;
   top: 0;
@@ -115,22 +112,17 @@ body {
 }
 
 /* ANTI-SPOILER */
-.hidden-card {
-  display: none !important;
-}
-.active-card {
-  display: flex !important;
-  z-index: 100;
-}
+.hidden-card { display: none !important; }
+.active-card { display: flex !important; z-index: 100; }
 
 /* CARTE */
 .card-container { 
   position: relative; 
   width: 340px;
-  height: 380px; /* ridotto da 420px */
+  height: 380px;
   display: flex; 
   justify-content: center;
-  margin-bottom: 12px; /* ridotto da 20px */
+  margin-bottom: 12px;
 }
 
 .swipe { 
@@ -179,7 +171,6 @@ body {
    BOTTONI RISPOSTA
    ================================================ */
 
-/* Container base — 2 bottoni */
 .action-buttons-container { 
   display: flex; 
   justify-content: center;
@@ -188,12 +179,8 @@ body {
   margin: 10px auto 0;
 }
 
-/* Container con 3 bottoni — gap ridotto per stare in 340px */
-.action-buttons-container.three-buttons {
-  gap: 6px;
-}
+.action-buttons-container.three-buttons { gap: 6px; }
 
-/* Bottone base — 2 bottoni: (340 - 8) / 2 = 166px */
 .swipe-btn {
   flex: 0 0 166px;
   width: 166px;
@@ -212,54 +199,35 @@ body {
   overflow: hidden;
 }
 
-/* 3 bottoni uguali: (340 - 6 - 6) / 3 = 109.33px → arrotondiamo a 109px */
 .action-buttons-container.three-buttons .swipe-btn {
   flex: 0 0 109px;
   width: 109px;
 }
 
-.swipe-btn:active {
-  transform: scale(0.98);
-  background: #f0f0f0;
-}
+.swipe-btn:active { transform: scale(0.98); background: #f0f0f0; }
 
 .swipe-btn .arrow { 
-  font-size: 18px; 
-  font-weight: bold; 
-  color: #834d6c; 
-  margin-bottom: 2px; 
+  font-size: 18px; font-weight: bold; color: #834d6c; margin-bottom: 2px; 
 }
 
-/* Freccia del bottone neutro in grigio/viola tenue */
-.swipe-btn.neutral .arrow {
-  color: #a0a0b0;
-}
+.swipe-btn.neutral .arrow { color: #a0a0b0; }
 
 .swipe-btn .btn-text { 
-  font-size: 13px; 
-  font-weight: 600; 
-  text-align: center; 
-  line-height: 1.2;
-  margin: 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  word-wrap: break-word;
+  font-size: 13px; font-weight: 600; text-align: center; line-height: 1.2; margin: 0;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+  overflow: hidden; word-wrap: break-word;
 }
 
-/* Testo del bottone neutro più tenue */
-.swipe-btn.neutral .btn-text {
-  color: #888;
-  font-weight: 500;
-  font-size: 12px;
-}
+.swipe-btn.neutral .btn-text { color: #888; font-weight: 500; font-size: 12px; }
 
-/* RISULTATI */
+/* ================================================
+   RISULTATI
+   ================================================ */
+
 .result-container { 
   width: 340px;
   overflow-y: auto;
-  padding-bottom: 30px;
+  padding-bottom: 40px;
 }
 
 .result-title {
@@ -280,7 +248,7 @@ body {
   font-style: italic;
 }
 
-/* Indicatore scroll nella pagina risultati */
+/* Indicatore scroll */
 .scroll-hint {
   position: fixed;
   right: 18px;
@@ -323,38 +291,6 @@ body {
   50%       { transform: translateY(8px); opacity: 0.6; }
 }
 
-/* Card ringraziamento finale */
-.thank-you-card {
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  border-radius: 20px;
-  padding: 28px 24px;
-  margin-top: 8px;
-  margin-bottom: 16px;
-  text-align: center;
-  backdrop-filter: blur(4px);
-}
-
-.thank-you-emoji {
-  font-size: 36px;
-  display: block;
-  margin-bottom: 12px;
-}
-
-.thank-you-title {
-  font-size: 20px;
-  font-weight: 800;
-  color: white;
-  margin: 0 0 10px;
-}
-
-.thank-you-text {
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.85);
-  line-height: 1.6;
-  margin: 0;
-}
-
 /* Card singolo gatto nei risultati */
 .cat-result-card {
   background: white;
@@ -381,9 +317,7 @@ body {
   flex-shrink: 0;
 }
 
-.cat-result-info {
-  flex: 1;
-}
+.cat-result-info { flex: 1; }
 
 .cat-result-name {
   font-size: 15px;
@@ -400,8 +334,11 @@ body {
   margin: 0;
 }
 
-/* Barra punteggio — riusa le classi esistenti */
-.chart-bar-bg { flex-grow: 1; height: 24px; background: #f0f0f0; border-radius: 12px; overflow: hidden; position: relative; }
+/* Barra punteggio */
+.chart-bar-bg { 
+  flex-grow: 1; height: 24px; background: #f0f0f0; 
+  border-radius: 12px; overflow: hidden; position: relative; 
+}
 .chart-bar-fill { 
   height: 100%; transition: width 0.8s ease-out; display: flex; align-items: center; 
   justify-content: flex-end; padding-right: 10px; box-sizing: border-box;
@@ -410,7 +347,10 @@ body {
 .chart-bar-fill.neg { background: linear-gradient(90deg, #f44336, #ff7043); }
 .score-val { color: white; font-size: 11px; font-weight: 800; text-shadow: 0 1px 1px rgba(0,0,0,0.2); }
 
-/* Likert scale */
+/* ================================================
+   LIKERT SCALE
+   ================================================ */
+
 .likert-question {
   font-size: 13px;
   font-weight: 600;
@@ -442,9 +382,7 @@ body {
   justify-content: center;
 }
 
-.likert-btn:active {
-  transform: scale(0.93);
-}
+.likert-btn:active { transform: scale(0.93); }
 
 .likert-btn.selected {
   background: linear-gradient(135deg, #834d6c, #a855f7);
@@ -460,7 +398,200 @@ body {
   padding: 0 4px;
 }
 
-.retry-btn { margin-top: 8px; width: 100%; padding: 15px; background: #e2a07c; border: none; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; font-size: 15px; }
+/* ================================================
+   OVERLAY RINGRAZIAMENTO
+   ================================================ */
+
+.thankyou-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 101;
+
+  width: 92%;
+  max-width: 340px;
+  max-height: 90vh;
+  overflow-y: auto;
+
+  background: #fff;
+  border-radius: 24px;
+  padding: 36px 28px;
+  box-sizing: border-box;
+
+  text-align: center;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+}
+
+.thankyou-modal-emoji {
+  font-size: 48px;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.thankyou-modal-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: #2b1b3d;
+  margin: 0 0 14px;
+  line-height: 1.2;
+}
+
+.thankyou-modal-body {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #555;
+  margin: 0 0 28px;
+}
+
+.thankyou-modal-btn {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(90deg, #834d6c, #a855f7);
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.15s ease;
+}
+
+.thankyou-modal-btn:hover { opacity: 0.92; transform: translateY(-1px); }
+.thankyou-modal-btn:active { transform: scale(0.98); }
+
+/* ================================================
+   AI RACCOMANDAZIONI
+   ================================================ */
+
+.ai-intro-card {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  padding: 16px 18px;
+  margin-bottom: 16px;
+  backdrop-filter: blur(4px);
+}
+
+.ai-intro-card p {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.6;
+  margin: 0;
+  font-style: italic;
+  text-align: center;
+}
+
+.ai-recs-card {
+  background: linear-gradient(135deg, #2b1b3d 0%, #49284d 100%);
+  border-radius: 20px;
+  padding: 20px 18px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  color: white;
+}
+
+.ai-recs-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 0;
+  color: rgba(255,255,255,0.7);
+  font-size: 14px;
+  font-style: italic;
+}
+
+.ai-recs-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid rgba(255,255,255,0.15);
+  border-top-color: #d8b4fe;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.ai-recs-item-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.ai-recs-item-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #d8b4fe;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.ai-recs-item-name {
+  color: #d8b4fe;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.ai-recs-item-msg {
+  font-size: 13px;
+  color: rgba(255,255,255,0.9);
+  line-height: 1.6;
+  margin: 0 0 14px;
+}
+
+.ai-recs-error {
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
+  text-align: center;
+  padding: 16px 0;
+  margin: 0;
+}
+
+/* Likert nella schermata consigli — variante chiara su sfondo scuro */
+.advice-likert-q {
+  color: #d8b4fe !important;
+  margin-top: 14px !important;
+}
+
+.advice-likert-btn {
+  border-color: rgba(216, 180, 254, 0.4) !important;
+  background: rgba(255,255,255,0.08) !important;
+  color: white !important;
+}
+
+.advice-likert-btn.selected {
+  background: linear-gradient(135deg, #834d6c, #a855f7) !important;
+  border-color: #a855f7 !important;
+  color: white !important;
+}
+
+.advice-likert-labels {
+  color: rgba(255,255,255,0.4) !important;
+}
+
+/* ================================================
+   PULSANTE RIFAI IL TEST
+   ================================================ */
+
+.retry-btn { 
+  margin-top: 8px; 
+  width: 100%; 
+  padding: 15px; 
+  background: #e2a07c; 
+  border: none; 
+  border-radius: 12px; 
+  color: white; 
+  font-weight: bold; 
+  cursor: pointer; 
+  font-size: 15px;
+  transition: opacity 0.2s ease;
+}
+
+.retry-btn:hover { opacity: 0.9; }
+.retry-btn:active { transform: scale(0.98); }
 
 /* ================================================
    PRIVACY MODAL
@@ -481,17 +612,14 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 101;
-
   width: 92%;
   max-width: 340px;
   max-height: 90vh;
   overflow-y: auto;
-
   background: #fff;
   border-radius: 24px;
   padding: 28px 24px;
   box-sizing: border-box;
-
   color: #1a1a1a;
   text-align: left;
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.45);
