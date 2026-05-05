@@ -51,8 +51,6 @@ export default async function handler(req, res) {
     { apiVersion: 'v1' } // Aggiungi questa riga
     );
 
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
-
     const prompt = `
 Sei il motore di profilazione psicologica di un test basato su cinema e serie TV.
 L'utente ha ottenuto dei punteggi (da -20 a +20) per 5 "profili felini".
