@@ -36,7 +36,24 @@ export default async function handler(req, res) {
   // API key solo server-side
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) return res.status(500).json({ error: 'Chiave API mancante.' });
+  
   console.log('API Key presente:', !!apiKey);
+// --- INIZIO TEST DEBUG MODELLI ---
+  try {
+    const checkModels = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
+    const dataModels = await checkModels.json();
+    console.log("I MODELLI CHE LA TUA CHIAVE PUO' VEDERE SONO:");
+    // Stampa solo i nomi per comodità
+    if (dataModels.models) {
+      console.log(dataModels.models.map(m => m.name));
+    } else {
+      console.log("Nessun modello trovato o errore:", dataModels);
+    }
+  } catch (err) {
+    console.log("Errore nel controllo modelli:", err);
+  }
+  // --- FINE TEST DEBUG MODELLI ---
+
 
   const { punteggi } = req.body;
   if (!validatePunteggi(punteggi)) {
