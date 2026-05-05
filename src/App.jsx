@@ -434,7 +434,9 @@ function App() {
             /* SCHERMATA RISULTATI */
             <div className="result-container scrollable-results">
               <h2 className="result-title">I tuoi Punteggi Felini</h2>
+              <h2 className="result-title">Lasciaci il feedback per ricevere consigli personalizzati</h2>
               <p className="result-subtitle">Scopri i profili e lasciaci il tuo feedback!</p>
+              <p className="result-subtitle">Considerando che +20 indica massima affinità e -20 totale lontananza</p>
 
               {showScrollHint && (
                 <div className="scroll-hint">
@@ -461,7 +463,8 @@ function App() {
                         <span className="score-val">{score}</span>
                       </div>
                     </div>
-                    <p className="likert-question">Quanto ti ci ritrovi?</p>
+                    <p className="likert-question">(+20 massima affinità, -20 minima)</p>
+                    <p className="likert-question">Quanto ritieni corretto questo risultato?</p>
                     <div className="likert-scale">
                       {[1, 2, 3, 4, 5].map(val => (
                         <button
