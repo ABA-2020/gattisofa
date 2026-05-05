@@ -137,39 +137,29 @@ Nessun testo fuori dal JSON. Nessun blocco markdown (\`\`\`json). Solo JSON puro
   ]
 }`;
 
-    const result = await model.generateContent({
+const result = await model.generateContent({
       contents: [{ parts: [{ text: prompt }] }],
       generationConfig: {
         temperature: 0.75,
-        maxOutputTokens: 1800,
+        maxOutputTokens: 4000, // Aumentato da 1800 a 4000 per evitare interruzioni a metà frase
+        responseMimeType: "application/json", // IL TRUCCO MAGICO: Forza il modello a parlare SOLO in JSON puro
       },
     });
 
-const responseText = result.response.text();
-
-    // 1. Trova l'inizio e la fine del JSON ignorando tutto il resto
-    const startJson = responseText.indexOf('{');
-    const endJson = responseText.lastIndexOf('}');
-
-    if (startJson === -1 || endJson === -1) {
-      console.error("L'AI non ha restituito un JSON:", responseText);
-      throw new Error('Formato risposta AI non valido: JSON non trovato');
-    }
-
-    // 2. Estrae solo la stringa racchiusa tra le graffe
-    const cleanJson = responseText.substring(startJson, endJson + 1);
+    // Dato che abbiamo forzato application/json, la risposta sarà JSON perfetto e non serve più cercare le graffe!
+    const responseText = result.response.text();
     
     try {
-      const aiData = JSON.parse(cleanJson);
+      const aiData = JSON.parse(responseText);
 
-      // 3. Validazione struttura risposta
+      // Validazione struttura risposta
       if (!aiData.gatti || !Array.isArray(aiData.gatti) || aiData.gatti.length !== 5) {
-        throw new Error('La struttura dei gatti nel JSON è incompleta');
+        throw new Error('La struttura dei gatti nel JSON è incompleta o errata');
       }
 
       return res.status(200).json(aiData);
     } catch (parseError) {
-      console.error("Errore nel parsing del JSON pulito:", cleanJson);
+      console.error("Errore nel parsing del JSON generato:", responseText);
       throw new Error('Errore durante la lettura dei dati generati dall\'AI');
     }
 
