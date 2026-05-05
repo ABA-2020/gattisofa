@@ -36,6 +36,7 @@ export default async function handler(req, res) {
   // API key solo server-side
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) return res.status(500).json({ error: 'Chiave API mancante.' });
+  console.log('API Key presente:', !!apiKey);
 
   const { punteggi } = req.body;
   if (!validatePunteggi(punteggi)) {
