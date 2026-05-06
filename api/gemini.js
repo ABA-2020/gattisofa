@@ -121,7 +121,7 @@ Nessun testo fuori dal JSON. Nessun blocco markdown (\`\`\`json). Solo JSON puro
 
     // --- INIZIO GESTIONE RETRY (Anti Errore 503) ---
     let result;
-    let retries = 3; // Quante volte riprovare
+    let retries = 5; // Quante volte riprovare
     let delay = 2000; // Tempo di attesa iniziale: 2 secondi
 
     for (let i = 0; i < retries; i++) {
