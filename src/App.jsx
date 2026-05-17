@@ -380,6 +380,12 @@ function App() {
               {!aiLoading && !aiData && (
                 <div className="ai-recs-card">
                   <p className="ai-recs-error">Non è stato possibile generare i consigli al momento.</p>
+                  <button
+                    className="ai-retry-btn"
+                    onClick={() => fetchAiAdvice(scores)}
+                  >
+                    🔄 Riprova
+                  </button>
                 </div>
               )}
 
